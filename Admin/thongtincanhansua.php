@@ -1,4 +1,5 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
     include('./thongtincanhan.php');
     // Kiểm tra kết nối và biến baseUrl
     if (!isset($conn) || !isset($baseUrl)) {

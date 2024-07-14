@@ -1,5 +1,6 @@
 <?php
     // session_start();  
+    error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
     include('./thongtincanhan.php');
     $data = thongtincanhan::layDanhSach($conn);
 
@@ -34,7 +35,7 @@
             <tr>
             <td scope="row"><?php echo $item->HoTen;?></td>
                 <td><?php echo date_format(date_create($item->NgaySinh), "d/m/Y");?></td>
-                <td><?php echo $item->MaKhoa;?></td>
+                <td><?php echo $item->MaKhoa ?? "Cần Thêm Khoa Cho $item->HoTen";?></td>
                 <td><?php echo $item->ChuVu;?></td>
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?>
                 <td><a href='<?php echo "$baseUrl?p=danhgiaCNthem&&id=$item->MaCN" ?>'>Cập Nhật Đánh Giá</a>|<a href='<?php echo "$baseUrl?p=thongtincanhansua&&id=$item->MaCN" ?>'>Sửa</a> | <a href='<?php echo "$baseUrl?p=thongtincanhanxoa&&id=$item->MaCN" ?>'>Xóa</a></td>

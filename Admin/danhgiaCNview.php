@@ -1,4 +1,5 @@
 <?php  
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
     include('./danhgiaCN.php');
     $data = DanhgiaCN::layDanhSach($conn);
 
@@ -31,8 +32,8 @@ include('../Admin/chimuckhoa.php');
             {
         ?>
             <tr>
-                <td scope="row"><?php echo $item->MaCN; ?></td>
-                <td><?php echo $item->MaKhoa;?></td>
+                <td scope="row"><?php echo $item->MaCN ?? "Cập Nhật Họ Và Tên"; ?></td>
+                <td><?php echo $item->MaKhoa ?? "Cập Nhật Khoa";?></td>
                 <td><?php echo $item->SoQD;?></td>
                 <td><?php echo $item->DanhGia;?></td>
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 

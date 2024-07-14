@@ -88,11 +88,10 @@
             $message = "Lỗi khi Xóa thể loại";
 
             // Chuẩn bị câu truy vấn SQL để xóa 
-            $sql = "DELETE FROM danhgiatt WHERE MaKhoa = $this->MaKhoa";
-            $sql1 = "DELETE FROM danhgiatt WHERE MaKhoa = $this->MaKhoa";
+            $sql = "DELETE FROM khoa WHERE MaKhoa = $this->MaKhoa";
             
             // thực thi câu truy vấn và kiểm tra kết quả
-            if (mysqli_query($conn, $sql,$sql1)) {
+            if (mysqli_query($conn, $sql)) {
                 $id = mysqli_insert_id($conn);
                 $message = "Xóa Khoa $this->TenKhoa thành công";
             }
