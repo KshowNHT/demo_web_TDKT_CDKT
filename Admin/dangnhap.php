@@ -11,12 +11,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $TenTk = $_POST['TenTk'];
         $MatKhau = $_POST['MatKhau'];
         
-        // Kiểm tra kết nối
-        if ($conn->connect_error) {
-            die("Kết nối thất bại: " . $conn->connect_error);
-        }
 
-        // Sử dụng prepared statement để bảo mật hơn
+        // Sử dụng prepared statement 
         $stmt = $conn->prepare("SELECT * FROM taikhoan WHERE TenTk = ?");
         $stmt->bind_param("s", $TenTk);
         $stmt->execute();

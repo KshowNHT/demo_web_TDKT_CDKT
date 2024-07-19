@@ -23,7 +23,7 @@
     <div class="form-group">
         <label >Vai Trò</label>
         <select name="VaiTro" id="VaiTro">
-            <option value="1">Đang Đánh Giá</option>
+            <option value="1">Vai Trò: </option>
             <option value="Quản Trị" >Quản Trị</option>
             <option value="Giảng Viên" >Giảng Viên</option>
             <option value="Khoa" >Khoa</option>

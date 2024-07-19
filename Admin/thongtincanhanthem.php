@@ -7,13 +7,13 @@
         $data->NgaySinh = $_POST["NgaySinh"];
         $data->MaKhoa = $_POST["Lkhoa"];
         $data->ChuVu = $_POST["ChuVu"];
-        
         if(!$data->HoTen || !$data->NgaySinh|| !$data->MaKhoa || !$data->ChuVu){ 
-            echo "Vui Lòng Nhập Đầy Đủ Thông Tin.";
+            $error = "Vui Lòng Nhập Đầy Đủ Thông Tin.";
         }
+       
         $data->Themthongtincanhan($conn,$baseUrl);
-   
-    
+        
+        
     }
 ?>
 <?php
@@ -21,6 +21,7 @@
     $Lkhoa = Khoa::layDanhSach($conn);
 
 ?>
+<?php if (isset($error)) { echo "<p style='color: red;'>$error</p>"; } ?>
 
 <form method="post" enctype="multipart/form-data">
    
@@ -37,7 +38,6 @@
        <option value=" ">Khoa:  </option>
         <?php
         foreach($Lkhoa as $L ){
-        
         ?>
        <option value="<?php echo $L->MaKhoa ;?>"><?php echo $L->TenKhoa ;?></option>
 
