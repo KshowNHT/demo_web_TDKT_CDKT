@@ -1,10 +1,8 @@
 <?php
+error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 include('./danhgiaCN.php');
 
-// Kiểm tra kết nối và biến baseUrl
-if (!isset($conn) || !isset($baseUrl)) {
-    die("Lỗi kết nối cơ sở dữ liệu hoặc baseUrl không được đặt.");
-}
+
 
 if (isset($_POST["SoQD"])) {
     $data = new DanhgiaCN();
@@ -27,9 +25,12 @@ if (isset($_POST["SoQD"])) {
 } else {
     die("Yêu cầu không hợp lệ.");
 }
+if(!isset($data->MaKhoa->MaKhoa)){
+    $message = "Lỗi Không Tìm Thấy Khoa.";
+}
 
 ?>
-
+<?php if (isset($message)) { echo "<p style='color: red;'>$message</p>"; } ?>
 <form method="post">
     <div class="form-group">
         <label for="MaCN">Mã Cá Nhân: </label>
@@ -38,7 +39,7 @@ if (isset($_POST["SoQD"])) {
 
     <div class="form-group">
         <label for="MaKhoa">Mã Khoa: </label>
-        <input type="text" class="form-control" id="MaKhoa" name="MaKhoa" value="<?php echo $data->MaKhoa->MaKhoa?>" readonly>
+        <input type="text" class="form-control" id="MaKhoa" name="MaKhoa" value="<?php  echo $data->MaKhoa->MaKhoa?>" readonly>
     </div>
 
     <div class="form-group">

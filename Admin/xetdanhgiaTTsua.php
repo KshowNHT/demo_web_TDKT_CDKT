@@ -32,10 +32,10 @@
         <label >Đánh Giá</label>
         <select name="DanhGia" id="DanhGia">
             <option value="Chưa Đánh Giá">Đang Đánh Giá</option>
-            <option value="Hoàn Thành Xuất ">Hoàn Thành Xuất</option>
-            <option value="Hoàn Thành Tốt Nhiệm Vụ">Hoàn Thành Tốt Nhiệm Vụ</option>
-            <option value="Hoàn Thành Nhiệm Vụ">Hoàn Thành Nhiệm Vụ</option>
-            <option value="Không Hoàn Thành Nhiệm Vụ">Không Hoàn Thành Nhiệm Vụ</option>
+            <option value="TT_LAO_DONG_TIEN_TIEN">TT_LAO_DONG_TIEN_TIEN</option>
+            <option value="TT_LAO_DONG_XS">TT_LAO_DONG_XS</option>
+            <option value="GK_Hieu_Truong">GK_Hieu_Truong</option>
+            <option value="BK_UBNDTP">BK_UBNDTP</option>
         </select>
     </div>
     <div class="form-group">

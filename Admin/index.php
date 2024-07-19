@@ -20,16 +20,20 @@
         'danhgiaTT' => array('Quản Lý Đánh Giá Tập Thể', 'danhgiaTTview.php'),
         'danhgiaTTth' => array('Thêm Đánh Giá', 'danhgiaTTthem.php'),
         'danhgiaTTsua' => array('Sửa Đánh Giá', 'danhgiaTTsua.php'),
+        'xetdanhgiaTT' => array('Đánh Giá Tập Thể', 'xetdanhgiaTT.php'),
+        'danhgiaTTtientienview' => array('Đánh Giá Tập Thể Lao Động Tiên Tiến', 'danhgiaTTtientienview.php'),
+        'danhgiaTTxsvahieutruong' => array('Đánh Giá Tập Thể', 'xedanhgiaTTxsvahieutruong.php'),
+        'danhgiaTTxs' => array('Đánh Giá Tập Thể Lao Động Xuất Sắc', 'danhgiaTTxsview.php'),
+        'danhgiaTThieutruong' => array('Đánh Giá Tập Thể GK Hiệu Trưởng', 'danhgiaTThieutruongview.php'),
+        'danhgiaTThubndtp' => array('Đánh Giá Tập Thể BK UBNDTP', 'xetdanhgiaTTubndtpview.php'),
+        'danhgiaTThubndtpthem' => array('Xét Đánh Giá Tập Thể BK UBNDTP', 'xetdanhgiaTTubndtpthem.php'),
+        'xetdanhgiaTTsua' => array('Sửa Đánh Giá', 'xetdanhgiaTTsua.php'),
         // Đánh Giá Cá Nhân
         'danhgiaCN' => array('Quản lý Đánh Giá Cá Nhân', 'danhgiaCNview.php'),
         'danhgiaCNsua' => array('Sửa Đánh Giá Cá Nhân', 'danhgiaCNsua.php'),
         'danhgiaCNthem' => array('Đánh Giá Cá Nhân', 'danhgiaCNthem.php'),
         'danhgiaCNkhoa' => array('Đánh Giá Cá Nhân', 'danhgiaCNviewkhoa.php'),
-        // // khách hàng
-        // 'user' => array('Quản lý khách hàng ', 'qluserview.php'),
-        // 'userth' => array('Theme Thông Tin Khách Hàng ', 'qluserthem.php'),
-        // 'usersua' => array('Sửa Thông Tin Khách Hàng ', 'qlusersua.php'),
-        // 'userxoa' => array('Xóa Thông Tin Khách Hàng  ', 'qluserxoa.php'),
+        
     );
     //connect các trang 
     include('../Admin/connectdb.php');

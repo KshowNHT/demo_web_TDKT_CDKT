@@ -1,6 +1,6 @@
 <?php  
 include('./danhgiaTT.php');
-$data = DanhgiaTT::layDanhSach($conn);
+$data = DanhgiaTT::laydanhsachdanhgiaxs($conn);
 
 if (isset($_GET["message"])) {
     $message = $_GET["message"];
@@ -29,8 +29,8 @@ if (isset($_GET["message"])) {
                 <td><?php echo $item->SoQD ?? "Cần Thêm Số Quyết Đinh Cho $item->MaKhoa"?></td>
                 <td><?php echo $item->DanhGia; ?></td> <!-- Hiển thị tên loại khen thưởng -->
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
-                <td><button type="button" class="btn btn-info"><a href='<?php echo "$baseUrl?p=danhgiaTTsua&&id=$item->MaDGTT" ?>'>Sửa Đánh Giá</a> </button></td>
-                <td><button type="button" class="btn btn-info"><a href='<?php echo "$baseUrl?p=xetdanhgiaTT&&id=$item->MaDGTT" ?>'>Xét Đánh Giá</a> </button></td>
+                <td><button type="button" class="btn btn-info"><a href='<?php echo "$baseUrl?p=xetdanhgiaTTsua&&id=$item->MaDGTT" ?>'>Sửa Đánh Giá</a> </button></td>
+                <td><button type="button" class="btn btn-info"><a href='<?php echo "$baseUrl?p=danhgiaTThubndtpthem&&id=$item->MaDGTT" ?>'>Xét Đánh Giá</a> </button></td>
                 <?php
                }
                ?>

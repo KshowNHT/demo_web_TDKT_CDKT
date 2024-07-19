@@ -5,7 +5,7 @@
 
 include ('../Admin/connectdb.php');
 
-// $baseUrl = $pages;
+
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (!empty($_POST['TenTk']) && !empty($_POST['MatKhau'])) {
         $TenTk = $_POST['TenTk'];
@@ -71,7 +71,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                         <input type="hidden" name="form_login" value="true">
                                         <input type="text" class="form-control form-control-user" id="TenTk" placeholder="Enter NameUser Address..." name="TenTk" required>
                                         <input type="password" class="form-control form-control-user" id="MatKhau" placeholder="Password" name="MatKhau" required>
-                                        <button type="submit" class="btn btn-primary btn-user btn-block">Login</button>
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">Đăng Nhập</button>
                                         <hr>
                                     </form>
                                     <hr>
