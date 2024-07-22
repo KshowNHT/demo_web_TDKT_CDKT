@@ -29,14 +29,8 @@
     </div>
 
     <div class="form-group">
-        <label >Đánh Giá</label>
-        <select name="DanhGia" id="DanhGia">
-            <option value="Chưa Đánh Giá">Đang Đánh Giá</option>
-            <option value="TT_LAO_DONG_TIEN_TIEN">TT_LAO_DONG_TIEN_TIEN</option>
-            <option value="TT_LAO_DONG_XS">TT_LAO_DONG_XS</option>
-            <option value="GK_Hieu_Truong">GK_Hieu_Truong</option>
-            <option value="BK_UBNDTP">BK_UBNDTP</option>
-        </select>
+    <label for="DanhGia">Đánh Giá: </label>
+    <input type="text" class="form-control" id="DanhGia" name="DanhGia" value ='<?php echo $data->DanhGia; ?>'readonly>
     </div>
     <div class="form-group">
         <input type="submit" class="form-control" value=" Cập Nhật Đánh Giá"/>

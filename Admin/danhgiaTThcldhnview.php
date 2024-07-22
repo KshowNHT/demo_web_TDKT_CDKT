@@ -1,10 +1,11 @@
 <?php
 include('./danhgiaTT.php');
-$data = DanhgiaTT::laydanhsachdanhgiaubndtp($conn);
+$data = DanhgiaTT::laydanhsachdanhgiahcldhn($conn);
 
 // Mảng ánh xạ
 $awardMap = array(
-    'BK_UBNDTP' => 'Bằng Khen Ủy Ban Nhân Dân Thành Phố',
+    'Huan_Chuong_Lao_Dong_Hang_Nhi' => 'Huân Chương Lao Động Hạng Nhì',
+    // Thêm các giá trị ánh xạ khác nếu cần
 );
 
 if (isset($_GET["message"])) {
@@ -37,7 +38,6 @@ if (isset($_GET["message"])) {
                 <td><?php echo $danhGia; ?></td> <!-- Hiển thị tên loại khen thưởng -->
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
                 <td><button type="button" class="btn btn-info"><a href='<?php echo "$baseUrl?p=xetdanhgiaTTsua&&id=$item->MaDGTT" ?>'>Sửa Đánh Giá</a> </button></td>
-                <td><button type="button" class="btn btn-info"><a href='<?php echo "$baseUrl?p=danhgiaTTttcpthem&&id=$item->MaDGTT" ?>'>Xét Đánh Giá</a> </button></td>
                 <?php
                }
                ?>

@@ -31,69 +31,59 @@ class DanhgiaTT {
         ],
        
         'BK_UBNDTP' => [
-            '2_nam_hoan_thanh_nhiem_vu' => true,
-            'dat_danh_hieu_tap_the' => false,
+            'either' => ['2_nam_hoan_thanh_nhiem_vu', 'dat_danh_hieu_tap_the'],
             'dong_y' => true
         ],
+
+
+        'BK_TTCP' => [
+            'duoc_ubnd_tang_bang_khen' => true,
+            'either' => ['co_5_nam_hoan_thanh_xuat_sac', 'dat_tap_the_lao_dong_xuat_sac'],
+            'co_1_lan_duoc_tang_co_thi_dua' => true,
+            'dong_y' => true
+        ],
+
+        'Huan_Chuong_Lao_Dong_Hang_Ba' => [
+            'duoc_tang_bang_khen_ttcp' => true,
+            'either_1' => ['co_5_nam_hoan_thanh_xsnv', 'dat_danh_hieu_ttldxs'],
+            'either_2' => ['co_1_lan_duoc_tang_co_thi_dua_cp', 'co_2_lan_duoc_tang_co_thi_dua_ubnd', 'co_1_lan_duoc_tang_co_thi_dua_ubnd'],
+            'co_1_lan_duoc_tang_bang_khen' => true,
+            'dong_y' => true
+        ],
+
+        'Huan_Chuong_Lao_Dong_Hang_Nhi' => [
+            'duoc_tang_hcldhb' => true,
+            'either_1' => ['co_5_nam_tro_len_hoan_thanh_xsnv', 'danh_hieu_ttldxs'],
+            'co_1_lan_nhan_duoc_co_thi_dua_cp' => true,
+            'either_2' => ['co_1_lan_duoc_tang_co_thi_dua_ubnd', 'co_3_lan_duoc_tang_co_thi_dua_ubnd'],
+            'dong_y' => true
+        ],
+
     ];
 
     // kiểm tra từng tiêu chí
-    private static function checkHoanThanhNhiemVu($data) {
-        return $data['hoan_thanh_nhiem_vu'];
-    }
-
-    private static function checkCaNhan70PhanTram($data) {
-        return $data['ca_nhan_70_phan_tram'];
-    }
-
-    private static function checkKyLuat($data) {
-        return !$data['ky_luat'];
-    }
-
-    private static function checkDongY($data) {
-        return $data['dong_y'];
-    }
-
-    private static function checkHoanThanhXuatSac($data) {
-        return $data['hoan_thanh_xuat_sac'];
-    }
-
-    private static function checkCaNhan100PhanTram($data) {
-        return $data['ca_nhan_100_phan_tram'];
-    }
-
-    private static function checkcanhandatcstdcs($data) {
-        return $data['ca_nhan_dat_cstdcs'];
-    }
-
-    private static function checkHoanThanhTotNhiemVu($data) {
-        return $data['hoan_thanh_tot_nhiem_vu'];
-    }
-
-    private static function checkCaNhan90PhanTram($data) {
-        return $data['ca_nhan_90_phan_tram'];
-    }
-    
-    private static function check2NamHoanThanhNhiemVu($data) {
-        return $data['2_nam_hoan_thanh_nhiem_vu'];
-    }
-    private static function checkDatDanhHieuTapThe($data) {
-        return $data['dat_danh_hieu_tap_the'];
+    private static function checkCriteria($key, $value, $data) {
+        if (strpos($key, 'either') === 0) {
+            foreach ($value as $eitherKey) {
+                if (!empty($data[$eitherKey])) {
+                    return true;
+                }
+            }
+            return false;
+        }
+        return !empty($data[$key]) === $value;
     }
 
     // đánh giá các tiêu chí
     private static function evaluateCriteria($data, $criteria) {
         foreach ($criteria as $key => $value) {
-            $checkFunction = 'check' . str_replace(' ', '', ucwords(str_replace('_', ' ', $key)));
-            if (!method_exists(__CLASS__, $checkFunction)) {
-                throw new Exception("Hàm kiểm tra $checkFunction không tồn tại.");
-            }
-            if (!call_user_func([__CLASS__, $checkFunction], $data)) {
+            if (!self::checkCriteria($key, $value, $data)) {
                 return false;
             }
         }
         return true;
     }
+
 
     // Lấy danh sách Đánh Giá Tập Thể
     public static function layDanhSach($conn) {
@@ -117,95 +107,59 @@ class DanhgiaTT {
         }
         return $danhgiattList;
     }
-    //lấy danh sách đánh giá tiên tiến
+
+    // Lấy danh sách đánh giá theo loại
+    private static function layDanhSachDanhGiaTheoLoai($conn, $loai) {
+        $sql = "SELECT * FROM `danhgiatt` WHERE DanhGia = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $loai);
+        $stmt->execute();
+        $result = $stmt->get_result();
+
+        $danhgiattList = array();
+
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+                if ($khoa_obj) {
+                    $danhgiatt_obj = new DanhgiaTT();
+                    $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
+                    $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
+                    $danhgiatt_obj->SoQD = $row["SoQD"];
+                    $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                    $danhgiattList[] = $danhgiatt_obj;
+                }
+            }
+        }
+        return $danhgiattList;
+    }
+
     public static function laydanhsachdanhgiatientien($conn) {
-        $sql = "SELECT * FROM `danhgiatt` WHERE DanhGia = 'TT_LAO_DONG_TIEN_TIEN'";
-        $result = $conn->query($sql);
-
-        $danhgiattList = array();
-
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
-                $danhgiatt_obj = new DanhgiaTT();
-                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
-                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
-                $danhgiatt_obj->SoQD = $row["SoQD"];
-                $danhgiatt_obj->DanhGia = $row["DanhGia"];
-
-
-                $danhgiattList[] = $danhgiatt_obj;
-            }
-        }
-        return $danhgiattList;
+        return self::layDanhSachDanhGiaTheoLoai($conn, 'TT_LAO_DONG_TIEN_TIEN');
     }
-     //lấy danh sách đánh giá xuất sắc
+
     public static function laydanhsachdanhgiaxs($conn) {
-        $sql = "SELECT * FROM `danhgiatt` WHERE DanhGia = 'TT_LAO_DONG_XS'";
-        $result = $conn->query($sql);
-
-        $danhgiattList = array();
-
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
-                $danhgiatt_obj = new DanhgiaTT();
-                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
-                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
-                $danhgiatt_obj->SoQD = $row["SoQD"];
-                $danhgiatt_obj->DanhGia = $row["DanhGia"];
-
-
-                $danhgiattList[] = $danhgiatt_obj;
-            }
-        }
-        return $danhgiattList;
+        return self::layDanhSachDanhGiaTheoLoai($conn, 'TT_LAO_DONG_XS');
     }
 
-     //lấy danh sách đánh giá hiệu trưởng
-     public static function laydanhsachdanhgiahieutruong($conn) {
-        $sql = "SELECT * FROM `danhgiatt` WHERE DanhGia = 'GK_Hieu_Truong'";
-        $result = $conn->query($sql);
-
-        $danhgiattList = array();
-
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
-                $danhgiatt_obj = new DanhgiaTT();
-                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
-                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
-                $danhgiatt_obj->SoQD = $row["SoQD"];
-                $danhgiatt_obj->DanhGia = $row["DanhGia"];
-
-
-                $danhgiattList[] = $danhgiatt_obj;
-            }
-        }
-        return $danhgiattList;
+    public static function laydanhsachdanhgiahieutruong($conn) {
+        return self::layDanhSachDanhGiaTheoLoai($conn, 'GK_Hieu_Truong');
     }
 
-    //lấy danh sách đánh giá UBNDTP
     public static function laydanhsachdanhgiaubndtp($conn) {
-        $sql = "SELECT * FROM `danhgiatt` WHERE DanhGia = 'BK_UBNDTP'";
-        $result = $conn->query($sql);
+        return self::layDanhSachDanhGiaTheoLoai($conn, 'BK_UBNDTP');
+    }
 
-        $danhgiattList = array();
+    public static function laydanhsachdanhgiattcp($conn) {
+        return self::layDanhSachDanhGiaTheoLoai($conn, 'BK_TTCP');
+    }
 
-        if ($result->num_rows > 0) {
-            while($row = $result->fetch_assoc()) {
-                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
-                $danhgiatt_obj = new DanhgiaTT();
-                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
-                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
-                $danhgiatt_obj->SoQD = $row["SoQD"];
-                $danhgiatt_obj->DanhGia = $row["DanhGia"];
+    public static function laydanhsachdanhgiahcldhb($conn) {
+        return self::layDanhSachDanhGiaTheoLoai($conn, 'Huan_Chuong_Lao_Dong_Hang_Ba');
+    }
 
-
-                $danhgiattList[] = $danhgiatt_obj;
-            }
-        }
-        return $danhgiattList;
+    public static function laydanhsachdanhgiahcldhn($conn) {
+        return self::layDanhSachDanhGiaTheoLoai($conn, 'Huan_Chuong_Lao_Dong_Hang_Nhi');
     }
     
     // Lấy Đánh Giá Tập Thể theo ID
@@ -226,7 +180,6 @@ class DanhgiaTT {
     public function Themxetdanhgiatttientien($conn, $baseUrl, $data) {
         $message = "Lỗi khi thêm thể loại";
 
-        // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
         foreach (self::$awardsCriteria as $awardType => $criteria) {
             try {
                 if (self::evaluateCriteria($data, $criteria)) {
@@ -246,20 +199,25 @@ class DanhgiaTT {
             exit();
         }
 
-        $sql = "UPDATE danhgiatt SET DanhGia = '$this->DanhGia' WHERE MaDGTT = $this->MaDGTT";
+        $sql = "UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);
 
-        if (mysqli_query($conn, $sql)) {
-            $id = mysqli_insert_id($conn);
-            $message = "Đánh Giá $this->MaKhoa thành công";
+        if ($stmt->execute()) {
+            $message = "Cập nhật đánh giá thành công";
+        } else {
+            $message = "Lỗi khi cập nhật đánh giá";
         }
+
         header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
         exit();
     }
 
+
     // Thêm Đánh Giá Tập Thể XS và Hiệu Trưởng
     public function Themxetdanhgiatttxsvahieutruong($conn, $baseUrl, $data) {
         $message = "Lỗi khi thêm thể loại";
-
+    
         // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
         foreach (self::$awardsCriteria as $awardType => $criteria) {
             try {
@@ -273,32 +231,37 @@ class DanhgiaTT {
                 exit();
             }
         }
-
+    
         if (empty($this->DanhGia)) {
             $message = "Khoa $this->MaKhoa Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
             header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
             exit();
         }
-
-        $sql = "UPDATE danhgiatt SET DanhGia = '$this->DanhGia' WHERE MaDGTT = $this->MaDGTT";
-
-        if (mysqli_query($conn, $sql)) {
-            $id = mysqli_insert_id($conn);
-            $message = "Đánh Giá $this->MaKhoa thành công";
+    
+        $sql = "UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);
+    
+        if ($stmt->execute()) {
+            $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+        } else {
+            $message = "Lỗi khi thêm đánh giá: " . $stmt->error;
         }
-        if($awardType == "TT_LAO_DONG_XS"){
+    
+        if ($awardType == "TT_LAO_DONG_XS") {
             header("Location: $baseUrl?p=danhgiaTTxs&message=" . urlencode($message));
-        }else{
+        } else {
             header("Location: $baseUrl?p=danhgiaTThieutruong&message=" . urlencode($message));
         }
-        
+    
         exit();
     }
+    
 
     // Thêm Đánh Giá Tập Thể UBNDTP
     public function Themxetdanhgiattubndtp($conn, $baseUrl, $data) {
         $message = "Lỗi khi thêm thể loại";
-
+    
         // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
         foreach (self::$awardsCriteria as $awardType => $criteria) {
             try {
@@ -308,47 +271,175 @@ class DanhgiaTT {
                 }
             } catch (Exception $e) {
                 $message = "Lỗi: " . $e->getMessage();
-                switch ($this->DanhGia) {
-                    case "TT_LAO_DONG_XS":
-                        header("Location: $baseUrl?p=danhgiaTTxs&message=" . urlencode($message));
-                        break;
-                    case "GK_Hieu_Truong":
-                        header("Location: $baseUrl?p=danhgiaTThieutruong&message=" . urlencode($message));
-                        break;
-                    default:
-                        header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
-                }
+                header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
                 exit();
             }
         }
-
+    
         if (empty($this->DanhGia)) {
             $message = "Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
-            switch ($this->DanhGia) {
-                case "TT_LAO_DONG_XS":
-                    header("Location: $baseUrl?p=danhgiaTTxs&message=" . urlencode($message));
-                    break;
-                case "GK_Hieu_Truong":
-                    header("Location: $baseUrl?p=danhgiaTThieutruong&message=" . urlencode($message));
-                    break;
-                default:
-                    header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
+            header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
             exit();
         }
-
-        $sql = "UPDATE danhgiatt SET DanhGia = '$this->DanhGia' WHERE MaDGTT = $this->MaDGTT";
-
-        if (mysqli_query($conn, $sql)) {
-            $id = mysqli_insert_id($conn);
-            $message = "Đánh Giá $this->MaKhoa thành công";
+    
+        $sql = "UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);
+    
+        if ($stmt->execute()) {
+            $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
         } else {
-            $message = "Lỗi khi thêm đánh giá: " . mysqli_error($conn);
+            $message = "Lỗi khi thêm đánh giá: " . $stmt->error;
         }
-
+    
         header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
         exit();
     }
-}
+    
+
+    // Thêm Đánh Giá Tập Thể TTCP
+    public function Themxetdanhgiattcp($conn, $baseUrl, $data) {
+        $message = "Lỗi khi thêm thể loại";
+    
+        // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
+        foreach (self::$awardsCriteria as $awardType => $criteria) {
+            try {
+                if (self::evaluateCriteria($data, $criteria)) {
+                    $this->DanhGia = $awardType;
+                    break;
+                }
+            } catch (Exception $e) {
+                $message = "Lỗi: " . $e->getMessage();
+                header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
+                exit();
+            }
+        }
+    
+        if (empty($this->DanhGia)) {
+            $message = "Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
+            header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
+            exit();
+        }
+    
+        if (isset($this->MaDGTT) && is_numeric($this->MaDGTT)) {
+            // Sử dụng Prepared Statements
+            $stmt = $conn->prepare("UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?");
+            $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);            
+    
+            if ($stmt->execute()) {
+                if ($stmt->affected_rows > 0) {
+                    $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+                } else {
+                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+                }
+            } else {
+                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
+            }
+    
+            $stmt->close();
+        } else {
+            $message = "Mã đánh giá không hợp lệ";
+        }
+    
+        header("Location: $baseUrl?p=danhgiaTTttcpview&message=" . urlencode($message));
+        exit();
+    }
+
+    // Thêm Đánh Giá Tập Thể Huân chương Lao động hạng Ba
+    public function Themxetdanhgiahcldhb($conn, $baseUrl, $data) {
+        $message = "Lỗi khi thêm thể loại";
+    
+        // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
+        foreach (self::$awardsCriteria as $awardType => $criteria) {
+            try {
+                if (self::evaluateCriteria($data, $criteria)) {
+                    $this->DanhGia = $awardType;
+                    break;
+                }
+            } catch (Exception $e) {
+                $message = "Lỗi: " . $e->getMessage();
+                header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
+                exit();
+            }
+        }
+    
+        if (empty($this->DanhGia)) {
+            $message = "Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
+            header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
+            exit();
+        }
+    
+        if (isset($this->MaDGTT) && is_numeric($this->MaDGTT)) {
+            // Sử dụng Prepared Statements
+            $stmt = $conn->prepare("UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?");
+            $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);            
+    
+            if ($stmt->execute()) {
+                if ($stmt->affected_rows > 0) {
+                    $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+                } else {
+                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+                }
+            } else {
+                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
+            }
+    
+            $stmt->close();
+        } else {
+            $message = "Mã đánh giá không hợp lệ";
+        }
+    
+        header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
+        exit();
+    }
+
+    // Thêm Đánh Giá Tập Thể Huân_Chương_Lao_Động_Hạng_Nhì
+    public function Themxetdanhgiahcldhn($conn, $baseUrl, $data) {
+        $message = "Lỗi khi thêm thể loại";
+    
+        // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
+        foreach (self::$awardsCriteria as $awardType => $criteria) {
+            try {
+                if (self::evaluateCriteria($data, $criteria)) {
+                    $this->DanhGia = $awardType;
+                    break;
+                }
+            } catch (Exception $e) {
+                $message = "Lỗi: " . $e->getMessage();
+                header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
+                exit();
+            }
+        }
+    
+        if (empty($this->DanhGia)) {
+            $message = "Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
+            header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
+            exit();
+        }
+    
+        if (isset($this->MaDGTT) && is_numeric($this->MaDGTT)) {
+            // Sử dụng Prepared Statements
+            $stmt = $conn->prepare("UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?");
+            $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);            
+    
+            if ($stmt->execute()) {
+                if ($stmt->affected_rows > 0) {
+                    $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+                } else {
+                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+                }
+            } else {
+                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
+            }
+    
+            $stmt->close();
+        } else {
+            $message = "Mã đánh giá không hợp lệ";
+        }
+    
+        header("Location: $baseUrl?p=danhgiaTThcldhnview&message=" . urlencode($message));
+        exit();
+    }
 
     //Thêm Khoa Vào Xét Đánh Giá
     public function Themdanhgiatt($conn,$baseUrl) {
@@ -363,7 +454,7 @@ class DanhgiaTT {
         // thực thi câu truy vấn và kiểm tra kết quả
         if (mysqli_query($conn, $sql)) {
             $id = mysqli_insert_id($conn);
-            $message = "Đánh Giá $this->MaKhoa thành công";
+            $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
         }
         // Chuyển hướng trang và truyền thông báo qua URL
         header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
@@ -377,7 +468,7 @@ class DanhgiaTT {
 
         if (mysqli_query($conn, $sql)) {
             $id = mysqli_insert_id($conn);
-            $message = "Cập Đánh Giá $this->MaKhoa thành công";
+            $message = "Cập Đánh Giá $this->MaDGTT thành công";
         }
 
         switch ($this->DanhGia) {
@@ -392,6 +483,12 @@ class DanhgiaTT {
                 break;
             case "BK_UBNDTP":
                 header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
+                break;
+            case "BK_TTCP":
+                header("Location: $baseUrl?p=danhgiaTTttcpview&message=" . urlencode($message));
+                break;
+            case "Huan_Chuong_Lao_Dong_Hang_Ba":
+                header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
                 break;
             default:
                 header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));

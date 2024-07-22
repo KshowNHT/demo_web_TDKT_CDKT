@@ -8,6 +8,10 @@
             <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo " $baseUrl?p=danhgiaTTtientienview"; ?>"><?php echo $pages['danhgiaTTtientienview'][0]; ?></a></li>
             <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo " $baseUrl?p=danhgiaTTxs"; ?>"><?php echo $pages['danhgiaTTxs'][0]; ?></a></li>
             <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo " $baseUrl?p=danhgiaTThieutruong"; ?>"><?php echo $pages['danhgiaTThieutruong'][0]; ?></a></li>
+            <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTThubndtp"; ?>"><?php echo $pages['danhgiaTThubndtp'][0]; ?></a></li>
+            <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTTttcpview"; ?>"><?php echo $pages['danhgiaTTttcpview'][0]; ?></a></li>
+            <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTThcldhbview"; ?>"><?php echo $pages['danhgiaTThcldhbview'][0]; ?></a></li>
+            <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTThcldhnview"; ?>"><?php echo $pages['danhgiaTThcldhnview'][0]; ?></a></li>
         </ul>
     <?php
     }
@@ -22,10 +26,13 @@
     <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=Khoa"; ?>"><?php echo $pages['Khoa'][0]; ?></a></li>
     <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTT"; ?>"><?php echo $pages['danhgiaTT'][0]; ?></a>
         <ul>
-            <li><a href="<?php echo "$baseUrl?p=danhgiaTTtientienview"; ?>"><?php echo $pages['danhgiaTTtientienview'][0]; ?></a></li>
-            <li><a href="<?php echo "$baseUrl?p=danhgiaTTxs"; ?>"><?php echo $pages['danhgiaTTxs'][0]; ?></a></li>
-            <li><a href="<?php echo "$baseUrl?p=danhgiaTThieutruong"; ?>"><?php echo $pages['danhgiaTThieutruong'][0]; ?></a></li>
-            <li><a href="<?php echo "$baseUrl?p=danhgiaTThubndtp"; ?>"><?php echo $pages['danhgiaTThubndtp'][0]; ?></a></li>
+            <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTTtientienview"; ?>"><?php echo $pages['danhgiaTTtientienview'][0]; ?></a></li>
+            <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTTxs"; ?>"><?php echo $pages['danhgiaTTxs'][0]; ?></a></li>
+            <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTThieutruong"; ?>"><?php echo $pages['danhgiaTThieutruong'][0]; ?></a></li>
+            <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTThubndtp"; ?>"><?php echo $pages['danhgiaTThubndtp'][0]; ?></a></li>
+            <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTTttcpview"; ?>"><?php echo $pages['danhgiaTTttcpview'][0]; ?></a></li>
+            <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTThcldhbview"; ?>"><?php echo $pages['danhgiaTThcldhbview'][0]; ?></a></li>
+            <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaTThcldhnview"; ?>"><?php echo $pages['danhgiaTThcldhnview'][0]; ?></a></li>
         </ul>
     </li>
     <li style="font-weight: bold;font-size: 18px;color: #e5e5e5;"><a href="<?php echo "$baseUrl?p=danhgiaCN"; ?>"><?php echo $pages['danhgiaCN'][0]; ?></a></li>

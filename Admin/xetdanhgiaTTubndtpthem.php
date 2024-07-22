@@ -39,8 +39,8 @@ if (isset($_POST["SoQD"])) {
     </div>
 
     <div class="form-group">
-        <label>Có 2 năm liên tục hoàn thành xuất sắc nhiệm vụ: <input type="checkbox" name="2_nam_hoan_thanh_nhiem_vu"></label><br>
-        <label>Đạt danh hiệu tập thể: <input type="checkbox" name="dat_danh_hieu_tap_the"></label><br>
+        <label>Có 2 năm liên tục hoàn thành xuất sắc nhiệm vụ: <input type="checkbox" name="2_nam_hoan_thanh_nhiem_vu"></label>
+        <label>Hoặc Đạt danh hiệu tập thể: <input type="checkbox" name="dat_danh_hieu_tap_the"></label><br>
         <label>có 2/3 thành viên HĐ đồng ý : <input type="checkbox" name="dong_y"></label><br>
     </div>
 

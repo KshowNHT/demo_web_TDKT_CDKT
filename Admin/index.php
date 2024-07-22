@@ -28,6 +28,12 @@
         'danhgiaTThubndtp' => array('Đánh Giá Tập Thể BK UBNDTP', 'xetdanhgiaTTubndtpview.php'),
         'danhgiaTThubndtpthem' => array('Xét Đánh Giá Tập Thể BK UBNDTP', 'xetdanhgiaTTubndtpthem.php'),
         'xetdanhgiaTTsua' => array('Sửa Đánh Giá', 'xetdanhgiaTTsua.php'),
+        'danhgiaTTttcpthem' => array('Xét Đánh Giá Tập Thể BK TTCP', 'xetdanhgiaTTttcpthem.php'),
+        'danhgiaTTttcpview' => array('Đánh Giá Tập Thể BK TTCP', 'xetdanhgiaTTttcpview.php'),
+        'danhgiaTThcldhbthem' => array('Xét Đánh Giá Tập Thể Huân Chương Lao Động Hạng Ba', 'xetdanhgiaTThcldhbthem.php'),
+        'danhgiaTThcldhbview' => array('Đánh Giá Tập Thể Huân Chương Lao Động Hạng Ba', 'xetdanhgiaTThcldhbview.php'),
+        'danhgiaTThcldhnthem' => array('Xét Đánh Giá Tập Thể Huân Chương Lao Động Hạng Nhì', 'danhgiaTThcldhnthem.php'),
+        'danhgiaTThcldhnview' => array('Đánh Giá Tập Thể Huân Chương Lao Động Hạng Nhì', 'danhgiaTThcldhnview.php'),
         // Đánh Giá Cá Nhân
         'danhgiaCN' => array('Quản lý Đánh Giá Cá Nhân', 'danhgiaCNview.php'),
         'danhgiaCNsua' => array('Sửa Đánh Giá Cá Nhân', 'danhgiaCNsua.php'),
