@@ -13,7 +13,7 @@
         {
 
                 // Lấy danh sách Đánh Giá Cá Nhân
-            $sql = "SELECT * FROM `danhgiacn`";
+            $sql = "SELECT * FROM `danhgiacn` where DanhGia in ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')";
             $result = $conn->query($sql);
 
             $danhgiacnList = array();

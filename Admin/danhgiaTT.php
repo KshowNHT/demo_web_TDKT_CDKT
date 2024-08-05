@@ -1,10 +1,12 @@
 <?php
 include('./Khoa.php');
+include('./nam.php');
 
 class DanhgiaTT {
     public $MaDGTT;
     public $MaKhoa;
     public $SoQD;
+    public $Manam;
     public $DanhGia;
     
     // Tiêu chí cho các loại khen thưởng
@@ -95,10 +97,12 @@ class DanhgiaTT {
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
                 $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
                 $danhgiatt_obj = new DanhgiaTT();
                 $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
                 $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
                 $danhgiatt_obj->SoQD = $row["SoQD"];
+                $danhgiatt_obj->Manam = $nam_obj->Nam;
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
 
 
@@ -121,11 +125,13 @@ class DanhgiaTT {
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
                 if ($khoa_obj) {
                     $danhgiatt_obj = new DanhgiaTT();
                     $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
                     $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
                     $danhgiatt_obj->SoQD = $row["SoQD"];
+                    $danhgiatt_obj->Manam = $nam_obj->Nam;
                     $danhgiatt_obj->DanhGia = $row["DanhGia"];
                     $danhgiattList[] = $danhgiatt_obj;
                 }
@@ -172,6 +178,7 @@ class DanhgiaTT {
         $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
         $danhgiatt_obj->MaKhoa = Khoa::layKhoa($conn, $row["MaKhoa"]);
         $danhgiatt_obj->SoQD = $row["SoQD"];
+        $danhgiatt_obj->Manam = Nam::laynam($conn, $row["Manam"]);
         $danhgiatt_obj->DanhGia = $row["DanhGia"];
         return $danhgiatt_obj;
     }
@@ -180,6 +187,7 @@ class DanhgiaTT {
     public function Themxetdanhgiatttientien($conn, $baseUrl, $data) {
         $message = "Lỗi khi thêm thể loại";
 
+        // Kiểm tra và đánh giá tiêu chí
         foreach (self::$awardsCriteria as $awardType => $criteria) {
             try {
                 if (self::evaluateCriteria($data, $criteria)) {
@@ -192,23 +200,28 @@ class DanhgiaTT {
                 exit();
             }
         }
-
+    
+        // Kiểm tra nếu không có đánh giá nào được gán
         if (empty($this->DanhGia)) {
             $message = "Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
             header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
             exit();
         }
+    
+  
+    
 
-        $sql = "UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);
-
-        if ($stmt->execute()) {
-            $message = "Cập nhật đánh giá thành công";
-        } else {
-            $message = "Lỗi khi cập nhật đánh giá";
+        // tạo câu truy vấn để thêm đối tượng thể loại mới vào cơ sở dữ liệu
+        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES ('$this->MaKhoa', '$this->SoQD', '$this->Manam', '$this->DanhGia')";
+        
+        // thực thi câu truy vấn và kiểm tra kết quả
+        if (mysqli_query($conn, $sql)) {
+            $id = mysqli_insert_id($conn);
+            $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+        }else{
+            $message = "Đánh Giá $this->MaKhoa Không thành công ";
         }
-
+    
         header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
         exit();
     }
@@ -217,7 +230,6 @@ class DanhgiaTT {
     // Thêm Đánh Giá Tập Thể XS và Hiệu Trưởng
     public function Themxetdanhgiatttxsvahieutruong($conn, $baseUrl, $data) {
         $message = "Lỗi khi thêm thể loại";
-    
         // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
         foreach (self::$awardsCriteria as $awardType => $criteria) {
             try {
@@ -238,9 +250,9 @@ class DanhgiaTT {
             exit();
         }
     
-        $sql = "UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?";
+        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);
+        $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
     
         if ($stmt->execute()) {
             $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
@@ -271,20 +283,20 @@ class DanhgiaTT {
                 }
             } catch (Exception $e) {
                 $message = "Lỗi: " . $e->getMessage();
-                header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
+                header("Location: $baseUrl?p=danhgiaTTxs&message=" . urlencode($message));
                 exit();
             }
         }
     
         if (empty($this->DanhGia)) {
             $message = "Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
-            header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
+            header("Location: $baseUrl?p=danhgiaTThieutruong&message=" . urlencode($message));
             exit();
         }
     
-        $sql = "UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?";
+        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);
+        $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
     
         if ($stmt->execute()) {
             $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
@@ -323,8 +335,9 @@ class DanhgiaTT {
     
         if (isset($this->MaDGTT) && is_numeric($this->MaDGTT)) {
             // Sử dụng Prepared Statements
-            $stmt = $conn->prepare("UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?");
-            $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);            
+            $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);          
     
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
@@ -371,8 +384,9 @@ class DanhgiaTT {
     
         if (isset($this->MaDGTT) && is_numeric($this->MaDGTT)) {
             // Sử dụng Prepared Statements
-            $stmt = $conn->prepare("UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?");
-            $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);            
+            $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);            
     
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
@@ -419,8 +433,9 @@ class DanhgiaTT {
     
         if (isset($this->MaDGTT) && is_numeric($this->MaDGTT)) {
             // Sử dụng Prepared Statements
-            $stmt = $conn->prepare("UPDATE danhgiatt SET DanhGia = ? WHERE MaDGTT = ?");
-            $stmt->bind_param("si", $this->DanhGia, $this->MaDGTT);            
+            $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);            
     
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
@@ -449,13 +464,19 @@ class DanhgiaTT {
     
 
         // tạo câu truy vấn để thêm đối tượng thể loại mới vào cơ sở dữ liệu
-        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, DanhGia) VALUES ('$this->MaKhoa', '$this->SoQD', '$this->DanhGia')";
-        
-        // thực thi câu truy vấn và kiểm tra kết quả
-        if (mysqli_query($conn, $sql)) {
-            $id = mysqli_insert_id($conn);
-            $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
-        }
+        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);            
+    
+            if ($stmt->execute()) {
+                if ($stmt->affected_rows > 0) {
+                    $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+                } else {
+                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+                }
+            } else {
+                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
+            }
         // Chuyển hướng trang và truyền thông báo qua URL
         header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
         exit();
@@ -464,12 +485,20 @@ class DanhgiaTT {
     // Cập Nhật Đánh Giá Tập Thể
     public function Suadgtt($conn, $baseUrl) {
         $message = "Lỗi khi Sửa thể loại";
-        $sql = "UPDATE danhgiatt SET SoQD = '$this->SoQD', DanhGia = '$this->DanhGia' WHERE MaDGTT = $this->MaDGTT";
-
-        if (mysqli_query($conn, $sql)) {
-            $id = mysqli_insert_id($conn);
-            $message = "Cập Đánh Giá $this->MaDGTT thành công";
+        // tạo câu truy vấn 
+        $stmt = $conn->prepare("UPDATE danhgiatt SET SoQD = ?, Manam = ?, DanhGia = ? WHERE MaDGTT = ?");
+        $stmt->bind_param("siss", $this->SoQD,$this->Manam,$this->DanhGia, $this->MaDGTT);
+        if ($stmt->execute()) {
+            if ($stmt->affected_rows > 0) {
+                $message = "Sửa Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+            } else {
+                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+            }
+        } else {
+            $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
         }
+
+        $stmt->close();
 
         switch ($this->DanhGia) {
             case "TT_LAO_DONG_TIEN_TIEN":

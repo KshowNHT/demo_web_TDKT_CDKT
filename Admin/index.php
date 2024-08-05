@@ -16,6 +16,11 @@
         'Khoath' => array('Thêm Khoa', 'Khoathem.php'),
         'Khoasua' => array('Sửa Khoa', 'Khoasua.php'),
         'Khoaxoa' => array('Xóa Khoa', 'Khoaxoa.php'),
+        //Năm
+        'Nam' => array('Quản lý Năm', 'namview.php'),
+        'Namth' => array('Thêm Năm', 'namthem.php'),
+        'Namsua' => array('Sửa Năm', 'namsua.php'),
+        'Namxoa' => array('Xóa Năm', 'namxoa.php'),
         // Đánh Giá Tập Thể 
         'danhgiaTT' => array('Quản Lý Đánh Giá Tập Thể', 'danhgiaTTview.php'),
         'danhgiaTTth' => array('Thêm Đánh Giá', 'danhgiaTTthem.php'),

@@ -27,6 +27,6 @@
         <input type="text" class="form-control" id="MoTa" name="MoTa" value ='<?php echo $data->MoTa ;?>'>
     </div>
     <div class="form-group">
-        <input type="submit" class="form-control" value="Sửa Thể Loại"/>
+        <input type="submit" class="form-control" value="Sửa Khoa"/>
     </div>
 </form>

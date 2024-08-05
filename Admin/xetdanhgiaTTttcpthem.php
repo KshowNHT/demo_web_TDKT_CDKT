@@ -6,6 +6,7 @@ if (isset($_POST["SoQD"])) {
     $data->MaDGTT = $_POST["MaDGTT"];
     $data->MaKhoa = $_POST["MaKhoa"];
     $data->SoQD = $_POST["SoQD"];
+    $data->Manam = $_POST["Manam"];
 
     // Tạo mảng để chứa các tiêu chí đánh giá từ form
     $criteriaData = [
@@ -41,20 +42,25 @@ if (isset($_POST["SoQD"])) {
     </div>
 
     <div class="form-group">
+        <label for="Manam">Năm: </label>
+        <input type="text" class="form-control" id="Manam" name="Manam" value ='<?php echo $data->Manam->Manam; ?>'readonly>
+    </div>
+
+    <div class="form-group">
         <label for="duoc_ubnd_tang_bang_khen">Được UBND tặng bằng khen:</label>
-        <input type="checkbox" id="duoc_ubnd_tang_bang_khen" name="duoc_ubnd_tang_bang_khen"><br>
+        <input type="radio" id="duoc_ubnd_tang_bang_khen" name="duoc_ubnd_tang_bang_khen"><br>
 
         <label for="co_5_nam_hoan_thanh_xuat_sac">Có 5 năm hoàn thành xuất sắc:</label>
-        <input type="checkbox" id="co_5_nam_hoan_thanh_xuat_sac" name="co_5_nam_hoan_thanh_xuat_sac"> 
+        <input type="radio" id="co_5_nam_hoan_thanh_xuat_sac" name="co_5_nam_hoan_thanh_xuat_sac"> 
 
         <label for="dat_tap_the_lao_dong_xuat_sac">Hoặc Đạt tập thể lao động xuất sắc:</label>
-        <input type="checkbox" id="dat_tap_the_lao_dong_xuat_sac" name="dat_tap_the_lao_dong_xuat_sac"><br>
+        <input type="radio" id="dat_tap_the_lao_dong_xuat_sac" name="dat_tap_the_lao_dong_xuat_sac"><br>
 
         <label for="co_1_lan_duoc_tang_co_thi_dua">Có 1 lần được tặng cờ thi đua:</label>
-        <input type="checkbox" id="co_1_lan_duoc_tang_co_thi_dua" name="co_1_lan_duoc_tang_co_thi_dua"><br>
+        <input type="radio" id="co_1_lan_duoc_tang_co_thi_dua" name="co_1_lan_duoc_tang_co_thi_dua"><br>
         
         <label for="dong_y">Đồng ý:</label>
-        <input type="checkbox" id="dong_y" name="dong_y"><br>
+        <input type="radio" id="dong_y" name="dong_y"><br>
         
     </div>
 

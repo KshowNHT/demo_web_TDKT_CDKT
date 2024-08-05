@@ -6,6 +6,7 @@ if (isset($_POST["SoQD"])) {
     $data->MaDGTT = $_POST["MaDGTT"];
     $data->MaKhoa = $_POST["MaKhoa"];
     $data->SoQD = $_POST["SoQD"];
+    $data->Manam = $_POST["Manam"];
 
     // Tạo mảng để chứa các tiêu chí đánh giá từ form
     $criteriaData = [
@@ -43,26 +44,31 @@ if (isset($_POST["SoQD"])) {
     </div>
 
     <div class="form-group">
+        <label for="Manam">Năm: </label>
+        <input type="text" class="form-control" id="Manam" name="Manam" value ='<?php echo $data->Manam->Manam; ?>'readonly>
+    </div>
+
+    <div class="form-group">
         <label for="duoc_tang_hcldhb">Đã được tặng “Huân chương Lao động” hạng Ba:</label>
-        <input type="checkbox" id="duoc_tang_hcldhb" name="duoc_tang_hcldhb"><br>
+        <input type="radio" id="duoc_tang_hcldhb" name="duoc_tang_hcldhb"><br>
 
         <label for="co_5_nam_tro_len_hoan_thanh_xsnv">Sau đó có liên tục từ 05 năm trở lên hoàn thành XSNV:</label>
-        <input type="checkbox" id="co_5_nam_tro_len_hoan_thanh_xsnv" name="co_5_nam_tro_len_hoan_thanh_xsnv">
+        <input type="radio" id="co_5_nam_tro_len_hoan_thanh_xsnv" name="co_5_nam_tro_len_hoan_thanh_xsnv">
 
         <label for="danh_hieu_ttldxs">Hoặc đạt danh hiệu TTLĐXS:</label>
-        <input type="checkbox" id="danh_hieu_ttldxs" name="danh_hieu_ttldxs"><br>
+        <input type="radio" id="danh_hieu_ttldxs" name="danh_hieu_ttldxs"><br>
 
         <label for="co_1_lan_nhan_duoc_co_thi_dua_cp">có 01 lần được tặng “Cờ thi đua của Chính phủ”:</label>
-        <input type="checkbox" id="co_1_lan_nhan_duoc_co_thi_dua_cp" name="co_1_lan_nhan_duoc_co_thi_dua_cp"><br>
+        <input type="radio" id="co_1_lan_nhan_duoc_co_thi_dua_cp" name="co_1_lan_nhan_duoc_co_thi_dua_cp"><br>
 
         <label for="co_1_lan_duoc_tang_co_thi_dua_ubnd">01 lần được tặng cờ thi đua của UBND:</label>
-        <input type="checkbox" id="co_1_lan_duoc_tang_co_thi_dua_ubnd" name="co_1_lan_duoc_tang_co_thi_dua_ubnd">
+        <input type="radio" id="co_1_lan_duoc_tang_co_thi_dua_ubnd" name="co_1_lan_duoc_tang_co_thi_dua_ubnd">
 
         <label for="co_3_lan_duoc_tang_co_thi_dua_ubnd">Hoặc có 03 lần được tặng cờ thi đua của UBND:</label>
-        <input type="checkbox" id="co_3_lan_duoc_tang_co_thi_dua_ubnd" name="co_3_lan_duoc_tang_co_thi_dua_ubnd"><br>
+        <input type="radio" id="co_3_lan_duoc_tang_co_thi_dua_ubnd" name="co_3_lan_duoc_tang_co_thi_dua_ubnd"><br>
 
         <label for="dong_y">Có 2/3 thành viên HĐ đồng ý:</label>
-        <input type="checkbox" id="dong_y" name="dong_y"><br>
+        <input type="radio" id="dong_y" name="dong_y"><br>
         
     </div>
 

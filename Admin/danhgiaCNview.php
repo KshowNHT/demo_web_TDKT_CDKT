@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 <?php
 include('../Admin/chimuckhoa.php');
 ?>
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>Họ và Tên</th>

@@ -6,6 +6,7 @@ if (isset($_POST["SoQD"])) {
     $data->MaDGTT = $_POST["MaDGTT"];
     $data->MaKhoa = $_POST["MaKhoa"];
     $data->SoQD = $_POST["SoQD"];
+    $data->Manam = $_POST["Manam"];
 
     // Tạo mảng để chứa các tiêu chí đánh giá từ form
     $criteriaData = [
@@ -38,10 +39,15 @@ if (isset($_POST["SoQD"])) {
         <input type="text" class="form-control" id="SoQD" name="SoQD" value ='<?php echo $data->SoQD; ?>'readonly>
     </div>
 
+     <div class="form-group">
+        <label for="Manam">Năm: </label>
+        <input type="text" class="form-control" id="Manam" name="Manam" value ='<?php echo $data->Manam->Manam; ?>'readonly>
+    </div>
+
     <div class="form-group">
-        <label>Có 2 năm liên tục hoàn thành xuất sắc nhiệm vụ: <input type="checkbox" name="2_nam_hoan_thanh_nhiem_vu"></label>
-        <label>Hoặc Đạt danh hiệu tập thể: <input type="checkbox" name="dat_danh_hieu_tap_the"></label><br>
-        <label>có 2/3 thành viên HĐ đồng ý : <input type="checkbox" name="dong_y"></label><br>
+        <label>Có 2 năm liên tục hoàn thành xuất sắc nhiệm vụ: <input type="radio" name="2_nam_hoan_thanh_nhiem_vu"></label>
+        <label>Hoặc Đạt danh hiệu tập thể: <input type="radio" name="dat_danh_hieu_tap_the"></label><br>
+        <label>có 2/3 thành viên HĐ đồng ý : <input type="radio" name="dong_y"></label><br>
     </div>
 
     <div class="form-group">

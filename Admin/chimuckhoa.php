@@ -5,12 +5,12 @@
     /* $rows = mysqli_fetch_assoc($result); */
 ?>
 
-<div class="container">
-    <div class="khoa" style="font-size: 16px;">
+<div class="btn-group" role="group" aria-label="Basic example">
+    <div class="btn-group" role="group" aria-label="Basic example">
         <?php while ($row = mysqli_fetch_assoc($result)): ?>
             <?php $idmaloaisp = $row['MaKhoa'] ?>
             <a href="<?php  echo "$baseUrl?p=danhgiaCNkhoa&&id= $idmaloaisp" ?>">
-            <button style="font-size: 16px;" type="button" class="btn btn-primary" ><?php echo $row['TenKhoa']; ?></button>
+            <button type="button" class="btn btn-secondary"><?php echo $row['TenKhoa']; ?></button>
             </a>
         <?php endwhile; ?>
 

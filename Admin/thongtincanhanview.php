@@ -19,7 +19,7 @@
 <?php
 }
 ?>
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>Họ Và Tên</th>

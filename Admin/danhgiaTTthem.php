@@ -4,6 +4,7 @@
         $data = new DanhgiaTT();
         $data->MaKhoa = $_POST["MaKhoa"];
         $data->SoQD = $_POST["SoQD"];
+        $data->Manam = $_POST["Lnam"];
         $data->DanhGia = $_POST["DanhGia"];
         $data->Themdanhgiatt($conn,$baseUrl);
     }else{
@@ -13,6 +14,7 @@
         $tenKhoa = $data->TenKhoa; 
     }
 
+    $Lnam = Nam::layDanhSach($conn);
     
 ?>
 
@@ -26,6 +28,20 @@
     <div class="form-group">
         <label for="SoQD">Số Quyết Định: </label>
         <input type="text" class="form-control" id="SoQD" name="SoQD">
+    </div>
+
+    <div>
+        <label >Năm</label>
+        <select  name="Lnam" id="Lnam" >
+        <?php
+        foreach($Lnam as $L ){
+        ?>
+        <option value="<?php echo $L->Manam ;?>"><?php echo $L->Nam ;?></option>
+
+       <?php
+        }
+       ?>
+     </select>
     </div>
 
     <div class="form-group">

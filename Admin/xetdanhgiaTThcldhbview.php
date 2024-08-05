@@ -17,11 +17,12 @@ if (isset($_GET["message"])) {
 }
 ?>
 
-<table class="table">
+<table class="table table-bordered">
     <thead>
         <tr>
             <th>Tên Khoa</th>
             <th>Số Quyết Định</th>
+            <th>Năm</th>
             <th>Đánh Giá</th>
         </tr>
     </thead>
@@ -34,6 +35,7 @@ if (isset($_GET["message"])) {
             <tr>
                 <td scope="row"><?php echo $item->MaKhoa; ?></td>
                 <td><?php echo $item->SoQD ?? "Cần Thêm Số Quyết Đinh Cho $item->MaKhoa"?></td>
+                <td><?php echo $item->Manam ?? "Cần Thêm Năm Cho $item->MaKhoa" ?></td>
                 <td><?php echo $danhGia; ?></td> <!-- Hiển thị tên loại khen thưởng -->
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
                 <td><button type="button" class="btn btn-info"><a href='<?php echo "$baseUrl?p=xetdanhgiaTTsua&&id=$item->MaDGTT" ?>'>Sửa Đánh Giá</a> </button></td>
