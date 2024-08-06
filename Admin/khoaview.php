@@ -4,7 +4,16 @@ $data = Khoa::layDanhSach($conn);
 
 
 // Lấy danh sách khoa cho combobox
+
+if (!$data) {
+    $data = []; 
+}
+
+$MaKhoa = isset($_GET['MaKhoa']) ? $_GET['MaKhoa'] : null;
 $options = $data;
+if (!$options) {
+    $options = [];
+}
 
 if (isset($_GET["message"])) {
     $message = $_GET["message"];
@@ -68,13 +77,12 @@ if (isset($_GET["message"])) {
 <script>
     function fetchAndDisplayKhoa(maKhoa) {
         if (maKhoa === '') {
-            // Nếu không chọn khoa nào, hiển thị bảng mặc định
             window.location.reload();
             return;
         }
 
         var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'Khoa.php?MaKhoa=' + maKhoa, true); // Gọi đến file Khoa.php
+        xhr.open('GET', 'Khoa.php?MaKhoa=' + maKhoa, true); 
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
                 var data = JSON.parse(xhr.responseText);

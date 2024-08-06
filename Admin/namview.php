@@ -31,7 +31,13 @@
             <tr>
                 <td scope="row"><?php echo $item->Nam ;?></td>
                 <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] == 'Quản Trị'){?> 
-                <td><a href='<?php echo "$baseUrl?p=Namsua&&id=$item->Manam" ?>'>Sửa</a> | <a href='<?php echo "$baseUrl?p=Namxoa&&id=$item->Manam" ?>'>Xóa</a></td>
+                <td>
+                    <select name="action" onchange="handleActionChange(this, '<?php echo $item->Manam; ?>')">
+                        <option value="">Chọn hành động</option>
+                        <option value="Namsua">Sửa</option>
+                        <option value="Namxoa">Xóa</option>
+                    </select>
+                </td>
                 <?php
                     }
                 ?>
@@ -41,3 +47,14 @@
         ?>
     </tbody>
 </table>
+
+<script>
+
+    function handleActionChange(select, id) {
+        var selectedAction = select.value;
+            if (selectedAction) {
+                var baseUrl = "<?php echo $baseUrl; ?>";
+                window.location.href = baseUrl + "?p=" + selectedAction + "&id=" + id;
+            }
+        }
+</script>

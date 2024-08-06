@@ -38,7 +38,14 @@
                 <td><?php echo $item->MaKhoa ?? "Cần Thêm Khoa Cho $item->HoTen";?></td>
                 <td><?php echo $item->ChuVu;?></td>
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?>
-                <td><a href='<?php echo "$baseUrl?p=danhgiaCNthem&&id=$item->MaCN" ?>'>Cập Nhật Đánh Giá</a>|<a href='<?php echo "$baseUrl?p=thongtincanhansua&&id=$item->MaCN" ?>'>Sửa</a> | <a href='<?php echo "$baseUrl?p=thongtincanhanxoa&&id=$item->MaCN" ?>'>Xóa</a></td>
+                    <td>
+                    <select name="action" onchange="handleActionChange(this, '<?php echo $item->MaCN; ?>')">
+                        <option value="">Chọn hành động</option>
+                        <option value="danhgiaCNthem">Xét Đánh Giá</option>
+                        <option value="thongtincanhansua">Sửa</option>
+                        <option value="thongtincanhanxoa">Xóa</option>
+                    </select>
+                </td>
                 <?php
                 }
                 ?>
@@ -48,3 +55,14 @@
         ?>
     </tbody>
 </table> 
+
+<script>
+
+    function handleActionChange(select, id) {
+        var selectedAction = select.value;
+            if (selectedAction) {
+                var baseUrl = "<?php echo $baseUrl; ?>";
+                window.location.href = baseUrl + "?p=" + selectedAction + "&id=" + id;
+            }
+        }
+</script>

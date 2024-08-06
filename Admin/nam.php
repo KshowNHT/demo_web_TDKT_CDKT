@@ -96,6 +96,30 @@
             header("Location: $baseUrl?p=Nam&message=" . urlencode($message));
             exit();
         }
+
+        // Lấy dữ liệu Khoa theo MaKhoa và trả về JSON
+        public static function layKhoaTheoNam($conn, $Manam) {
+            $sql = "SELECT * FROM danhgiatt WHERE Manam = '$Manam'";
+            $result = $conn->query($sql);
+    
+            $khoaData = [];
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $khoaData[] = $row;
+                }
+            }
+    
+            echo json_encode($khoaData);
+        }
+
+
+
     }
+    if (isset($_GET['Manam'])) {
+        include('./connectdb.php'); // Đảm bảo rằng bạn đã bao gồm tệp kết nối database
+        $Manam = $_GET['Manam'];
+        Nam::layKhoaTheoNam($conn, $Manam);
+    }
+    
 
 ?>

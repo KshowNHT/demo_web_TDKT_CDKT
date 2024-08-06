@@ -519,10 +519,67 @@ class DanhgiaTT {
             case "Huan_Chuong_Lao_Dong_Hang_Ba":
                 header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
                 break;
+            case "Huan_Chuong_Lao_Dong_Hang_Nhi":
+                header("Location: $baseUrl?p=danhgiaTThcldhnview&message=" . urlencode($message));
+                break;
             default:
                 header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
         }
         exit();
     }
+
+    // Lấy dữ liệu Đánh Giá theo Năm và trả về JSON
+    // public static function laydanhgiaTheoNam($conn, $Manam) {
+    //     // Chuẩn bị câu lệnh SQL để tránh SQL Injection
+    //     $stmt = $conn->prepare("SELECT * FROM danhgiatt WHERE Manam = ? AND DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')");
+    //     if ($stmt === false) {
+    //         error_log("Prepare failed: " . htmlspecialchars($conn->error));
+    //         return;
+    //     }
+
+    //     $stmt->bind_param("s", $Manam);
+    //     if (!$stmt->execute()) {
+    //         error_log("Execute failed: " . htmlspecialchars($stmt->error));
+    //         return;
+    //     }
+
+    //     $result = $stmt->get_result();
+
+    //     $danhgiattLists = [];
+    //     if ($result->num_rows > 0) {
+    //         while ($row = $result->fetch_assoc()) {
+    //             $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+    //             $nam_obj = Nam::laynam($conn, $row["Manam"]);
+    //             $danhgiatt_obj = new DanhgiaTT();
+    //             $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
+    //             $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
+    //             $danhgiatt_obj->SoQD = $row["SoQD"];
+    //             $danhgiatt_obj->Manam = $nam_obj->Nam;
+    //             $danhgiatt_obj->DanhGia = $row["DanhGia"];
+
+    //             $danhgiattLists[] = $danhgiatt_obj;
+    //         }
+    //     }
+
+    //     $stmt->close();
+
+    //     // Trả về dữ liệu dưới dạng JSON
+    //     header('Content-Type: application/json; charset=utf-8');
+    //     echo json_encode($danhgiattLists, JSON_UNESCAPED_UNICODE);
+    //     error_log(json_encode($danhgiattLists)); // Thêm dòng này để log dữ liệu JSON
+    // }
 }
+
+// ob_start();
+
+// if (isset($_GET['Manam'])) {
+//     $Manam = $_GET['Manam'];
+//     error_log("Received Manam: " . htmlspecialchars($Manam)); // Log giá trị Manam để kiểm tra
+//     DanhgiaTT::laydanhgiaTheoNam($conn, $Manam);
+// } else {
+//     error_log("No Manam parameter found in the request");
+// }
+
+// // Đảm bảo buffer output được đóng
+// ob_end_clean();
 ?>
