@@ -42,6 +42,7 @@
                     <select name="action" onchange="handleActionChange(this, '<?php echo $item->MaCN; ?>')">
                         <option value="">Chọn hành động</option>
                         <option value="danhgiaCNthem">Xét Đánh Giá</option>
+                        <option value="sangkienth">Thêm Sáng Kiến</option>
                         <option value="thongtincanhansua">Sửa</option>
                         <option value="thongtincanhanxoa">Xóa</option>
                     </select>

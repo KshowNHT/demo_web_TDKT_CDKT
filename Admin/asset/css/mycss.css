@@ -1,4 +1,4 @@
-/* Set height of the grid so .sidenav can be 100% (adjust if needed) */
+/* Đặt chiều cao của lưới để .sidenav có thể là 100% (điều chỉnh nếu cần) */
 .row.content {
     height: 1500px;
 }
@@ -8,13 +8,13 @@
     height: 100px;
 }
 
-/* Set gray background color and 100% height */
+/* Đặt màu nền xám và chiều cao 100% */
 .sidenav {
     background-color: #96ced8;
     height: 100%;
 }
 
-/* Set black background color, white text and some padding */
+/* Đặt màu nền đen, văn bản trắng và một số padding */
 footer {
     background-color: #555;
     color: white;
@@ -49,7 +49,6 @@ ul li a:hover {
 }
 
 ul li ul {
-    
     display: none;
     position: absolute;
     left: 100%;
@@ -79,15 +78,17 @@ ul li ul li a {
 
 ul li ul li a:hover {
     background-color: #f1f1f1;
+    color: #333; /* Màu chữ khi di chuột qua */
     list-style-type: none;
     position: relative;
     text-decoration: none;
 }
 
-#btn btn-info{
+#btn btn-info {
     text-decoration: none;
-  }
-/* On small screens, set height to 'auto' for sidenav and grid */
+}
+
+/* Trên màn hình nhỏ, đặt chiều cao là 'auto' cho sidenav và lưới */
 @media screen and (max-width: 767px) {
     .sidenav {
         height: auto;
@@ -98,7 +99,6 @@ ul li ul li a:hover {
         height: auto;
     }
 }
-
 
 .btn {
     display: inline-block;
@@ -112,41 +112,59 @@ ul li ul li a:hover {
     vertical-align: middle;
     cursor: pointer;
     border: 1px solid transparent;
-    border-radius: 4px; /*  Bo tròn góc nút */
+    border-radius: 4px; /* Bo tròn góc nút */
     color: #fff;
-    background-color: #93d3df; /*  Màu nền nút */
+    background-color: #93d3df; /* Màu nền nút */
     border-color: #93d3df;
     text-decoration: none;
-  }
-  
-  .btn:hover {
-    background-color: #93d3df; /*  Màu nền khi di chuột qua nút */
+}
+
+.btn:hover {
+    background-color: #93d3df; /* Màu nền khi di chuột qua nút */
     border-color: #93d3df;
-  }
+}
 
-  tr:hover {
-    background-color: #e9e9e9; /*  Màu nền khi di chuột qua dòng */
-  }
+tr:hover {
+    background-color: #e9e9e9; /* Màu nền khi di chuột qua dòng */
+}
 
-  th {
-    background-color: #f0f0f0; /*  Màu nền cho tiêu đề */
+th {
+    background-color: #f0f0f0; /* Màu nền cho tiêu đề */
     color: #333;
-    border-bottom: 2px solid #ddd; /*  Đường viền dưới tiêu đề */
-  }
-  
-  tr:nth-child(even) {
-    background-color: #f9f9f9; /* Màu nền xen kẽ cho các dòng */
-  }
+    border-bottom: 2px solid #ddd; /* Đường viền dưới tiêu đề */
+}
 
-  table {
+tr:nth-child(even) {
+    background-color: #f9f9f9; /* Màu nền xen kẽ cho các dòng */
+}
+
+table {
     width: 100%; /* Điều chỉnh chiều rộng bảng nếu cần */
     border-collapse: collapse; /* Gộp đường viền ô */
     margin-top: 20px;
-  }
-  
-  th, td {
-    padding: 10px 15px; /*  Khoảng cách bên trong ô */
-    text-align: left; /*  Căn lề trái cho văn bản */
-  }
+}
 
-  
+th, td {
+    padding: 10px 15px; /* Khoảng cách bên trong ô */
+    text-align: left; /* Căn lề trái cho văn bản */
+}
+
+/* Tạo hai cột để hiển thị danh sách như hình ảnh mẫu */
+.list-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.column {
+    width: 48%; /* Điều chỉnh chiều rộng mỗi cột nếu cần */
+}
+
+h4 {
+    color: red; /* Màu đỏ cho tiêu đề */
+    font-weight: bold;
+}
+
+ul li {
+    margin-bottom: 5px; /* Khoảng cách giữa các mục */
+    font-size: 14px; /* Điều chỉnh kích thước chữ */
+}

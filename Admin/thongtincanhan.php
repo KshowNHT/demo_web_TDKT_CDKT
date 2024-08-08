@@ -75,6 +75,7 @@
             header("Location: $baseUrl?p=thongtincanhan&message=" . urlencode($message));
             exit();
         }
+        
         //Sửa thông tin cá nhân
         public function Suathongtincanhan($conn,$baseUrl) {
             // Thông báo cần gửi
