@@ -6,7 +6,7 @@ if (isset($_GET['Manam'])) {
     // Kiểm tra giá trị của $Manam
     error_log("Manam: " . htmlspecialchars($Manam));
 
-    $sql = "SELECT * FROM danhgiatt WHERE Manam = $Manam";
+    $sql = "SELECT * FROM danhgiatt d INNER JOIN nam n ON d.Manam = n.Manam INNER JOIN khoa k ON d.MaKhoa = k.MaKhoa WHERE n.Manam = $Manam";
     
     // Kiểm tra câu truy vấn SQL
     error_log("SQL: " . htmlspecialchars($sql));

@@ -43,10 +43,10 @@ if (isset($_GET["message"])) {
         <?php
         foreach ($data as $item) {
         ?>
-            <tr class="danhgiattcp-row">
+            <tr class="sangkien-row">
                 <td scope="row"><?php echo htmlspecialchars($item->MaCN); ?></td>
                 <td><?php echo htmlspecialchars($item->TenSK); ?></td>
-                <td><?php echo htmlspecialchars($item->Manam); ?></td>
+                <td><?php echo htmlspecialchars($item->nam); ?></td>
                 <td><?php echo htmlspecialchars($item->CapSK); ?></td>
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){ ?> 
                 <td>
@@ -54,7 +54,7 @@ if (isset($_GET["message"])) {
                         <option value="">Chọn hành động</option>
                         <option value="sangkienct">Xem Chi Tiết</option>
                         <option value="sangkiensua">Sửa Sáng Kiến</option>
-                        <option value="sangkienxoa">Xóa Đánh Giá</option>
+                        <option value="sangkienxoa">Xóa Sáng Kiến</option>
                     </select>
                 </td>
                 <?php } ?>
@@ -66,78 +66,84 @@ if (isset($_GET["message"])) {
 </table>
 
 <script>
-   function fetchAndDisplaysangkien(Manam) {
-        if (Manam === '') {
-            window.location.reload();
-            return;
-        }
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'getsangkien.php?Manam=' + Manam, true); 
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                console.log('dữ liệu: ', xhr.responseText);
-                var data = JSON.parse(xhr.responseText);
-                var tableBody = document.getElementById('sangkien-table-body'); 
-                tableBody.innerHTML = '';
-
-                data.forEach(function (item) {
-
-                    var tr = document.createElement('tr');
-
-                    var tdMaCN = document.createElement('td');
-                    tdMaCN.scope = 'row';
-                    tdMaCN.textContent = item.MaCN;
-                    tr.appendChild(tdMaCN);
-
-                    var tdTenSK = document.createElement('td');
-                    tdTenSK.textContent = item.TenSK;
-                    tr.appendChild(tdTenSK);
-
-                    var tdManam = document.createElement('td');
-                    tdManam.textContent = item.Manam;
-                    tr.appendChild(tdManam);
-
-                    var tdCapSK = document.createElement('td');
-                    tdCapSK.textContent = item.CapSK;
-                    tr.appendChild(tdCapSK);
-
-                    if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] == 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
-                        var tdAction = document.createElement('td');
-                        var select = document.createElement('select');
-                        select.name = 'action';
-                        select.onchange = function() { handleActionChange(this, item.MaSK) };
-
-                        var optionDefault = document.createElement('option');
-                        optionDefault.value = '';
-                        optionDefault.textContent = 'Chọn hành động';
-                        select.appendChild(optionDefault);
-
-                        var optionDanhGia = document.createElement('option');
-                        optionDanhGia.value = 'sangkienct';
-                        optionDanhGia.textContent = 'Xem Chi Tiết';
-                        select.appendChild(optionDanhGia);
-
-                        var optionSua = document.createElement('option');
-                        optionSua.value = 'sangkiensua';
-                        optionSua.textContent = 'Sửa Sáng Kiến';
-                        select.appendChild(optionSua);
-
-                        var optionXoa = document.createElement('option');
-                        optionXoa.value = 'sangkienxoa';
-                        optionXoa.textContent = 'Xóa Sáng Kiến';
-                        select.appendChild(optionXoa);
-
-                        tdAction.appendChild(select);
-                        tr.appendChild(tdAction);
-                    }
-
-                    tableBody.appendChild(tr);
-                });
-            }
-        };
-        xhr.send();
+   async function fetchAndDisplaysangkien(Manam) {
+    console.log('Năm đã chọn:', Manam);
+    if (Manam === '') {
+        window.location.reload();
+        return;
     }
+
+    try {
+        const response = await fetch(`getsangkien.php?Manam=${Manam}`);
+        if (!response.ok) {
+            throw new Error('Mạng lỗi');
+        }
+        const data = await response.json();
+        console.log('Năm đã chọn:', data);
+        const tableBody = document.getElementById('sangkien-table-body');
+        tableBody.innerHTML = '';
+
+        data.forEach(item => {
+            console.log('Phản hồi từ server:', item);
+
+                const tr = document.createElement('tr');
+
+                const tdTenKhoa = document.createElement('td');
+                tdTenKhoa.textContent = item.HoTen;
+                tr.appendChild(tdTenKhoa);
+
+                const tdSoQD = document.createElement('td');
+                tdSoQD.textContent = item.TenSK || `Cần Thêm Số Quyết Định Cho ${item.MaKhoa}`;
+                tr.appendChild(tdSoQD);
+
+                const tdNam = document.createElement('td');
+                tdNam.textContent = item.Nam || `Cần Thêm Năm Cho ${item.Nam}`;
+                tr.appendChild(tdNam);
+
+                const tdDanhGia = document.createElement('td');
+                tdDanhGia.textContent = item.CapSK;
+                tr.appendChild(tdDanhGia);
+
+                if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
+                    const tdAction = document.createElement('td');
+                    const select = document.createElement('select');
+                    select.name = 'action';
+                    select.onchange = () => handleActionChange(select, item.MaDGTT);
+
+                    const optionDefault = document.createElement('option');
+                    optionDefault.value = '';
+                    optionDefault.textContent = 'Chọn hành động';
+                    select.appendChild(optionDefault);
+
+                    const optionct= document.createElement('option');
+                    optionct.value = 'sangkienct';
+                    optionct.textContent = 'Xem Chi Tiết';
+                    select.appendChild(optionct);
+
+                    const optionsua = document.createElement('option');
+                    optionsua.value = 'sangkiensua';
+                    optionsua.textContent = 'Sửa Sáng Kiến';
+                    select.appendChild(optionsua);
+
+
+                    const optionxoa = document.createElement('option');
+                    optionxoa.value = 'sangkienxoa';
+                    optionxoa.textContent = 'Xóa Sáng Kiến';
+                    select.appendChild(optionxoa);
+
+                    tdAction.appendChild(select);
+                    tr.appendChild(tdAction);
+                }
+
+                tableBody.appendChild(tr);
+        });
+    } catch (error) {
+        console.error('Error fetching data:', error);
+    }
+}
+
+
+
 
     function handleActionChange(select, id) {
         var selectedAction = select.value;

@@ -8,20 +8,21 @@ class sangkien {
     public $TenSK;
     public $QD;
     public $CapSK;
+    public $nam;
 
     public static function layDanhSach($conn) {
         $Dssangkien = array();
-        $sql = "SELECT * FROM `sangkien`";
+        $sql = "SELECT * FROM sangkien d INNER JOIN nam n ON d.Manam = n.Manam";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
-                $nam_obj = Nam::laynam($conn, $row["Manam"]);
                 $sangkien_obj = new sangkien();
                 $sangkien_obj->MaSK = $row["MaSK"];
                 $sangkien_obj->MaCN = $thongtincanhan_obj->HoTen;
-                $sangkien_obj->Manam = $nam_obj->Nam;
+                $sangkien_obj->Manam = $row["Manam"];
+                $sangkien_obj->nam = $row["Nam"];
                 $sangkien_obj->TenSK = $row["TenSK"];
                 $sangkien_obj->QD = $row["QD"];
                 $sangkien_obj->CapSK = $row["CapSK"];
@@ -155,6 +156,35 @@ class sangkien {
 
     //     echo json_encode($khoaData);
     // }
+
+    // public static function layDanhSachsangkienTheonam($conn, $Manam) {
+    //     $sql = "SELECT * FROM sangkien s INNER JOIN nam n ON s.Manam = n.Manam WHERE n.Manam = ?";
+    //     $stmt = $conn->prepare($sql);
+    //     $stmt->bind_param("i", $Manam);
+    //     $stmt->execute();
+    //     $result = $stmt->get_result();
+    
+    //     $sangkienList = [];
+    //     if ($result && $result->num_rows > 0) {
+    //         while($row = $result->fetch_assoc()) {
+    //             $sangkien_obj = new sangkien();
+    //             $sangkien_obj->MaSK = $row["MaSK"];
+    //             $sangkien_obj->MaCN = $row["MaCN"];
+    //             $sangkien_obj->Manam = $row["Manam"];
+    //             $sangkien_obj->TenSK = $row["TenSK"];
+    //             $sangkien_obj->CapSK = $row["CapSK"];
+    //             $sangkien_obj->nam = $row["Nam"];
+    //             $sangkien_obj->QD = $row["QD"];
+    
+    //             $sangkienList[] = $sangkien_obj;
+    //         }
+    //     }
+    
+    //     return $sangkienList;
+    // }
+    
+
+
 }
 
 // if (isset($_GET['MaKhoa'])) {
@@ -162,4 +192,30 @@ class sangkien {
 //     $MaKhoa = $_GET['MaKhoa'];
 //     Khoa::layKhoaTheoMa($conn, $MaKhoa);
 // }
+
+// if (isset($_GET['Manam'])) {
+//     include('./connectdb.php'); // Đảm bảo rằng bạn đã bao gồm tệp kết nối database
+//     $Manam = $_GET['Manam'];
+//     sangkien::layDanhSachsangkienTheonam($conn, $Manam);
+// }
+
+// ob_start();
+// // include('./connectdb.php');
+// if (isset($_GET['Manam'])) {
+//     $Manam = $_GET['Manam'];
+
+//     // Kiểm tra giá trị của $Manam
+//     error_log("Manam: " . htmlspecialchars($Manam));
+
+//     $sangkienList = sangkien::layDanhSachTheonam($conn, $Manam);
+
+//     // Kiểm tra kết quả truy vấn
+//     error_log("Kết quả truy vấn: " . print_r($sangkienList, true));
+
+//     echo json_encode($sangkienList);
+// } else {
+//     echo json_encode([]);
+// }
+// ob_end_clean();
+
 ?>

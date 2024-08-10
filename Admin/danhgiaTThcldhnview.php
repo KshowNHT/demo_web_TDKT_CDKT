@@ -82,7 +82,7 @@ if (isset($_GET["message"])) {
     }
 
     try {
-        const response = await fetch(`getnamdanhgiaxs.php?Manam=${Manam}`);
+        const response = await fetch(`getnamdanhgia.php?Manam=${Manam}`);
         if (!response.ok) {
             throw new Error('Mạng lỗi');
         }
@@ -98,7 +98,7 @@ if (isset($_GET["message"])) {
                 const tr = document.createElement('tr');
 
                 const tdTenKhoa = document.createElement('td');
-                tdTenKhoa.textContent = item.MaKhoa;
+                tdTenKhoa.textContent = item.TenKhoa;
                 tr.appendChild(tdTenKhoa);
 
                 const tdSoQD = document.createElement('td');
@@ -106,7 +106,7 @@ if (isset($_GET["message"])) {
                 tr.appendChild(tdSoQD);
 
                 const tdNam = document.createElement('td');
-                tdNam.textContent = item.Manam || `Cần Thêm Năm Cho ${item.MaKhoa}`;
+                tdNam.textContent = item.Nam || `Cần Thêm Năm Cho ${item.MaKhoa}`;
                 tr.appendChild(tdNam);
 
                 const tdDanhGia = document.createElement('td');

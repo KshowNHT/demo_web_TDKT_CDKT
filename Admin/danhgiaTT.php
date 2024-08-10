@@ -7,6 +7,7 @@ class DanhgiaTT {
     public $MaKhoa;
     public $SoQD;
     public $Manam;
+    public $nam;
     public $DanhGia;
     
     // Tiêu chí cho các loại khen thưởng
@@ -568,6 +569,31 @@ class DanhgiaTT {
     //     echo json_encode($danhgiattLists, JSON_UNESCAPED_UNICODE);
     //     error_log(json_encode($danhgiattLists)); // Thêm dòng này để log dữ liệu JSON
     // }
+
+    public static function layDanhSachTheonam($conn, $Manam) {
+        $sql = "SELECT * FROM danhgiatt d INNER JOIN nam n ON d.Manam = n.Manam WHERE n.Manam = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $Manam);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        $danhgiattList = [];
+        if ($result && $result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $danhgiatt_obj = new DanhgiaTT();
+                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
+                $danhgiatt_obj->MaKhoa = $row["MaKhoa"];
+                $danhgiatt_obj->SoQD = $row["SoQD"];
+                $danhgiatt_obj->Manam = $row["Manam"];
+                $danhgiatt_obj->nam = $row["Nam"];
+                $danhgiatt_obj->DanhGia = $row["DanhGia"];
+    
+                $danhgiattList[] = $danhgiatt_obj;
+            }
+        }
+    
+        return $danhgiattList;
+    }
 }
 
 // ob_start();
@@ -582,4 +608,24 @@ class DanhgiaTT {
 
 // // Đảm bảo buffer output được đóng
 // ob_end_clean();
+
+ob_start();
+include('./connectdb.php');
+if (isset($_GET['Manam'])) {
+    $Manam = $_GET['Manam'];
+
+    // Kiểm tra giá trị của $Manam
+    error_log("Manam: " . htmlspecialchars($Manam));
+
+    $danhgiattList = DanhgiaTT::layDanhSachTheonam($conn, $Manam);
+
+    // Kiểm tra kết quả truy vấn
+    error_log("Kết quả truy vấn: " . print_r($danhgiattList, true));
+
+    echo json_encode($danhgiattList);
+} else {
+    echo json_encode([]);
+}
+ob_end_clean();
+
 ?>
