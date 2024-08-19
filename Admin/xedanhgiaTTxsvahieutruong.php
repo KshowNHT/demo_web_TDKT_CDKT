@@ -111,16 +111,15 @@ $datakhoa = Khoa::layDanhSach($conn);
             </select>
         </div>
 
-    <div class="form-group">
-        <label>Hoàn thành tốt Nhiệm Vụ: <input type="checkbox" name="hoan_thanh_tot_nhiem_vu"></label>
-        <label>Hoàn thành xuất sắc: <input type="checkbox" name="hoan_thanh_xuat_sac"></label>
-        <label>Có 70% cá nhân đạt danh hiệu LĐTT : <input type="checkbox" name="ca_nhan_70_phan_tram"></label>
-        <label>Có 100% cá nhân trong tập thể hoàn thành nhiệm vụ : <input type="checkbox" name="ca_nhan_100_phan_tram"></label>
-        <label>Có cá nhân đạt danh hiệu CSTĐCS : <input type="checkbox" name="ca_nhan_dat_cstdcs"></label>
-        <label>Cá nhân 90%: <input type="checkbox" name="ca_nhan_90_phan_tram"></label>
+    <div class="form-group flex-container">
+        <label>Hoàn thành tốt Nhiệm Vụ: <input type="checkbox" id="hoan_thanh_tot_nhiem_vu" name="hoan_thanh_tot_nhiem_vu"></label>
+        <label>Hoàn thành xuất sắc Nhiệm Vụ: <input type="checkbox" id="hoan_thanh_xuat_sac" name="hoan_thanh_xuat_sac"></label>
+        <label>Có ít nhất 70% cá nhân đạt danh hiệu LĐTT : <input type="checkbox" id="ca_nhan_70_phan_tram" name="ca_nhan_70_phan_tram"></label>
+        <label>Có 100% cá nhân trong tập thể hoàn thành nhiệm vụ : <input type="checkbox" id="ca_nhan_100_phan_tram" name="ca_nhan_100_phan_tram"></label>
+        <label>Có cá nhân đạt danh hiệu CSTĐCS : <input type="checkbox" id="ca_nhan_dat_cstdcs" name="ca_nhan_dat_cstdcs"></label>
+        <label>Cá nhân 90%: <input type="checkbox" id="ca_nhan_90_phan_tram" name="ca_nhan_90_phan_tram"></label>
         <label>Kỷ luật: <input type="checkbox" name="ky_luat"></label>
         <label>Đồng ý: <input type="checkbox" name="dong_y"></label>
-        
     </div>
 
     <div class="form-group">
@@ -150,4 +149,49 @@ $datakhoa = Khoa::layDanhSach($conn);
             });
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+    const hoanthanhtotnhiemvu = document.getElementById('hoan_thanh_tot_nhiem_vu');
+    const hoanthanhxuatsac = document.getElementById('hoan_thanh_xuat_sac');
+    const canhan70 = document.getElementById('ca_nhan_70_phan_tram');
+    const canhan100 = document.getElementById('ca_nhan_100_phan_tram');
+    const ttlcanhancstdcs = document.getElementById('ca_nhan_dat_cstdcs');
+    const ttlcanhan90 = document.getElementById('ca_nhan_90_phan_tram');
+
+    if (hoanthanhtotnhiemvu && hoanthanhxuatsac && canhan70 && canhan100 && ttlcanhancstdcs && ttlcanhan90) {
+        hoanthanhtotnhiemvu.addEventListener('change', function () {
+            if (hoanthanhtotnhiemvu.checked) {
+                hoanthanhxuatsac.checked = false;
+                hoanthanhxuatsac.disabled = true;
+                canhan70.checked = false;
+                canhan70.disabled = true;
+                canhan100.checked = false;
+                canhan100.disabled = true;
+                ttlcanhancstdcs.checked = false;
+                ttlcanhancstdcs.disabled = true;
+            } else {
+                hoanthanhxuatsac.disabled = false;
+                canhan70.disabled = false;
+                canhan100.disabled = false;
+                ttlcanhancstdcs.disabled = false;
+            }
+        });
+
+        hoanthanhxuatsac.addEventListener('change', function () {
+            if (hoanthanhxuatsac.checked) {
+                hoanthanhtotnhiemvu.checked = false;
+                hoanthanhtotnhiemvu.disabled = true;
+                ttlcanhan90.checked = false;
+                ttlcanhan90.disabled = true;
+            } else {
+                hoanthanhtotnhiemvu.disabled = false;
+                ttlcanhan90.disabled = false;
+            }
+        });
+    } else {
+        console.error("Một trong các phần tử checkbox không tồn tại trong DOM.");
+    }
+});
+
+
 </script>

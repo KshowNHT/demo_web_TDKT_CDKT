@@ -28,13 +28,26 @@ $datakhoa = Khoa::layDanhSach($conn);
 ?>
 
 <style>
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f8f9fa;
+        color: #343a40;
+    }
+
     .container {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 20px;
-        background-color: #f9f9f9;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 30px;
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: #007bff;
+        font-weight: 700;
     }
 
     .form-group {
@@ -42,21 +55,35 @@ $datakhoa = Khoa::layDanhSach($conn);
     }
 
     .form-group label {
-        font-weight: bold;
-        margin-bottom: 5px;
-        display: block;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 8px;
+    font-size: 16px; /* Đảm bảo kích thước chữ đủ lớn */
+    line-height: 1.5; /* Đảm bảo chiều cao dòng đủ để chữ không bị mất */
     }
 
     .form-control {
-        width: 100%;
-        padding: 8px;
-        box-sizing: border-box;
-        border: 1px solid #ccc;
-        border-radius: 4px;
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 16px;
+    line-height: 1.5;
+    }
+
+    select.form-control {
+    padding: 8px; /* Điều chỉnh padding để không bị mất chữ */
+    line-height: 1.5;
+}
+    .form-control:focus {
+        border-color: #80bdff;
+        outline: 0;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
 
     .form-group input[type="checkbox"] {
-        margin-right: 10px;
+        margin-right: 12px;
     }
 
     .form-group.flex-container {
@@ -69,31 +96,40 @@ $datakhoa = Khoa::layDanhSach($conn);
         flex-basis: 48%;
         display: flex;
         align-items: center;
+        font-size: 15px;
     }
 
     .form-check {
         display: flex;
         flex-direction: column;
-    }
-
-    .form-check label {
-        margin-bottom: 10px;
+        margin-bottom: 25px;
     }
 
     .form-control[type="submit"] {
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        cursor: pointer;
-        text-align: center;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 18px; /* Đảm bảo kích thước chữ đủ lớn */
+    line-height: 1.5; /* Đảm bảo chiều cao dòng để chữ không bị mất */
+    padding: 12px;
+    margin-top: 20px;
+    text-align: center; /* Đảm bảo chữ nằm ở giữa nút */
     }
 
     .form-control[type="submit"]:hover {
-        background-color: #45a049;
+        background-color: gray;
+    }
+
+
+    #khoa-list h5 {
+        color: #dc3545;
+        margin-top: 25px;
     }
 </style>
 <div class="container">
 <form method="post">
+    <h2>Đánh Giá Thành Tích</h2>
         <div class="form-group">
             <label for="SoQD">Số Quyết Định:</label>
             <input type="text" class="form-control" id="SoQD" name="SoQD">
@@ -164,4 +200,51 @@ $datakhoa = Khoa::layDanhSach($conn);
             });
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const hoanthanhxsnv = document.getElementById('co_5_nam_tro_len_hoan_thanh_xsnv');
+        const danhhieuttldxs = document.getElementById('danh_hieu_ttldxs');
+        const cothiduaubnd = document.getElementById('co_1_lan_duoc_tang_co_thi_dua_ubnd');
+        const cothi3ubnd = document.getElementById('co_3_lan_duoc_tang_co_thi_dua_ubnd');
+
+        hoanthanhxsnv.addEventListener('change', function () {
+            if (hoanthanhxsnv.checked) {
+                danhhieuttldxs.checked = false;
+                danhhieuttldxs.disabled = true;
+            } else {
+                danhhieuttldxs.disabled = false;
+            }
+        });
+
+        danhhieuttldxs.addEventListener('change', function () {
+            if (danhhieuttldxs.checked) {
+                hoanthanhxsnv.checked = false;
+                hoanthanhxsnv.disabled = true;
+            } else {
+                hoanthanhxsnv.disabled = false;
+            }
+        });
+
+
+        cothiduaubnd.addEventListener('change', function () {
+            if (cothiduaubnd.checked) {
+                cothi3ubnd.checked = false;
+                cothi3ubnd.disabled = true;
+            } else {
+                cothi3ubnd.disabled = false;
+            }
+        });
+
+
+        cothi3ubnd.addEventListener('change', function () {
+            if (cothi3ubnd.checked) {
+                cothiduaubnd.checked = false;
+                cothiduaubnd.disabled = true;
+            } else {
+                cothiduaubnd.disabled = false;
+            }
+        });
+
+    });
+
 </script>

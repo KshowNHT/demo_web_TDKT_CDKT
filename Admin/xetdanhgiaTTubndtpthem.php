@@ -107,8 +107,8 @@ $datakhoa = Khoa::layDanhSach($conn);
     </div>
 
     <div class="form-group flex-container">
-        <label>Có 2 năm liên tục hoàn thành xuất sắc nhiệm vụ: <input type="checkbox" name="2_nam_hoan_thanh_nhiem_vu"></label>
-        <label>Hoặc Đạt danh hiệu tập thể: <input type="checkbox" name="dat_danh_hieu_tap_the"></label>
+        <label>Có 2 năm liên tục hoàn thành xuất sắc nhiệm vụ: <input type="checkbox" id = "2_nam_hoan_thanh_nhiem_vu" name="2_nam_hoan_thanh_nhiem_vu"></label>
+        <label>Hoặc Đạt danh hiệu tập thể: <input type="checkbox" id = "dat_danh_hieu_tap_the" name="dat_danh_hieu_tap_the"></label>
         <label>có 2/3 thành viên HĐ đồng ý : <input type="checkbox" name="dong_y"></label>
     </div>
     
@@ -140,4 +140,30 @@ $datakhoa = Khoa::layDanhSach($conn);
             });
         });
     });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const hoanthanhnhiemvu = document.getElementById('2_nam_hoan_thanh_nhiem_vu');
+        const danhhieutapthe = document.getElementById('dat_danh_hieu_tap_the');
+
+
+        hoanthanhnhiemvu.addEventListener('change', function () {
+            if (hoanthanhnhiemvu.checked) {
+                danhhieutapthe.checked = false;
+                danhhieutapthe.disabled = true;
+            } else {
+                danhhieutapthe.disabled = false;
+            }
+        });
+
+        danhhieutapthe.addEventListener('change', function () {
+            if (danhhieutapthe.checked) {
+                hoanthanhnhiemvu.checked = false;
+                hoanthanhnhiemvu.disabled = true;
+            } else {
+                hoanthanhnhiemvu.disabled = false;
+            }
+        });
+    });
+
+
 </script>
