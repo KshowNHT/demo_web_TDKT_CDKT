@@ -2,6 +2,29 @@
 include('./danhgiaTT.php');
 $data = DanhgiaTT::laydanhsachdanhgiatientien($conn);
 
+
+
+// Số bản ghi trên mỗi trang
+$recordsPerPage = 10;
+
+// Xác định trang hiện tại
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($currentPage < 1) {
+    $currentPage = 1;
+}
+
+// Tính vị trí bắt đầu lấy dữ liệu
+$startFrom = ($currentPage - 1) * $recordsPerPage;
+
+// Lấy tổng số bản ghi
+$totalRecords = DanhgiaTT::layTongSoDanhGiaTT($conn);
+
+// Tính tổng số trang
+$totalPages = ceil($totalRecords / $recordsPerPage);
+
+// Lấy dữ liệu cho trang hiện tại
+$data = DanhgiaTT::layDanhGiaTTPhanTrang($conn, $startFrom, $recordsPerPage);
+
 // Mảng ánh xạ
 $awardMap = array(
     'TT_LAO_DONG_TIEN_TIEN' => 'Tập Thể Lạo Động Tiên Tiến',
@@ -22,6 +45,40 @@ if (isset($_GET["message"])) {
 <?php
 }
 ?>
+
+<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
+    <a class="btn btn-primary btn-lg" href="<?php echo " $baseUrl?p=xetdanhgiaTT"; ?>">Xét Đánh Giá Tập Thể</a>
+<?php
+}
+?>
+
+
+<style>
+    .pagination {
+    background-color: transparent; 
+    border: none;
+    box-shadow: none;
+}
+
+.page-item {
+    background-color: transparent; 
+    border: none;
+    box-shadow: none;
+}
+
+.page-link {
+    background-color: transparent; 
+    border: none;
+    box-shadow: none;
+    color: #007bff; /* Màu mặc định của liên kết */
+}
+
+.page-item.active .page-link {
+    background-color: #007bff; /* Màu xanh đậm cho trang hiện tại */
+    border-color: #007bff;
+}
+
+</style>
 
 <div class="combobox">
     <label for="options">Chọn một tùy chọn:</label>
@@ -61,7 +118,6 @@ if (isset($_GET["message"])) {
                     <select name="action" onchange="handleActionChange(this, '<?php echo $item->MaDGTT; ?>')">
                         <option value="">Chọn hành động</option>
                         <option value="xetdanhgiaTTsua">Sửa Đánh Giá</option>
-                        <option value="danhgiaTTxsvahieutruong">Xét Đánh Giá</option>
                     </select>
                 </td>
                 <?php
@@ -74,6 +130,35 @@ if (isset($_GET["message"])) {
     </tbody>
 </table>
 
+
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <?php if ($currentPage > 1): ?>
+            <li class="page-item">
+                <a class="page-link" href="?p=danhgiaTTtientienview&page=<?php echo $currentPage - 1; ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <li class="page-item <?php echo $i == $currentPage ? 'active' : ''; ?>">
+                <a class="page-link" href="?p=danhgiaTTtientienview&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+            </li>
+        <?php endfor; ?>
+
+        <?php if ($currentPage < $totalPages): ?>
+            <li class="page-item">
+                <a class="page-link" href="?p=danhgiaTTtientienview&page=<?php echo $currentPage + 1; ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</nav>
+
+
 <script>
    async function fetchAndDisplayDanhGia(Manam) {
     console.log('Năm đã chọn:', Manam);
@@ -81,7 +166,7 @@ if (isset($_GET["message"])) {
         window.location.reload();
         return;
     }
-
+    const awardMap = <?php echo json_encode($awardMap); ?>;
     try {
         const response = await fetch(`getnamdanhgia.php?Manam=${Manam}`);
         if (!response.ok) {
@@ -111,8 +196,10 @@ if (isset($_GET["message"])) {
                 tdNam.textContent = item.Nam || `Cần Thêm Năm Cho ${item.nam}`;
                 tr.appendChild(tdNam);
 
+                // Kiểm tra xem danhGia có trong mảng ánh xạ không
+                const danhGia = awardMap[item.DanhGia] !== undefined ? awardMap[item.DanhGia] : item.DanhGia;
                 const tdDanhGia = document.createElement('td');
-                tdDanhGia.textContent = item.DanhGia;
+                tdDanhGia.textContent = danhGia;
                 tr.appendChild(tdDanhGia);
 
                 if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
@@ -131,11 +218,6 @@ if (isset($_GET["message"])) {
                     optionSua.textContent = 'Sửa Đánh Giá';
                     select.appendChild(optionSua);
 
-                    
-                    const optionXet = document.createElement('option');
-                    optionXet.value = 'danhgiaTTxsvahieutruong';
-                    optionXet.textContent = 'Xét Đánh Giá';
-                    select.appendChild(optionXet);
 
                     tdAction.appendChild(select);
                     tr.appendChild(tdAction);

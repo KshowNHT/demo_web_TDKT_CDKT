@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Aug 05, 2024 at 10:57 AM
+-- Generation Time: Aug 19, 2024 at 06:15 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -41,7 +41,9 @@ CREATE TABLE `danhgiacn` (
 --
 
 INSERT INTO `danhgiacn` (`MaDGCN`, `MaCN`, `MaKhoa`, `SoQD`, `Manam`, `DanhGia`) VALUES
-(11, 29, 25, '23', 0, 'Hoàn Thành Nhiệm Vụ');
+(11, 29, 25, '23', 0, 'Hoàn Thành Nhiệm Vụ'),
+(12, 29, 25, '32', 0, 'Hoàn Thành Xuất'),
+(13, 29, 25, '23', 0, 'Hoàn Thành Xuất');
 
 -- --------------------------------------------------------
 
@@ -65,18 +67,73 @@ INSERT INTO `danhgiatt` (`MaDGTT`, `MaKhoa`, `SoQD`, `Manam`, `DanhGia`) VALUES
 (70, 25, '23', 3, 'Hoàn Thành Tốt Nhiệm Vụ'),
 (75, 25, '23', 1, 'TT_LAO_DONG_TIEN_TIEN'),
 (76, 25, '23', 2, 'TT_LAO_DONG_XS'),
-(77, 25, '23', 1, 'TT_LAO_DONG_XS'),
+(77, 25, '23', 2, 'TT_LAO_DONG_XS'),
 (78, 25, '23', 1, 'TT_LAO_DONG_XS'),
 (79, 25, '23', 1, 'TT_LAO_DONG_XS'),
 (80, 25, '23', 4, 'Hoàn Thành Nhiệm Vụ'),
-(81, 25, '23', 4, 'TT_LAO_DONG_TIEN_TIEN'),
-(82, 25, '23', 3, 'GK_Hieu_Truong'),
-(83, 25, '23', 3, 'BK_UBNDTP'),
+(81, 25, '23', 1, 'TT_LAO_DONG_TIEN_TIEN'),
+(82, 25, '23', 1, 'GK_Hieu_Truong'),
+(83, 25, '23', 1, 'BK_UBNDTP'),
 (84, 25, '23', 1, 'BK_UBNDTP'),
 (85, 25, '23', 1, 'BK_UBNDTP'),
 (86, 25, '23', 3, 'BK_TTCP'),
-(87, 25, '23', 4, 'Huan_Chuong_Lao_Dong_Hang_Ba'),
-(88, 25, '23', 4, 'Huan_Chuong_Lao_Dong_Hang_Nhi');
+(87, 25, '23', 2, 'Huan_Chuong_Lao_Dong_Hang_Ba'),
+(88, 25, '23', 6, 'Huan_Chuong_Lao_Dong_Hang_Nhi'),
+(89, 25, '44444', 1, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(92, 30, '2333', 1, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(93, 29, '61111', 6, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(94, 28, '232313', 4, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(95, 29, '232313', 4, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(96, 30, '232313', 4, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(97, 25, '11111111', 2, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(98, 28, '11111111', 2, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(99, 29, '11111111', 2, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(100, 30, '11111111', 2, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(101, 28, '6666', 3, 'Hoàn Thành Nhiệm Vụ'),
+(102, 29, '6666', 3, 'Hoàn Thành Nhiệm Vụ'),
+(103, 31, '333', 2, 'Hoàn Thành Xuất'),
+(104, 28, '99', 1, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(105, 29, '99', 1, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(106, 31, '99', 1, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(107, 30, '0', 3, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(108, 31, '0', 3, 'Hoàn Thành Tốt Nhiệm Vụ'),
+(109, 25, '9', 1, 'Hoàn Thành Xuất'),
+(110, 25, '23', 1, 'GK_Hieu_Truong'),
+(111, 25, '23', 1, 'TT_LAO_DONG_XS'),
+(112, 25, '413131', 6, 'TT_LAO_DONG_TIEN_TIEN'),
+(113, 28, '413131', 2, 'TT_LAO_DONG_TIEN_TIEN'),
+(114, 29, '413131', 1, 'TT_LAO_DONG_TIEN_TIEN'),
+(115, 30, '413131', 6, 'TT_LAO_DONG_TIEN_TIEN'),
+(116, 25, '413131', 6, 'TT_LAO_DONG_TIEN_TIEN'),
+(117, 28, '413131', 6, 'TT_LAO_DONG_TIEN_TIEN'),
+(118, 29, '413131', 4, 'TT_LAO_DONG_TIEN_TIEN'),
+(119, 30, '413131', 6, 'TT_LAO_DONG_TIEN_TIEN'),
+(120, 29, '33', 3, 'TT_LAO_DONG_TIEN_TIEN'),
+(121, 30, '33', 3, 'TT_LAO_DONG_TIEN_TIEN'),
+(122, 31, '33', 2, 'TT_LAO_DONG_TIEN_TIEN'),
+(123, 28, '666', 1, 'TT_LAO_DONG_TIEN_TIEN'),
+(124, 29, '666', 1, 'TT_LAO_DONG_TIEN_TIEN'),
+(125, 30, '555', 1, 'TT_LAO_DONG_TIEN_TIEN'),
+(126, 31, '1134555', 3, 'TT_LAO_DONG_TIEN_TIEN'),
+(127, 28, '77777', 2, 'TT_LAO_DONG_TIEN_TIEN'),
+(128, 29, '77777', 2, 'TT_LAO_DONG_TIEN_TIEN'),
+(130, 28, 'demo1', 1, 'TT_LAO_DONG_XS'),
+(131, 29, '0', 2, 'TT_LAO_DONG_XS'),
+(132, 28, '0', 6, 'GK_Hieu_Truong'),
+(133, 30, '0', 6, 'GK_Hieu_Truong'),
+(134, 30, '4444', 3, 'TT_LAO_DONG_XS'),
+(135, 31, '4444', 3, 'TT_LAO_DONG_XS'),
+(136, 28, '2222', 2, 'GK_Hieu_Truong'),
+(137, 28, 'Test111', 6, 'BK_UBNDTP'),
+(138, 25, 'Test222', 1, 'BK_UBNDTP'),
+(139, 28, 'Test222', 1, 'BK_UBNDTP'),
+(140, 25, '20', 1, 'BK_TTCP'),
+(141, 28, '20', 1, 'BK_TTCP'),
+(142, 25, 'test', 1, 'Huan_Chuong_Lao_Dong_Hang_Ba'),
+(143, 28, 'test', 1, 'Huan_Chuong_Lao_Dong_Hang_Ba'),
+(144, 25, 'test', 1, 'Huan_Chuong_Lao_Dong_Hang_Nhi'),
+(145, 28, 'test', 1, 'Huan_Chuong_Lao_Dong_Hang_Nhi'),
+(146, 25, 'test2', 3, 'Huan_Chuong_Lao_Dong_Hang_Ba');
 
 -- --------------------------------------------------------
 
@@ -98,7 +155,8 @@ INSERT INTO `khoa` (`MaKhoa`, `TenKhoa`, `MoTa`) VALUES
 (25, 'Công Nghệ Thông Tin', 'Công Nghệ Thông Tin'),
 (28, 'Ngoại Ngữ', 'Ngoại Ngữ'),
 (29, 'Xây Dựng', 'Xây Dựng'),
-(30, 'Kinh Tế', 'Kinh Tế');
+(30, 'Kinh Tế', 'Kinh Tế'),
+(31, 'Cơ Khí', 'Cơ Khí');
 
 -- --------------------------------------------------------
 
@@ -117,10 +175,33 @@ CREATE TABLE `nam` (
 
 INSERT INTO `nam` (`Manam`, `Nam`) VALUES
 (1, '2024'),
-(2, '2023'),
+(2, '2019'),
 (3, '2022'),
 (4, '2021'),
 (6, '2020');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sangkien`
+--
+
+CREATE TABLE `sangkien` (
+  `MaSK` int(11) NOT NULL,
+  `MaCN` int(11) NOT NULL,
+  `Manam` int(11) NOT NULL,
+  `TenSK` varchar(50) DEFAULT NULL,
+  `QD` varchar(20) DEFAULT NULL,
+  `CapSK` varchar(20) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `sangkien`
+--
+
+INSERT INTO `sangkien` (`MaSK`, `MaCN`, `Manam`, `TenSK`, `QD`, `CapSK`) VALUES
+(6, 29, 3, 'test1', '1223', 'Cấp Thành Phố'),
+(7, 35, 4, 'Demo1', '233', 'Cấp Cơ Sở');
 
 -- --------------------------------------------------------
 
@@ -146,7 +227,8 @@ INSERT INTO `taikhoan` (`MaTk`, `TenTk`, `MatKhau`, `VaiTro`) VALUES
 (6, 'giangvien', '$2y$10$NXemjRp4IZcz2wPth4ESv.qKOjjCz.90aZqFs5SxInNdeG3oIvsX.', 'Giảng Viên'),
 (7, 'quantri', '$2y$10$mse1.KlwY4dntjn4A6AZEer2S5Oy2zBfmndesRKrdCE2S0b/4zA16', 'Quản Trị'),
 (8, 'khoa', '$2y$10$20KJ/7mqGaacA4JJ2vylhOSja02BVmFk7R7u.hDVKq.YnABRl2Njm', 'Khoa'),
-(9, 'giangvien1', '$2y$10$rKkuex6uyyNIGT/MfeD/SOEoeENYrtCq3lWZtrcGPxHVNUnZo/4Pq', 'Giảng Viên');
+(9, 'giangvien1', '$2y$10$rKkuex6uyyNIGT/MfeD/SOEoeENYrtCq3lWZtrcGPxHVNUnZo/4Pq', 'Giảng Viên'),
+(10, 'HuuThuan', '$2y$10$Ct5yYBLXCnJpMa0TzNP/9OOlpdMcHk0coQFqMGT/u7hI8rTSiIPJm', 'Quản Trị');
 
 -- --------------------------------------------------------
 
@@ -168,7 +250,7 @@ CREATE TABLE `thongtincanhan` (
 
 INSERT INTO `thongtincanhan` (`MaCN`, `HoTen`, `NgaySinh`, `MaKhoa`, `ChuVu`) VALUES
 (29, 'Nguyễn Hữu Thuận ', '2024-07-05', '25', 'Thực Tập '),
-(34, 'Vũ', '2024-07-03', '26', 'Thực Tập');
+(35, 'Vũ', '2024-03-15', '29', 'Thực Tập');
 
 --
 -- Indexes for dumped tables
@@ -203,6 +285,14 @@ ALTER TABLE `nam`
   ADD PRIMARY KEY (`Manam`);
 
 --
+-- Indexes for table `sangkien`
+--
+ALTER TABLE `sangkien`
+  ADD PRIMARY KEY (`MaSK`),
+  ADD KEY `fk_ttcn` (`MaCN`),
+  ADD KEY `fk_nam` (`Manam`);
+
+--
 -- Indexes for table `taikhoan`
 --
 ALTER TABLE `taikhoan`
@@ -222,19 +312,19 @@ ALTER TABLE `thongtincanhan`
 -- AUTO_INCREMENT for table `danhgiacn`
 --
 ALTER TABLE `danhgiacn`
-  MODIFY `MaDGCN` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `MaDGCN` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `danhgiatt`
 --
 ALTER TABLE `danhgiatt`
-  MODIFY `MaDGTT` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=89;
+  MODIFY `MaDGTT` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=147;
 
 --
 -- AUTO_INCREMENT for table `khoa`
 --
 ALTER TABLE `khoa`
-  MODIFY `MaKhoa` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
+  MODIFY `MaKhoa` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `nam`
@@ -243,16 +333,22 @@ ALTER TABLE `nam`
   MODIFY `Manam` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
+-- AUTO_INCREMENT for table `sangkien`
+--
+ALTER TABLE `sangkien`
+  MODIFY `MaSK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `taikhoan`
 --
 ALTER TABLE `taikhoan`
-  MODIFY `MaTk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
+  MODIFY `MaTk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `thongtincanhan`
 --
 ALTER TABLE `thongtincanhan`
-  MODIFY `MaCN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `MaCN` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- Constraints for dumped tables
@@ -271,6 +367,13 @@ ALTER TABLE `danhgiacn`
 ALTER TABLE `danhgiatt`
   ADD CONSTRAINT `fk_khoa_danhgiatapthe` FOREIGN KEY (`MaKhoa`) REFERENCES `khoa` (`MaKhoa`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_nam_danhgiatapthe` FOREIGN KEY (`Manam`) REFERENCES `nam` (`Manam`);
+
+--
+-- Constraints for table `sangkien`
+--
+ALTER TABLE `sangkien`
+  ADD CONSTRAINT `fk_nam` FOREIGN KEY (`Manam`) REFERENCES `nam` (`Manam`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_ttcn` FOREIGN KEY (`MaCN`) REFERENCES `thongtincanhan` (`MaCN`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

@@ -28,12 +28,12 @@
         <ul>
             <li>Khen Thưởng
                 <ul>
-                    <li>Đánh Giá Cá Nhân
+                    <li>Cá Nhân
                         <ul>
                             <!-- Add subitems here if any -->
                         </ul>
                     </li>
-                    <li>Đánh Giá Tập Thể
+                    <li>Tập Thể
                         <ul>
                             <li><a href="<?php echo "$baseUrl?p=danhgiaTTtientienview"; ?>"><?php echo $pages['danhgiaTTtientienview'][0]; ?></a></li>
                             <li><a href="<?php echo "$baseUrl?p=danhgiaTTxs"; ?>"><?php echo $pages['danhgiaTTxs'][0]; ?></a></li>

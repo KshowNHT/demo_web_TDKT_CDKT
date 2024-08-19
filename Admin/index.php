@@ -45,11 +45,11 @@
         'danhgiaCNthem' => array('Đánh Giá Cá Nhân', 'danhgiaCNthem.php'),
         'danhgiaCNkhoa' => array('Đánh Giá Cá Nhân', 'danhgiaCNviewkhoa.php'),
         // Sáng Kiên
-        'sangkien' => array('Quản lý Sáng Kiến', './sangkienview.php'),
-        'sangkiensua' => array('Sửa Sáng Kiến', './sangkiensua.php'),
-        'sangkienth' => array('Thêm Sáng Kiến', './sangkienth.php'),
-        'sangkienxoa' => array('Xóa Sáng kiến', './sangkienxoa.php'),
-        'sangkienct' => array('Xem Chi Tiết Sáng kiến', './sangkienct.php'),
+        'sangkien' => array('Quản lý Sáng Kiến', 'sangkienview.php'),
+        'sangkiensua' => array('Sửa Sáng Kiến', 'sangkiensua.php'),
+        'sangkienth' => array('Thêm Sáng Kiến', 'sangkienth.php'),
+        'sangkienxoa' => array('Xóa Sáng kiến', 'sangkienxoa.php'),
+        'sangkienct' => array('Xem Chi Tiết Sáng kiến', 'sangkienct.php'),
         
     );
     //connect các trang 

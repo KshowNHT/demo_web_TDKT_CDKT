@@ -50,7 +50,7 @@
             </div>
 
             <div class="form-group">
-                <label for="CapSK">Đánh Giá</label>
+                <label for="CapSK">Cấp Sáng Kiến</label>
                 <select name="CapSK" id="CapSK" class="form-control">
                     <option value="1" <?php echo $data->CapSK == "1" ? 'selected' : ''; ?>>Cấp Sáng Kiến</option>
                     <option value="Cấp Cơ Sở" <?php echo $data->CapSK == "Cấp Cơ Sở" ? 'selected' : ''; ?>>Cấp Cơ Sở</option>

@@ -3,6 +3,30 @@ include('./Khoa.php');
 $data = Khoa::layDanhSach($conn);
 
 
+        // Số bản ghi trên mỗi trang
+        $recordsPerPage = 10;
+
+        // Xác định trang hiện tại
+        $currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+        if ($currentPage < 1) {
+            $currentPage = 1;
+        }
+
+        // Tính vị trí bắt đầu lấy dữ liệu
+        $startFrom = ($currentPage - 1) * $recordsPerPage;
+
+        // Lấy tổng số bản ghi
+        $totalRecords = Khoa::layTongSokhoa($conn);
+
+        // Tính tổng số trang
+        $totalPages = ceil($totalRecords / $recordsPerPage);
+
+        // Lấy dữ liệu cho trang hiện tại
+        $data = Khoa::laykhoaPhanTrang($conn, $startFrom, $recordsPerPage);
+
+
+
+
 // Lấy danh sách khoa cho combobox
 
 if (!$data) {
@@ -30,6 +54,33 @@ if (isset($_GET["message"])) {
 <?php
 }
 ?>
+
+<style>
+    .pagination {
+    background-color: transparent; 
+    border: none;
+    box-shadow: none;
+}
+
+.page-item {
+    background-color: transparent; 
+    border: none;
+    box-shadow: none;
+}
+
+.page-link {
+    background-color: transparent; 
+    border: none;
+    box-shadow: none;
+    color: #007bff; /* Màu mặc định của liên kết */
+}
+
+.page-item.active .page-link {
+    background-color: #007bff; /* Màu xanh đậm cho trang hiện tại */
+    border-color: #007bff;
+}
+
+</style>
 
 <div class="combobox">
     <label for="options">Chọn một tùy chọn:</label>
@@ -63,9 +114,8 @@ if (isset($_GET["message"])) {
                 <td>
                     <select name="action" onchange="handleActionChange(this, '<?php echo $item->MaKhoa; ?>')">
                         <option value="">Chọn hành động</option>
-                        <option value="danhgiaTTth">Cập Nhật Đánh Giá</option>
-                        <option value="Khoasua">Sửa</option>
-                        <option value="Khoaxoa">Xóa</option>
+                        <option value="Khoasua">Sửa Khoa</option>
+                        <option value="Khoaxoa">Xóa Khoa</option>
                     </select>
                 </td>
                 <?php } ?>
@@ -73,6 +123,34 @@ if (isset($_GET["message"])) {
         <?php } ?>
     </tbody>
 </table>
+
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <?php if ($currentPage > 1): ?>
+            <li class="page-item">
+                <a class="page-link" href="?p=Khoa&page=<?php echo $currentPage - 1; ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <li class="page-item <?php echo $i == $currentPage ? 'active' : ''; ?>">
+                <a class="page-link" href="?p=Khoa&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+            </li>
+        <?php endfor; ?>
+
+        <?php if ($currentPage < $totalPages): ?>
+            <li class="page-item">
+                <a class="page-link" href="?p=Khoa&page=<?php echo $currentPage + 1; ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</nav>
+
 
 <script>
     function fetchAndDisplayKhoa(maKhoa) {
@@ -112,19 +190,15 @@ if (isset($_GET["message"])) {
                         optionDefault.textContent = 'Chọn hành động';
                         select.appendChild(optionDefault);
 
-                        var optionDanhGia = document.createElement('option');
-                        optionDanhGia.value = 'danhgiaTTth';
-                        optionDanhGia.textContent = 'Cập Nhật Đánh Giá';
-                        select.appendChild(optionDanhGia);
 
                         var optionSua = document.createElement('option');
                         optionSua.value = 'Khoasua';
-                        optionSua.textContent = 'Sửa';
+                        optionSua.textContent = 'Sửa Khoa';
                         select.appendChild(optionSua);
 
                         var optionXoa = document.createElement('option');
                         optionXoa.value = 'Khoaxoa';
-                        optionXoa.textContent = 'Xóa';
+                        optionXoa.textContent = 'Xóa Khoa';
                         select.appendChild(optionXoa);
 
                         tdAction.appendChild(select);

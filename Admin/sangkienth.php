@@ -12,6 +12,7 @@
         $id = ($_GET["id"]);
         $data = new thongtincanhan();
         $data  =  $data->laythongtincanhan($conn,$id); 
+        $ten = $data->HoTen;
     }
 
     $Lnam = Nam::layDanhSach($conn);
@@ -19,10 +20,10 @@
 ?>
 
 <form method="post">
-<div class="form-group">
-        <label for="MaCN">Họ Và Tên: </label>
-        <input type="text" class="form-control" id="MaCN" name="MaCN" value ='<?php echo $data->MaCN;?>' readonly>
-    </div>
+            <div class="form-group">
+                <label for="MaCN">Họ Và Tên: <?php echo $ten?></label>
+                <input type="hidden" class="form-control" id="MaCN" name="MaCN" value="<?php echo htmlspecialchars($data->MaCN); ?>" readonly>
+            </div>
 
 
     <div class="form-group">

@@ -213,18 +213,40 @@ class DanhgiaTT {
     
 
         // tạo câu truy vấn để thêm đối tượng thể loại mới vào cơ sở dữ liệu
-        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES ('$this->MaKhoa', '$this->SoQD', '$this->Manam', '$this->DanhGia')";
-        
-        // thực thi câu truy vấn và kiểm tra kết quả
-        if (mysqli_query($conn, $sql)) {
-            $id = mysqli_insert_id($conn);
-            $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
-        }else{
-            $message = "Đánh Giá $this->MaKhoa Không thành công ";
-        }
+        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
     
-        header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
-        exit();
+        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
+        if (is_array($this->MaKhoa)) {
+            $successCount = 0;
+            foreach ($this->MaKhoa as $khoa) {
+                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
+                if ($stmt->execute()) {
+                    if ($stmt->affected_rows > 0) {
+                        $successCount++;
+                    }
+                }
+            }
+            if ($successCount > 0) {
+                $message = "Đánh Giá thành công cho $successCount khoa";
+            } else {
+                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+            }
+        } else {
+            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
+            if ($stmt->execute()) {
+                if ($stmt->affected_rows > 0) {
+                    $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+                } else {
+                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+                }
+            } else {
+                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
+            }
+        }
+         // Chuyển hướng trang và truyền thông báo qua URL
+         header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
+         exit();
     }
 
 
@@ -252,13 +274,35 @@ class DanhgiaTT {
         }
     
         $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
+       $stmt = $conn->prepare($sql);
     
-        if ($stmt->execute()) {
-            $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
+        if (is_array($this->MaKhoa)) {
+            $successCount = 0;
+            foreach ($this->MaKhoa as $khoa) {
+                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
+                if ($stmt->execute()) {
+                    if ($stmt->affected_rows > 0) {
+                        $successCount++;
+                    }
+                }
+            }
+            if ($successCount > 0) {
+                $message = "Đánh Giá thành công cho $successCount khoa";
+            } else {
+                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+            }
         } else {
-            $message = "Lỗi khi thêm đánh giá: " . $stmt->error;
+            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
+            if ($stmt->execute()) {
+                if ($stmt->affected_rows > 0) {
+                    $message = "Đánh Giá là $this->DanhGia thành công";
+                } else {
+                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+                }
+            } else {
+                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
+            }
         }
     
         if ($awardType == "TT_LAO_DONG_XS") {
@@ -297,12 +341,34 @@ class DanhgiaTT {
     
         $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
     
-        if ($stmt->execute()) {
-            $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
+        if (is_array($this->MaKhoa)) {
+            $successCount = 0;
+            foreach ($this->MaKhoa as $khoa) {
+                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
+                if ($stmt->execute()) {
+                    if ($stmt->affected_rows > 0) {
+                        $successCount++;
+                    }
+                }
+            }
+            if ($successCount > 0) {
+                $message = "Đánh Giá thành công cho $successCount khoa";
+            } else {
+                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+            }
         } else {
-            $message = "Lỗi khi thêm đánh giá: " . $stmt->error;
+            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
+            if ($stmt->execute()) {
+                if ($stmt->affected_rows > 0) {
+                    $message = "Đánh Giá là $this->DanhGia thành công";
+                } else {
+                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+                }
+            } else {
+                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
+            }
         }
     
         header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
@@ -334,25 +400,38 @@ class DanhgiaTT {
             exit();
         }
     
-        if (isset($this->MaDGTT) && is_numeric($this->MaDGTT)) {
+
             // Sử dụng Prepared Statements
             $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);          
     
+        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
+        if (is_array($this->MaKhoa)) {
+            $successCount = 0;
+            foreach ($this->MaKhoa as $khoa) {
+                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
+                if ($stmt->execute()) {
+                    if ($stmt->affected_rows > 0) {
+                        $successCount++;
+                    }
+                }
+            }
+            if ($successCount > 0) {
+                $message = "Đánh Giá thành công cho $successCount khoa";
+            } else {
+                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+            }
+        } else {
+            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
-                    $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+                    $message = "Đánh Giá là $this->DanhGia thành công";
                 } else {
                     $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
                 }
             } else {
                 $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
             }
-    
-            $stmt->close();
-        } else {
-            $message = "Mã đánh giá không hợp lệ";
         }
     
         header("Location: $baseUrl?p=danhgiaTTttcpview&message=" . urlencode($message));
@@ -382,26 +461,37 @@ class DanhgiaTT {
             header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
             exit();
         }
-    
-        if (isset($this->MaDGTT) && is_numeric($this->MaDGTT)) {
             // Sử dụng Prepared Statements
             $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);            
     
+        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
+        if (is_array($this->MaKhoa)) {
+            $successCount = 0;
+            foreach ($this->MaKhoa as $khoa) {
+                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
+                if ($stmt->execute()) {
+                    if ($stmt->affected_rows > 0) {
+                        $successCount++;
+                    }
+                }
+            }
+            if ($successCount > 0) {
+                $message = "Đánh Giá thành công cho $successCount khoa";
+            } else {
+                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+            }
+        } else {
+            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
-                    $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+                    $message = "Đánh Giá là $this->DanhGia thành công";
                 } else {
                     $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
                 }
             } else {
                 $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
             }
-    
-            $stmt->close();
-        } else {
-            $message = "Mã đánh giá không hợp lệ";
         }
     
         header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
@@ -432,25 +522,37 @@ class DanhgiaTT {
             exit();
         }
     
-        if (isset($this->MaDGTT) && is_numeric($this->MaDGTT)) {
             // Sử dụng Prepared Statements
             $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
             $stmt = $conn->prepare($sql);
-            $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);            
     
+        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
+        if (is_array($this->MaKhoa)) {
+            $successCount = 0;
+            foreach ($this->MaKhoa as $khoa) {
+                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
+                if ($stmt->execute()) {
+                    if ($stmt->affected_rows > 0) {
+                        $successCount++;
+                    }
+                }
+            }
+            if ($successCount > 0) {
+                $message = "Đánh Giá thành công cho $successCount khoa";
+            } else {
+                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+            }
+        } else {
+            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
-                    $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
+                    $message = "Đánh Giá là $this->DanhGia thành công";
                 } else {
                     $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
                 }
             } else {
                 $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
             }
-    
-            $stmt->close();
-        } else {
-            $message = "Mã đánh giá không hợp lệ";
         }
     
         header("Location: $baseUrl?p=danhgiaTThcldhnview&message=" . urlencode($message));
@@ -458,17 +560,32 @@ class DanhgiaTT {
     }
 
     //Thêm Khoa Vào Xét Đánh Giá
-    public function Themdanhgiatt($conn,$baseUrl) {
-            
+    public function Themdanhgiatt($conn, $baseUrl) {
         // Thông báo cần gửi
-        $message = "Lỗi khi thêm thể loại";
+        $message = "Lỗi khi thêm đánh giá";
     
-
-        // tạo câu truy vấn để thêm đối tượng thể loại mới vào cơ sở dữ liệu
+        // tạo câu truy vấn để thêm đối tượng đánh giá mới vào cơ sở dữ liệu
         $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);            
+        $stmt = $conn->prepare($sql);
     
+        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
+        if (is_array($this->MaKhoa)) {
+            $successCount = 0;
+            foreach ($this->MaKhoa as $khoa) {
+                $stmt->bind_param("siss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
+                if ($stmt->execute()) {
+                    if ($stmt->affected_rows > 0) {
+                        $successCount++;
+                    }
+                }
+            }
+            if ($successCount > 0) {
+                $message = "Đánh Giá thành công cho $successCount khoa";
+            } else {
+                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+            }
+        } else {
+            $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
             if ($stmt->execute()) {
                 if ($stmt->affected_rows > 0) {
                     $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
@@ -478,6 +595,8 @@ class DanhgiaTT {
             } else {
                 $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
             }
+        }
+    
         // Chuyển hướng trang và truyền thông báo qua URL
         header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
         exit();
@@ -529,46 +648,309 @@ class DanhgiaTT {
         exit();
     }
 
-    // Lấy dữ liệu Đánh Giá theo Năm và trả về JSON
-    // public static function laydanhgiaTheoNam($conn, $Manam) {
-    //     // Chuẩn bị câu lệnh SQL để tránh SQL Injection
-    //     $stmt = $conn->prepare("SELECT * FROM danhgiatt WHERE Manam = ? AND DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')");
-    //     if ($stmt === false) {
-    //         error_log("Prepare failed: " . htmlspecialchars($conn->error));
-    //         return;
-    //     }
 
-    //     $stmt->bind_param("s", $Manam);
-    //     if (!$stmt->execute()) {
-    //         error_log("Execute failed: " . htmlspecialchars($stmt->error));
-    //         return;
-    //     }
 
-    //     $result = $stmt->get_result();
+    // Xóa Đánh Giá
+    public function XoaDanhGia($conn, $baseUrl) {
+        $message = "Lỗi khi Xóa thể loại";
+        $sql = "DELETE FROM danhgiatt WHERE MaDGTT = $this->MaDGTT";
 
-    //     $danhgiattLists = [];
-    //     if ($result->num_rows > 0) {
-    //         while ($row = $result->fetch_assoc()) {
-    //             $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
-    //             $nam_obj = Nam::laynam($conn, $row["Manam"]);
-    //             $danhgiatt_obj = new DanhgiaTT();
-    //             $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
-    //             $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
-    //             $danhgiatt_obj->SoQD = $row["SoQD"];
-    //             $danhgiatt_obj->Manam = $nam_obj->Nam;
-    //             $danhgiatt_obj->DanhGia = $row["DanhGia"];
+        if (mysqli_query($conn, $sql)) {
+            $message = "Xóa Đánh Giá thành công";
+        }
 
-    //             $danhgiattLists[] = $danhgiatt_obj;
-    //         }
-    //     }
+        switch ($this->DanhGia) {
+            case "TT_LAO_DONG_TIEN_TIEN":
+                header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
+                break;
+            case "TT_LAO_DONG_XS":
+                header("Location: $baseUrl?p=danhgiaTTxs&message=" . urlencode($message));
+                break;
+            case "GK_Hieu_Truong":
+                header("Location: $baseUrl?p=danhgiaTThieutruong&message=" . urlencode($message));
+                break;
+            case "BK_UBNDTP":
+                header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
+                break;
+            case "BK_TTCP":
+                header("Location: $baseUrl?p=danhgiaTTttcpview&message=" . urlencode($message));
+                break;
+            case "Huan_Chuong_Lao_Dong_Hang_Ba":
+                header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
+                break;
+            case "Huan_Chuong_Lao_Dong_Hang_Nhi":
+                header("Location: $baseUrl?p=danhgiaTThcldhnview&message=" . urlencode($message));
+                break;
+            default:
+                header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
+        }
+        exit();
+    }
 
-    //     $stmt->close();
 
-    //     // Trả về dữ liệu dưới dạng JSON
-    //     header('Content-Type: application/json; charset=utf-8');
-    //     echo json_encode($danhgiattLists, JSON_UNESCAPED_UNICODE);
-    //     error_log(json_encode($danhgiattLists)); // Thêm dòng này để log dữ liệu JSON
-    // }
+    //Phân Trang Đánh Giá
+    public static function layTongSoDanhGia($conn) {
+        $sql = "SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')";
+        $result = $conn->query($sql);
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+
+    public static function layDanhGiaPhanTrang($conn, $startFrom, $recordsPerPage) {
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá') LIMIT $startFrom, $recordsPerPage";
+        $result = $conn->query($sql);
+
+        $danhgiattList = array();
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
+                $danhgiatt_obj = new DanhgiaTT();
+                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
+                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
+                $danhgiatt_obj->SoQD = $row["SoQD"];
+                $danhgiatt_obj->Manam = $nam_obj->Nam;
+                $danhgiatt_obj->DanhGia = $row["DanhGia"];
+
+
+                $danhgiattList[] = $danhgiatt_obj;
+            }
+        }
+        return $danhgiattList;
+    }
+
+
+    //Phân trang Lao Động Tiên Tiến
+    public static function layTongSoDanhGiaTT($conn) {
+        $sql = "SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('TT_LAO_DONG_TIEN_TIEN')";
+        $result = $conn->query($sql);
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+
+    public static function layDanhGiaTTPhanTrang($conn, $startFrom, $recordsPerPage) {
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('TT_LAO_DONG_TIEN_TIEN') LIMIT $startFrom, $recordsPerPage";
+        $result = $conn->query($sql);
+
+        $danhgiattList = array();
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
+                $danhgiatt_obj = new DanhgiaTT();
+                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
+                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
+                $danhgiatt_obj->SoQD = $row["SoQD"];
+                $danhgiatt_obj->Manam = $nam_obj->Nam;
+                $danhgiatt_obj->DanhGia = $row["DanhGia"];
+
+
+                $danhgiattList[] = $danhgiatt_obj;
+            }
+        }
+        return $danhgiattList;
+    }
+
+
+
+    //Phân Trang Lao Đông Xuất Sắc 
+    public static function layTongSoDanhGiaxs($conn) {
+        $sql = "SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('TT_LAO_DONG_XS')";
+        $result = $conn->query($sql);
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+
+    public static function layDanhGiaxsPhanTrang($conn, $startFrom, $recordsPerPage) {
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('TT_LAO_DONG_XS') LIMIT $startFrom, $recordsPerPage";
+        $result = $conn->query($sql);
+
+        $danhgiattList = array();
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
+                $danhgiatt_obj = new DanhgiaTT();
+                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
+                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
+                $danhgiatt_obj->SoQD = $row["SoQD"];
+                $danhgiatt_obj->Manam = $nam_obj->Nam;
+                $danhgiatt_obj->DanhGia = $row["DanhGia"];
+
+
+                $danhgiattList[] = $danhgiatt_obj;
+            }
+        }
+        return $danhgiattList;
+    }
+
+
+    // Phân Trang Giấy Khen Hiệu Trưởng
+    public static function layTongSoDanhGiaht($conn) {
+        $sql = "SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('GK_Hieu_Truong')";
+        $result = $conn->query($sql);
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+
+    public static function layDanhGiahtPhanTrang($conn, $startFrom, $recordsPerPage) {
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('GK_Hieu_Truong') LIMIT $startFrom, $recordsPerPage";
+        $result = $conn->query($sql);
+
+        $danhgiattList = array();
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
+                $danhgiatt_obj = new DanhgiaTT();
+                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
+                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
+                $danhgiatt_obj->SoQD = $row["SoQD"];
+                $danhgiatt_obj->Manam = $nam_obj->Nam;
+                $danhgiatt_obj->DanhGia = $row["DanhGia"];
+
+
+                $danhgiattList[] = $danhgiatt_obj;
+            }
+        }
+        return $danhgiattList;
+    }
+
+    // Phân Trang UBNDTP
+    public static function layTongSoDanhGiaubndtp($conn) {
+        $sql = "SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('BK_UBNDTP')";
+        $result = $conn->query($sql);
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+
+    public static function layDanhGiaubndtpPhanTrang($conn, $startFrom, $recordsPerPage) {
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('BK_UBNDTP') LIMIT $startFrom, $recordsPerPage";
+        $result = $conn->query($sql);
+
+        $danhgiattList = array();
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
+                $danhgiatt_obj = new DanhgiaTT();
+                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
+                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
+                $danhgiatt_obj->SoQD = $row["SoQD"];
+                $danhgiatt_obj->Manam = $nam_obj->Nam;
+                $danhgiatt_obj->DanhGia = $row["DanhGia"];
+
+
+                $danhgiattList[] = $danhgiatt_obj;
+            }
+        }
+        return $danhgiattList;
+    }
+    
+
+
+    // Phân Trang Thủ Tướng Chính Phủ
+    public static function layTongSoDanhGiattcp($conn) {
+        $sql = "SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('BK_TTCP')";
+        $result = $conn->query($sql);
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+
+    public static function layDanhGiattcp($conn, $startFrom, $recordsPerPage) {
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('BK_TTCP') LIMIT $startFrom, $recordsPerPage";
+        $result = $conn->query($sql);
+
+        $danhgiattList = array();
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
+                $danhgiatt_obj = new DanhgiaTT();
+                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
+                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
+                $danhgiatt_obj->SoQD = $row["SoQD"];
+                $danhgiatt_obj->Manam = $nam_obj->Nam;
+                $danhgiatt_obj->DanhGia = $row["DanhGia"];
+
+
+                $danhgiattList[] = $danhgiatt_obj;
+            }
+        }
+        return $danhgiattList;
+    }
+
+
+    // Phân Trang Huân Chương Lao Động Hạng Ba
+    public static function layTongSoDanhGiahangba($conn) {
+        $sql = "SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('Huan_Chuong_Lao_Dong_Hang_Ba')";
+        $result = $conn->query($sql);
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+
+    public static function layDanhGiahangba($conn, $startFrom, $recordsPerPage) {
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('Huan_Chuong_Lao_Dong_Hang_Ba') LIMIT $startFrom, $recordsPerPage";
+        $result = $conn->query($sql);
+
+        $danhgiattList = array();
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
+                $danhgiatt_obj = new DanhgiaTT();
+                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
+                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
+                $danhgiatt_obj->SoQD = $row["SoQD"];
+                $danhgiatt_obj->Manam = $nam_obj->Nam;
+                $danhgiatt_obj->DanhGia = $row["DanhGia"];
+
+
+                $danhgiattList[] = $danhgiatt_obj;
+            }
+        }
+        return $danhgiattList;
+    }
+
+
+    // Phân Trang Huân Chương Lao Động Hạng Nhì
+    public static function layTongSoDanhGiahangnhi($conn) {
+        $sql = "SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('Huan_Chuong_Lao_Dong_Hang_Nhi')";
+        $result = $conn->query($sql);
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+
+    public static function layDanhGiahangnhi($conn, $startFrom, $recordsPerPage) {
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('Huan_Chuong_Lao_Dong_Hang_Nhi') LIMIT $startFrom, $recordsPerPage";
+        $result = $conn->query($sql);
+
+        $danhgiattList = array();
+
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
+                $danhgiatt_obj = new DanhgiaTT();
+                $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
+                $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
+                $danhgiatt_obj->SoQD = $row["SoQD"];
+                $danhgiatt_obj->Manam = $nam_obj->Nam;
+                $danhgiatt_obj->DanhGia = $row["DanhGia"];
+
+
+                $danhgiattList[] = $danhgiatt_obj;
+            }
+        }
+        return $danhgiattList;
+    }
 
     public static function layDanhSachTheonam($conn, $Manam) {
         $sql = "SELECT * FROM danhgiatt d INNER JOIN nam n ON d.Manam = n.Manam WHERE n.Manam = ?";
@@ -596,18 +978,6 @@ class DanhgiaTT {
     }
 }
 
-// ob_start();
-
-// if (isset($_GET['Manam'])) {
-//     $Manam = $_GET['Manam'];
-//     error_log("Received Manam: " . htmlspecialchars($Manam)); // Log giá trị Manam để kiểm tra
-//     DanhgiaTT::laydanhgiaTheoNam($conn, $Manam);
-// } else {
-//     error_log("No Manam parameter found in the request");
-// }
-
-// // Đảm bảo buffer output được đóng
-// ob_end_clean();
 
 ob_start();
 include('./connectdb.php');

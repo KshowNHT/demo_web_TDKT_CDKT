@@ -2,6 +2,30 @@
 include('./sangkien.php');
 $data = sangkien::layDanhSach($conn);
 
+
+// Số bản ghi trên mỗi trang
+$recordsPerPage = 10;
+
+// Xác định trang hiện tại
+$currentPage = isset($_GET['page']) ? (int)$_GET['page'] : 1;
+if ($currentPage < 1) {
+    $currentPage = 1;
+}
+
+// Tính vị trí bắt đầu lấy dữ liệu
+$startFrom = ($currentPage - 1) * $recordsPerPage;
+
+// Lấy tổng số bản ghi
+$totalRecords = sangkien::layTongSosangkien($conn);
+
+// Tính tổng số trang
+$totalPages = ceil($totalRecords / $recordsPerPage);
+
+// Lấy dữ liệu cho trang hiện tại
+$data = sangkien::laysangkienPhanTrang($conn, $startFrom, $recordsPerPage);
+
+
+$Manam = isset($_GET['Manam']) ? $_GET['Manam'] : null;
 $options = Nam::layDanhSach($conn);
 if (!$options) {
     $options = [];
@@ -16,6 +40,33 @@ if (isset($_GET["message"])) {
 <?php
 }
 ?>
+
+<style>
+    .pagination {
+    background-color: transparent; 
+    border: none;
+    box-shadow: none;
+}
+
+.page-item {
+    background-color: transparent; 
+    border: none;
+    box-shadow: none;
+}
+
+.page-link {
+    background-color: transparent; 
+    border: none;
+    box-shadow: none;
+    color: #007bff; /* Màu mặc định của liên kết */
+}
+
+.page-item.active .page-link {
+    background-color: #007bff; /* Màu xanh đậm cho trang hiện tại */
+    border-color: #007bff;
+}
+
+</style>
 
 <div class="combobox">
     <label for="options">Chọn một tùy chọn:</label>
@@ -44,10 +95,11 @@ if (isset($_GET["message"])) {
         foreach ($data as $item) {
         ?>
             <tr class="sangkien-row">
-                <td scope="row"><?php echo htmlspecialchars($item->MaCN); ?></td>
-                <td><?php echo htmlspecialchars($item->TenSK); ?></td>
-                <td><?php echo htmlspecialchars($item->nam); ?></td>
-                <td><?php echo htmlspecialchars($item->CapSK); ?></td>
+            <td scope="row"><?php echo $item->MaCN !== null ? htmlspecialchars($item->MaCN) : ''; ?></td>
+            <td><?php echo $item->TenSK !== null ? htmlspecialchars($item->TenSK) : ''; ?></td>
+            <td><?php echo $item->Manam !== null ? htmlspecialchars($item->Manam) : ''; ?></td>
+            <td><?php echo $item->CapSK !== null ? htmlspecialchars($item->CapSK) : ''; ?></td>
+
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){ ?> 
                 <td>
                     <select name="action" onchange="handleActionChange(this, '<?php echo $item->MaSK; ?>')">
@@ -64,6 +116,33 @@ if (isset($_GET["message"])) {
         ?>
     </tbody>
 </table>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <?php if ($currentPage > 1): ?>
+            <li class="page-item">
+                <a class="page-link" href="?p=sangkien&page=<?php echo $currentPage - 1; ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <li class="page-item <?php echo $i == $currentPage ? 'active' : ''; ?>">
+                <a class="page-link" href="?p=sangkien&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+            </li>
+        <?php endfor; ?>
+
+        <?php if ($currentPage < $totalPages): ?>
+            <li class="page-item">
+                <a class="page-link" href="?p=sangkien&page=<?php echo $currentPage + 1; ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</nav>
+
 
 <script>
    async function fetchAndDisplaysangkien(Manam) {

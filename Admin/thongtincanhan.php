@@ -111,6 +111,24 @@
             header("Location: $baseUrl?p=thongtincanhan&message=" . urlencode($message));
             exit();
         }
+
+        public static function layTongSothongtincanhan($conn) {
+            $sql = "SELECT COUNT(*) FROM thongtincanhan";
+            $result = $conn->query($sql);
+            $row = $result->fetch_row();
+            return $row[0];
+        }
+    
+        public static function laythongtincanhanPhanTrang($conn, $startFrom, $recordsPerPage) {
+            $sql = "SELECT * FROM thongtincanhan LIMIT $startFrom, $recordsPerPage";
+            $result = $conn->query($sql);
+            $data = [];
+            while ($row = $result->fetch_object()) {
+                $data[] = $row;
+            }
+            return $data;
+        }
+
     }
 
 ?>

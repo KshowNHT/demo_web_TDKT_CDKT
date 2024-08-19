@@ -8,21 +8,20 @@ class sangkien {
     public $TenSK;
     public $QD;
     public $CapSK;
-    public $nam;
 
     public static function layDanhSach($conn) {
         $Dssangkien = array();
-        $sql = "SELECT * FROM sangkien d INNER JOIN nam n ON d.Manam = n.Manam";
+        $sql = "SELECT * FROM sangkien ";
         $result = $conn->query($sql);
 
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
                 $sangkien_obj = new sangkien();
                 $sangkien_obj->MaSK = $row["MaSK"];
                 $sangkien_obj->MaCN = $thongtincanhan_obj->HoTen;
-                $sangkien_obj->Manam = $row["Manam"];
-                $sangkien_obj->nam = $row["Nam"];
+                $sangkien_obj->Manam = $nam_obj->Nam;
                 $sangkien_obj->TenSK = $row["TenSK"];
                 $sangkien_obj->QD = $row["QD"];
                 $sangkien_obj->CapSK = $row["CapSK"];
@@ -141,6 +140,40 @@ class sangkien {
         header("Location: $baseUrl?p=sangkien&message=" . urlencode($message));
         exit();
     }
+
+
+
+    public static function layTongSosangkien($conn) {
+        $sql = "SELECT COUNT(*) FROM sangkien";
+        $result = $conn->query($sql);
+        $row = $result->fetch_row();
+        return $row[0];
+    }
+
+    public static function laysangkienPhanTrang($conn, $startFrom, $recordsPerPage) {
+        $Dssangkien = array();
+        $sql = "SELECT * FROM sangkien LIMIT $startFrom, $recordsPerPage";
+        $result = $conn->query($sql);
+    
+        if ($result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn, $row["MaCN"]);
+                $nam_obj = Nam::laynam($conn, $row["Manam"]);
+                $sangkien_obj = new sangkien();
+                $sangkien_obj->MaSK = $row["MaSK"];
+                $sangkien_obj->MaCN = $thongtincanhan_obj->HoTen;
+                $sangkien_obj->Manam = $nam_obj->Nam;
+                $sangkien_obj->TenSK = $row["TenSK"];
+                $sangkien_obj->QD = $row["QD"];
+                $sangkien_obj->CapSK = $row["CapSK"];
+                $Dssangkien[] = $sangkien_obj;
+            }
+        }
+    
+        return $Dssangkien;
+    }
+
+
 
     // Lấy dữ liệu sáng kiến theo năm và trả về JSON
     // public static function laysangkienTheoMa($conn, $MaKhoa) {
