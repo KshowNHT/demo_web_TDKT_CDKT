@@ -997,5 +997,4 @@ if (isset($_GET['Manam'])) {
     echo json_encode([]);
 }
 ob_end_clean();
-
 ?>

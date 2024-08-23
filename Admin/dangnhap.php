@@ -19,6 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if ($result->num_rows > 0) {
             $row = $result->fetch_assoc();
             if (password_verify($MatKhau, $row['MatKhau'])) {
+                $_SESSION['MaTk'] = $row['MaTk'];
                 $_SESSION['TenTk'] = $TenTk;
                 $_SESSION['VaiTro'] = $row['VaiTro'];
                 header("Location: ../Admin/index.php");

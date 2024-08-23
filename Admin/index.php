@@ -5,6 +5,9 @@
         'trangchinh' => array('Trang Chủ', 'trangchinh.php'),
         'dangnhap' => array('Đăng Nhập', 'dangnhap.php'),
         'dangki' => array('Đăng Kí Tài Khoản', 'dangkiview.php'),
+        'taikhoan' => array('Quản lý Tài Khoản', 'taikhoanview.php'),
+        'taikhoanxoa' => array('Xóa Tài Khoản', 'taikhoanxoa.php'),
+        'taikhoansua' => array('Đổi Mật Khẩu', 'doimatkhau.php'),
         'dangxuat' => array('Đăng Xuất', 'dangxuat.php'),
         // Thông Tin Cá Nhân
         'thongtincanhan' => array('Quản Lý Thông Tin ', 'thongtincanhanview.php'),

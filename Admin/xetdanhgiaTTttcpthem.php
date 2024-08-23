@@ -1,24 +1,30 @@
 <?php
 include('./danhgiaTT.php');
 
-if (isset($_POST["SoQD"])) {
-    $data = new DanhgiaTT();
-    $data->MaKhoa = $_POST["MaKhoa"];
-    $data->SoQD = $_POST["SoQD"];
-    $data->Manam = $_POST["Lnam"];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Kiểm tra các trường bắt buộc có được điền đầy đủ hay không
+    if (empty($_POST["SoQD"]) || empty($_POST["Lnam"]) || empty($_POST["MaKhoa"])) {
+        $error_message = "Vui lòng điền đầy đủ thông tin bắt buộc.";
+    } else {
+        // Tạo đối tượng DanhgiaTT và xử lý dữ liệu
+        $data = new DanhgiaTT();
+        $data->MaKhoa = $_POST["MaKhoa"];
+        $data->SoQD = $_POST["SoQD"];
+        $data->Manam = $_POST["Lnam"];
 
-    // Tạo mảng để chứa các tiêu chí đánh giá từ form
-    $criteriaData = [
-        'duoc_ubnd_tang_bang_khen' => isset($_POST['duoc_ubnd_tang_bang_khen']),
-        'co_5_nam_hoan_thanh_xuat_sac' => isset($_POST['co_5_nam_hoan_thanh_xuat_sac']),
-        'dat_tap_the_lao_dong_xuat_sac' => isset($_POST['dat_tap_the_lao_dong_xuat_sac']),
-        'co_1_lan_duoc_tang_co_thi_dua' => isset($_POST['co_1_lan_duoc_tang_co_thi_dua']),
-        'dong_y' => isset($_POST['dong_y'])
-    ];
+        $criteriaData = [
+            'duoc_ubnd_tang_bang_khen' => isset($_POST['duoc_ubnd_tang_bang_khen']),
+            'co_5_nam_hoan_thanh_xuat_sac' => isset($_POST['co_5_nam_hoan_thanh_xuat_sac']),
+            'dat_tap_the_lao_dong_xuat_sac' => isset($_POST['dat_tap_the_lao_dong_xuat_sac']),
+            'co_1_lan_duoc_tang_co_thi_dua' => isset($_POST['co_1_lan_duoc_tang_co_thi_dua']),
+            'dong_y' => isset($_POST['dong_y'])
+        ];
 
-    // Truyền mảng tiêu chí đánh giá vào phương thức Themdanhgiatt
-    $data->Themxetdanhgiattcp($conn, $baseUrl, $criteriaData);
-} 
+        $data->Themxetdanhgiattcp($conn, $baseUrl, $criteriaData);
+        $success_message = "Cập nhật đánh giá thành công!";
+    }
+}
+
 $Lnam = Nam::layDanhSach($conn);
 $datakhoa = Khoa::layDanhSach($conn);
 ?>
@@ -128,6 +134,17 @@ $datakhoa = Khoa::layDanhSach($conn);
 <div class="container">
 <form method="post">
     <h2>Đánh Giá Thành Tích</h2>
+    <?php if (!empty($error_message)) { ?>
+        <div class="alert alert-danger">
+            <?php echo $error_message; ?>
+        </div>
+    <?php } ?>
+
+    <?php if (!empty($success_message)) { ?>
+        <div class="alert alert-success">
+            <?php echo $success_message; ?>
+        </div>
+    <?php } ?>
     <div class="form-group">
                 <label for="SoQD">Số Quyết Định:</label>
                 <input type="text" class="form-control" id="SoQD" name="SoQD">
