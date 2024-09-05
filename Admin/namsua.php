@@ -14,11 +14,11 @@
 
 <form method="post">
     <div class="form-group">
-        <label for="Manam">Mã Khoa: </label>
+        <label for="Manam">Mã Năm: </label>
         <input type="text" class="form-control" id="Manam" name="Manam" value ='<?php echo $data->Manam ;?>'readonly>
     </div>
     <div class="form-group">
-        <label for="Nam">Tên Khoa: </label>
+        <label for="Nam">Năm: </label>
         <input type="text" class="form-control" id="Nam" name="Nam" value ='<?php echo $data->Nam ;?>'>
     </div>
     <div class="form-group">

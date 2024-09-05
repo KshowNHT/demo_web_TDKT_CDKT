@@ -6,6 +6,8 @@ if (isset($_POST["SoQD"])) {
     $data->MaKhoa = $_POST["MaKhoa"];
     $data->SoQD = $_POST["SoQD"];
     $data->Manam = $_POST["Lnam"];
+    $data->Ngay = $_POST["Ngay"];
+    $data->DonVi = $_POST["Ldonvi"];
 
     // Tạo mảng để chứa các tiêu chí đánh giá từ form
     $criteriaData = [
@@ -43,6 +45,15 @@ $datakhoa = Khoa::layDanhSach($conn);
         display: block;
     }
 
+    .form-group.row.flex-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .form-group.row.flex-container .col {
+        flex: 1;
+    }
     .form-control {
         width: 100%;
         padding: 8px;
@@ -93,11 +104,6 @@ $datakhoa = Khoa::layDanhSach($conn);
     <form method="post">
 
         <div class="form-group">
-            <label for="SoQD">Số Quyết Định:</label>
-            <input type="text" class="form-control" id="SoQD" name="SoQD">
-        </div>
-
-        <div class="form-group">
             <label for="Lnam">Năm</label>
             <select class="form-control" name="Lnam" id="Lnam">
                 <option value="">Chọn Năm</option>
@@ -105,6 +111,26 @@ $datakhoa = Khoa::layDanhSach($conn);
                     <option value="<?php echo $L->Manam; ?>"><?php echo $L->Nam; ?></option>
                 <?php } ?>
             </select>
+        </div>
+        
+        <div class="form-group row flex-container">
+            <div class="col">
+                <label for="SoQD">Số Quyết Định:</label>
+                <input type="text" class="form-control" id="SoQD" name="SoQD">
+            </div>
+            <div class="col">
+                <label for="Ngay">Ngày:</label>
+                <input type="date" class="form-control" id="Ngay" name="Ngay">
+            </div>
+            <div class="col">
+                <label for="Ldonvi">Đơn Vị:</label>
+                <select class="form-control" name="Ldonvi" id="Ldonvi">
+                    <option value="">Chọn Đơn Vị</option>
+                    <?php foreach($datakhoa as $L) { ?>
+                        <option value="<?php echo $L->TenKhoa; ?>"><?php echo $L->TenKhoa; ?></option>
+                    <?php } ?>
+                </select>
+            </div>
         </div>
 
         <div class="form-group flex-container">

@@ -3,7 +3,7 @@ include('./danhgiaTT.php');
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Kiểm tra các trường bắt buộc có được điền đầy đủ hay không
-    if (empty($_POST["SoQD"]) || empty($_POST["Lnam"]) || empty($_POST["MaKhoa"])) {
+    if (empty($_POST["SoQD"]) || empty($_POST["Lnam"]) || empty($_POST["MaKhoa"])|| empty($_POST["Ngay"])||empty($_POST["Ldonvi"])) {
         $error_message = "Vui lòng điền đầy đủ thông tin bắt buộc.";
     } else {
         // Tạo đối tượng DanhgiaTT và xử lý dữ liệu
@@ -11,6 +11,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $data->MaKhoa = $_POST["MaKhoa"];
         $data->SoQD = $_POST["SoQD"];
         $data->Manam = $_POST["Lnam"];
+        $data->Ngay = $_POST["Ngay"];
+        $data->DonVi = $_POST["Ldonvi"];
 
         $criteriaData = [
             'duoc_ubnd_tang_bang_khen' => isset($_POST['duoc_ubnd_tang_bang_khen']),
@@ -31,26 +33,13 @@ $datakhoa = Khoa::layDanhSach($conn);
 
 
 <style>
-    body {
-        font-family: 'Roboto', sans-serif;
-        background-color: #f8f9fa;
-        color: #343a40;
-    }
-
-    .container {
-        max-width: 800px;
-        margin: 40px auto;
-        padding: 30px;
-        background-color: #fff;
-        border-radius: 12px;
-        box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
-    }
-
-    h2 {
-        text-align: center;
-        margin-bottom: 30px;
-        color: #007bff;
-        font-weight: 700;
+.container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f9f9f9;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     }
 
     .form-group {
@@ -58,35 +47,30 @@ $datakhoa = Khoa::layDanhSach($conn);
     }
 
     .form-group label {
-    font-weight: bold;
-    display: block;
-    margin-bottom: 8px;
-    font-size: 16px; /* Đảm bảo kích thước chữ đủ lớn */
-    line-height: 1.5; /* Đảm bảo chiều cao dòng đủ để chữ không bị mất */
+        font-weight: bold;
+        margin-bottom: 5px;
+        display: block;
     }
 
+    .form-group.row.flex-container {
+        display: flex;
+        justify-content: space-between;
+        gap: 20px;
+    }
+
+    .form-group.row.flex-container .col {
+        flex: 1;
+    }
     .form-control {
-    width: 100%;
-    padding: 10px;
-    box-sizing: border-box;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 16px;
-    line-height: 1.5;
-    }
-
-    select.form-control {
-    padding: 8px; /* Điều chỉnh padding để không bị mất chữ */
-    line-height: 1.5;
-}
-    .form-control:focus {
-        border-color: #80bdff;
-        outline: 0;
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        width: 100%;
+        padding: 8px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
     }
 
     .form-group input[type="checkbox"] {
-        margin-right: 12px;
+        margin-right: 10px;
     }
 
     .form-group.flex-container {
@@ -99,35 +83,27 @@ $datakhoa = Khoa::layDanhSach($conn);
         flex-basis: 48%;
         display: flex;
         align-items: center;
-        font-size: 15px;
     }
 
     .form-check {
         display: flex;
         flex-direction: column;
-        margin-bottom: 25px;
+    }
+
+    .form-check label {
+        margin-bottom: 10px;
     }
 
     .form-control[type="submit"] {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    font-size: 18px; /* Đảm bảo kích thước chữ đủ lớn */
-    line-height: 1.5; /* Đảm bảo chiều cao dòng để chữ không bị mất */
-    padding: 12px;
-    margin-top: 20px;
-    text-align: center; /* Đảm bảo chữ nằm ở giữa nút */
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+        text-align: center;
     }
 
     .form-control[type="submit"]:hover {
-        background-color: gray;
-    }
-
-
-    #khoa-list h5 {
-        color: #dc3545;
-        margin-top: 25px;
+        background-color: #45a049;
     }
 </style>
 
@@ -145,10 +121,6 @@ $datakhoa = Khoa::layDanhSach($conn);
             <?php echo $success_message; ?>
         </div>
     <?php } ?>
-    <div class="form-group">
-                <label for="SoQD">Số Quyết Định:</label>
-                <input type="text" class="form-control" id="SoQD" name="SoQD">
-    </div>
 
     <div class="form-group">
         <label for="Lnam">Năm</label>
@@ -159,6 +131,26 @@ $datakhoa = Khoa::layDanhSach($conn);
             <?php } ?>
         </select>
     </div>
+            
+    <div class="form-group row flex-container">
+            <div class="col">
+                <label for="SoQD">Số Quyết Định:</label>
+                <input type="text" class="form-control" id="SoQD" name="SoQD">
+            </div>
+            <div class="col">
+                <label for="Ngay">Ngày:</label>
+                <input type="date" class="form-control" id="Ngay" name="Ngay">
+            </div>
+            <div class="col">
+                <label for="Ldonvi">Đơn Vị:</label>
+                <select class="form-control" name="Ldonvi" id="Ldonvi">
+                    <option value="">Chọn Đơn Vị</option>
+                    <?php foreach($datakhoa as $L) { ?>
+                        <option value="<?php echo $L->TenKhoa; ?>"><?php echo $L->TenKhoa; ?></option>
+                    <?php } ?>
+                </select>
+            </div>
+        </div>
 
     <div class="form-group flex-container">
         <label for="duoc_ubnd_tang_bang_khen">Được UBND tặng bằng khen:</label>

@@ -152,7 +152,7 @@ class sangkien {
 
     public static function laysangkienPhanTrang($conn, $startFrom, $recordsPerPage) {
         $Dssangkien = array();
-        $sql = "SELECT * FROM sangkien LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM sangkien  ORDER by Manam ASC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
     
         if ($result->num_rows > 0) {

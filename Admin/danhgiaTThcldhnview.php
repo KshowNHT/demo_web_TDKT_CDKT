@@ -45,13 +45,13 @@ if (isset($_GET["message"])) {
 ?>
 
 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
-    <a class="btn btn-primary btn-lg" href="<?php echo " $baseUrl?p=danhgiaTThcldhnthem"; ?>">Xét Đánh Giá Tập Thể</a>
+    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=danhgiaTThcldhnthem"; ?>">Xét Đánh Giá Tập Thể</a>
 <?php
 }
 ?>
 
 <style>
-    .pagination {
+     .pagination {
     background-color: transparent; 
     border: none;
     box-shadow: none;
@@ -75,6 +75,32 @@ if (isset($_GET["message"])) {
     border-color: #007bff;
 }
 
+.btn-custom {
+    background-color: #6fc3d0; /* Màu nền xanh nhạt */
+    border: none; /* Loại bỏ viền */
+    color: white; /* Màu chữ trắng */
+    padding: 9px 10px; /* Đệm trong nút (giảm kích thước) */
+    font-size: 12px; /* Cỡ chữ nhỏ hơn */
+    margin: 2px; /* Khoảng cách giữa các nút */
+    cursor: pointer; /* Đổi con trỏ khi hover */
+    border-radius: 4px; /* Bo tròn góc nhẹ */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Hiệu ứng chuyển màu và phóng to khi hover */
+}
+
+.btn-custom:hover {
+    background-color: #5a9eac; /* Màu nền khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+.btn-custom-primary {
+    background-color: #6fc3d0; /* Màu xanh nhạt */
+}
+
+.btn-custom-danger {
+    background-color: #d9534f; /* Màu đỏ nhẹ */
+}
+
+
 </style>
 
 <div class="combobox">
@@ -97,6 +123,8 @@ if (isset($_GET["message"])) {
             <th>Số Quyết Định</th>
             <th>Năm</th>
             <th>Đánh Giá</th>
+            <th>Ngày</th>
+            <th>Đơn Vị</th>
         </tr>
     </thead>
     <tbody id="danhgiahn-table-body">
@@ -109,13 +137,12 @@ if (isset($_GET["message"])) {
                 <td scope="row"><?php echo htmlspecialchars($item->MaKhoa) ; ?></td>
                 <td><?php echo htmlspecialchars($item->SoQD ?? "Cần Thêm Số Quyết Đinh Cho $item->MaKhoa");?></td>
                 <td><?php echo htmlspecialchars($item->Manam ?? "Cần Thêm Năm Cho $item->MaKhoa"); ?></td>
-                <td><?php echo htmlspecialchars($danhGia);?></td> <!-- Hiển thị tên loại khen thưởng -->
+                <td><?php echo htmlspecialchars($danhGia);?></td>
+                <td><?php echo date_format(date_create($item->Ngay), "d/m/Y");?></td> 
+                <td><?php echo htmlspecialchars($item->DonVi); ?></td> 
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
                 <td>
-                    <select name="action" onchange="handleActionChange(this, '<?php echo $item->MaDGTT; ?>')">
-                        <option value="">Chọn hành động</option>
-                        <option value="xetdanhgiaTTsua">Sửa Đánh Giá</option>
-                    </select>
+                    <button class="btn btn-custom btn-custom-primary" onclick="handleAction('xetdanhgiaTTsua', '<?php echo $item->MaDGTT; ?>')">Sửa Đánh Giá</button>
                 </td>
                 <?php
                }
@@ -197,24 +224,26 @@ if (isset($_GET["message"])) {
                 tdDanhGia.textContent = danhGia;
                 tr.appendChild(tdDanhGia);
 
+                const dateObj = new Date(item.Ngay);
+                const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth() + 1).toString().padStart(2, '0')}/${dateObj.getFullYear()}`;
+
+                const tdNgay = document.createElement('td');
+                tdNgay.textContent = formattedDate;
+                tr.appendChild(tdNgay);
+
+                const tdDonVi = document.createElement('td');
+                tdDonVi.textContent = item.DonVi;
+                tr.appendChild(tdDonVi);
+
                 if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
                     const tdAction = document.createElement('td');
-                    const select = document.createElement('select');
-                    select.name = 'action';
-                    select.onchange = () => handleActionChange(select, item.MaDGTT);
 
-                    const optionDefault = document.createElement('option');
-                    optionDefault.value = '';
-                    optionDefault.textContent = 'Chọn hành động';
-                    select.appendChild(optionDefault);
+                    const buttonSua = document.createElement('button');
+                    buttonSua.className = 'btn btn-custom btn-custom-primary';
+                    buttonSua.textContent = 'Sửa Đánh Giá';
+                    buttonSua.onclick = () => handleAction('xetdanhgiaTTsua', item.MaDGTT);
+                    tdAction.appendChild(buttonSua);
 
-                    const optionSua = document.createElement('option');
-                    optionSua.value = 'xetdanhgiaTTsua';
-                    optionSua.textContent = 'Sửa Đánh Giá';
-                    select.appendChild(optionSua);
-
-
-                    tdAction.appendChild(select);
                     tr.appendChild(tdAction);
                 }
 
@@ -229,11 +258,10 @@ if (isset($_GET["message"])) {
 
 
 
-    function handleActionChange(select, id) {
-        var selectedAction = select.value;
-        if (selectedAction) {
-            var baseUrl = "<?php echo $baseUrl; ?>";
-            window.location.href = baseUrl + "?p=" + selectedAction + "&id=" + id;
+function handleAction(action, id) {
+            if (action) {
+                var baseUrl = "<?php echo $baseUrl; ?>";
+                window.location.href = baseUrl + "?p=" + action + "&id=" + id;
+            }
         }
-    }
 </script>

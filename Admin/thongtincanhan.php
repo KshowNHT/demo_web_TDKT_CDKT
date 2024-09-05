@@ -24,12 +24,12 @@
             while($row = $result->fetch_assoc()) {
                 // Thông Tin Cá Nhân vào danh sách
                 // Tạo đối tượng Khoa và đưa vào mảng
-                $khoa_obj = Khoa::layKhoa($conn,$row["MaKhoa"]);
+                $Khoa = Khoa::layKhoa($conn,$row["MaKhoa"]);
                 $thongtincanhan_obj = new thongtincanhan();
                 $thongtincanhan_obj->MaCN = $row["MaCN"];
                 $thongtincanhan_obj->HoTen = $row["HoTen"];
                 $thongtincanhan_obj->NgaySinh = $row["NgaySinh"];
-                $thongtincanhan_obj->MaKhoa = $khoa_obj->TenKhoa;
+                $thongtincanhan_obj->MaKhoa = $Khoa->TenKhoa;
                 $thongtincanhan_obj->ChuVu = $row["ChuVu"];
                 $thongtincanhanList[] = $thongtincanhan_obj;
             }
@@ -122,12 +122,57 @@
         public static function laythongtincanhanPhanTrang($conn, $startFrom, $recordsPerPage) {
             $sql = "SELECT * FROM thongtincanhan LIMIT $startFrom, $recordsPerPage";
             $result = $conn->query($sql);
+
+            $thongtincanhanList = array();
+        
+            // Kiểm tra số lượng Đánh Giá Tập Thể trả về
+            if ($result->num_rows > 0) {
+            
+            while($row = $result->fetch_assoc()) {
+                // Thông Tin Cá Nhân vào danh sách
+                // Tạo đối tượng Khoa và đưa vào mảng
+                $Khoa = Khoa::layKhoa($conn,$row["MaKhoa"]);
+                $thongtincanhan_obj = new thongtincanhan();
+                $thongtincanhan_obj->MaCN = $row["MaCN"];
+                $thongtincanhan_obj->HoTen = $row["HoTen"];
+                $thongtincanhan_obj->NgaySinh = $row["NgaySinh"];
+                $thongtincanhan_obj->MaKhoa = $Khoa->TenKhoa;
+                $thongtincanhan_obj->ChuVu = $row["ChuVu"];
+                $thongtincanhanList[] = $thongtincanhan_obj;
+            }
+            }
+            return $thongtincanhanList;
+        }
+
+        //lấy Thông Tin Cá Nhân Theo Từng Khoa 
+        public static function layDanhSachthongtintheokhoa($conn, $khoa) {
+            $sql = "SELECT t.*, k.TenKhoa 
+                    FROM thongtincanhan t 
+                    INNER JOIN khoa k ON t.MaKhoa = k.MaKhoa 
+                    WHERE k.MaKhoa = ?
+                    AND t.MaCN NOT IN (
+                        SELECT d.MaCN 
+                        FROM danhgiacn d 
+                        WHERE d.MaKhoa = ? 
+                        AND d.DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')
+                    )";
+            $stmt = $conn->prepare($sql);
+            
+            $stmt->bind_param("ii", $khoa, $khoa);
+            
+            $stmt->execute();
+            $result = $stmt->get_result();
             $data = [];
+            
             while ($row = $result->fetch_object()) {
                 $data[] = $row;
             }
+            
             return $data;
         }
+        
+        
+        
 
     }
 

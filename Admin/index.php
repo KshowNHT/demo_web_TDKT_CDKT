@@ -10,12 +10,12 @@
         'taikhoansua' => array('Đổi Mật Khẩu', 'doimatkhau.php'),
         'dangxuat' => array('Đăng Xuất', 'dangxuat.php'),
         // Thông Tin Cá Nhân
-        'thongtincanhan' => array('Quản Lý Thông Tin ', 'thongtincanhanview.php'),
+        'thongtincanhan' => array('Quản Lý Thông Tin Cá Nhân', 'thongtincanhanview.php'),
         'thongtincanhanth' => array('Thêm Thông Tin', 'thongtincanhanthem.php'),
         'thongtincanhansua' => array('Sửa Thông Tin', 'thongtincanhansua.php'),
         'thongtincanhanxoa' => array('Xóa Thông Tin', 'thongtincanhanxoa.php'),
         //Khoa
-        'Khoa' => array('Quản lý Khoa', 'khoaview.php'),
+        'Khoa' => array('Quản lý Đơn Vị', 'khoaview.php'),
         'Khoath' => array('Thêm Khoa', 'Khoathem.php'),
         'Khoasua' => array('Sửa Khoa', 'Khoasua.php'),
         'Khoaxoa' => array('Xóa Khoa', 'Khoaxoa.php'),

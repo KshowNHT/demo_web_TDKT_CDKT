@@ -30,7 +30,7 @@ session_start();
         <li><a href="<?php echo "$baseUrl?p=taikhoan"; ?>"><?php echo $pages['taikhoan'][0]; ?> <i class="fa-solid fa-users"></i></a></li>
         
         <ul>
-            <li>Khen Thưởng
+            <li> Quản Lý Khen Thưởng
                 <ul>
                     <li>Cá Nhân
                         <ul>

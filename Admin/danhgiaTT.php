@@ -9,6 +9,8 @@ class DanhgiaTT {
     public $Manam;
     public $nam;
     public $DanhGia;
+    public $Ngay;
+    public $DonVi;
     
     // Tiêu chí cho các loại khen thưởng
     private static $awardsCriteria = [
@@ -90,7 +92,7 @@ class DanhgiaTT {
 
     // Lấy danh sách Đánh Giá Tập Thể
     public static function layDanhSach($conn) {
-        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')";
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá') ORDER by Manam ASC";
         $result = $conn->query($sql);
 
         $danhgiattList = array();
@@ -105,6 +107,8 @@ class DanhgiaTT {
                 $danhgiatt_obj->SoQD = $row["SoQD"];
                 $danhgiatt_obj->Manam = $nam_obj->Nam;
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                $danhgiatt_obj->Ngay = $row["Ngay"];
+                $danhgiatt_obj->DonVi = $row["DonVi"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -134,6 +138,8 @@ class DanhgiaTT {
                     $danhgiatt_obj->SoQD = $row["SoQD"];
                     $danhgiatt_obj->Manam = $nam_obj->Nam;
                     $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                    $danhgiatt_obj->Ngay = $row["Ngay"];
+                    $danhgiatt_obj->DonVi = $row["DonVi"];
                     $danhgiattList[] = $danhgiatt_obj;
                 }
             }
@@ -181,13 +187,15 @@ class DanhgiaTT {
         $danhgiatt_obj->SoQD = $row["SoQD"];
         $danhgiatt_obj->Manam = Nam::laynam($conn, $row["Manam"]);
         $danhgiatt_obj->DanhGia = $row["DanhGia"];
+        $danhgiatt_obj->Ngay = $row["Ngay"];
+        $danhgiatt_obj->DonVi = $row["DonVi"];
         return $danhgiatt_obj;
     }
 
     // Thêm Đánh Giá Tập Thể Tiên Tiến
     public function Themxetdanhgiatttientien($conn, $baseUrl, $data) {
         $message = "Lỗi khi thêm thể loại";
-
+    
         // Kiểm tra và đánh giá tiêu chí
         foreach (self::$awardsCriteria as $awardType => $criteria) {
             try {
@@ -197,63 +205,28 @@ class DanhgiaTT {
                 }
             } catch (Exception $e) {
                 $message = "Lỗi: " . $e->getMessage();
-                header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
-                exit();
+                $this->redirectWithMessage($baseUrl, "danhgiaTTtientienview", $message);
             }
         }
     
         // Kiểm tra nếu không có đánh giá nào được gán
         if (empty($this->DanhGia)) {
             $message = "Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
-            header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
-            exit();
+            $this->redirectWithMessage($baseUrl, "danhgiaTTtientienview", $message);
         }
     
-  
+        // Thực hiện chèn dữ liệu vào cơ sở dữ liệu
+        $this->insertDanhGia($conn, $message);
     
-
-        // tạo câu truy vấn để thêm đối tượng thể loại mới vào cơ sở dữ liệu
-        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-    
-        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
-        if (is_array($this->MaKhoa)) {
-            $successCount = 0;
-            foreach ($this->MaKhoa as $khoa) {
-                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
-                if ($stmt->execute()) {
-                    if ($stmt->affected_rows > 0) {
-                        $successCount++;
-                    }
-                }
-            }
-            if ($successCount > 0) {
-                $message = "Đánh Giá thành công cho $successCount khoa";
-            } else {
-                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-            }
-        } else {
-            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
-            if ($stmt->execute()) {
-                if ($stmt->affected_rows > 0) {
-                    $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
-                } else {
-                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-                }
-            } else {
-                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
-            }
-        }
-         // Chuyển hướng trang và truyền thông báo qua URL
-         header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
-         exit();
+        // Chuyển hướng trang và truyền thông báo qua URL
+        $this->redirectWithMessage($baseUrl, "danhgiaTTtientienview", $message);
     }
 
 
     // Thêm Đánh Giá Tập Thể XS và Hiệu Trưởng
     public function Themxetdanhgiatttxsvahieutruong($conn, $baseUrl, $data) {
         $message = "Lỗi khi thêm thể loại";
-        // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
+
         foreach (self::$awardsCriteria as $awardType => $criteria) {
             try {
                 if (self::evaluateCriteria($data, $criteria)) {
@@ -262,64 +235,28 @@ class DanhgiaTT {
                 }
             } catch (Exception $e) {
                 $message = "Lỗi: " . $e->getMessage();
-                header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
-                exit();
+                $this->redirectWithMessage($baseUrl, "danhgiaTTtientienview", $message);
             }
         }
-    
+
         if (empty($this->DanhGia)) {
             $message = "Khoa $this->MaKhoa Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
-            header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
-            exit();
+            $this->redirectWithMessage($baseUrl, "danhgiaTTtientienview", $message);
         }
-    
-        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
-       $stmt = $conn->prepare($sql);
-    
-        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
-        if (is_array($this->MaKhoa)) {
-            $successCount = 0;
-            foreach ($this->MaKhoa as $khoa) {
-                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
-                if ($stmt->execute()) {
-                    if ($stmt->affected_rows > 0) {
-                        $successCount++;
-                    }
-                }
-            }
-            if ($successCount > 0) {
-                $message = "Đánh Giá thành công cho $successCount khoa";
-            } else {
-                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-            }
-        } else {
-            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
-            if ($stmt->execute()) {
-                if ($stmt->affected_rows > 0) {
-                    $message = "Đánh Giá là $this->DanhGia thành công";
-                } else {
-                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-                }
-            } else {
-                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
-            }
-        }
-    
+
+        $this->insertDanhGia($conn, $message);
+
         if ($awardType == "TT_LAO_DONG_XS") {
-            header("Location: $baseUrl?p=danhgiaTTxs&message=" . urlencode($message));
+            $this->redirectWithMessage($baseUrl, "danhgiaTTxs", $message);
         } else {
-            header("Location: $baseUrl?p=danhgiaTThieutruong&message=" . urlencode($message));
+            $this->redirectWithMessage($baseUrl, "danhgiaTThieutruong", $message);
         }
-    
-        exit();
     }
-    
 
     // Thêm Đánh Giá Tập Thể UBNDTP
     public function Themxetdanhgiattubndtp($conn, $baseUrl, $data) {
         $message = "Lỗi khi thêm thể loại";
-    
-        // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
+
         foreach (self::$awardsCriteria as $awardType => $criteria) {
             try {
                 if (self::evaluateCriteria($data, $criteria)) {
@@ -328,59 +265,23 @@ class DanhgiaTT {
                 }
             } catch (Exception $e) {
                 $message = "Lỗi: " . $e->getMessage();
-                header("Location: $baseUrl?p=danhgiaTTxs&message=" . urlencode($message));
-                exit();
+                $this->redirectWithMessage($baseUrl, "danhgiaTTxs", $message);
             }
         }
-    
+
         if (empty($this->DanhGia)) {
             $message = "Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
-            header("Location: $baseUrl?p=danhgiaTThieutruong&message=" . urlencode($message));
-            exit();
+            $this->redirectWithMessage($baseUrl, "danhgiaTThieutruong", $message);
         }
-    
-        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-    
-        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
-        if (is_array($this->MaKhoa)) {
-            $successCount = 0;
-            foreach ($this->MaKhoa as $khoa) {
-                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
-                if ($stmt->execute()) {
-                    if ($stmt->affected_rows > 0) {
-                        $successCount++;
-                    }
-                }
-            }
-            if ($successCount > 0) {
-                $message = "Đánh Giá thành công cho $successCount khoa";
-            } else {
-                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-            }
-        } else {
-            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
-            if ($stmt->execute()) {
-                if ($stmt->affected_rows > 0) {
-                    $message = "Đánh Giá là $this->DanhGia thành công";
-                } else {
-                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-                }
-            } else {
-                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
-            }
-        }
-    
-        header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
-        exit();
+
+        $this->insertDanhGia($conn, $message);
+        $this->redirectWithMessage($baseUrl, "danhgiaTThubndtp", $message);
     }
-    
 
     // Thêm Đánh Giá Tập Thể TTCP
     public function Themxetdanhgiattcp($conn, $baseUrl, $data) {
         $message = "Lỗi khi thêm thể loại";
-    
-        // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
+
         foreach (self::$awardsCriteria as $awardType => $criteria) {
             try {
                 if (self::evaluateCriteria($data, $criteria)) {
@@ -389,60 +290,23 @@ class DanhgiaTT {
                 }
             } catch (Exception $e) {
                 $message = "Lỗi: " . $e->getMessage();
-                header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
-                exit();
+                $this->redirectWithMessage($baseUrl, "danhgiaTThubndtp", $message);
             }
         }
-    
+
         if (empty($this->DanhGia)) {
             $message = "Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
-            header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
-            exit();
+            $this->redirectWithMessage($baseUrl, "danhgiaTThubndtp", $message);
         }
-    
 
-            // Sử dụng Prepared Statements
-            $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-    
-        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
-        if (is_array($this->MaKhoa)) {
-            $successCount = 0;
-            foreach ($this->MaKhoa as $khoa) {
-                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
-                if ($stmt->execute()) {
-                    if ($stmt->affected_rows > 0) {
-                        $successCount++;
-                    }
-                }
-            }
-            if ($successCount > 0) {
-                $message = "Đánh Giá thành công cho $successCount khoa";
-            } else {
-                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-            }
-        } else {
-            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
-            if ($stmt->execute()) {
-                if ($stmt->affected_rows > 0) {
-                    $message = "Đánh Giá là $this->DanhGia thành công";
-                } else {
-                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-                }
-            } else {
-                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
-            }
-        }
-    
-        header("Location: $baseUrl?p=danhgiaTTttcpview&message=" . urlencode($message));
-        exit();
+        $this->insertDanhGia($conn, $message);
+        $this->redirectWithMessage($baseUrl, "danhgiaTTttcpview", $message);
     }
 
     // Thêm Đánh Giá Tập Thể Huân chương Lao động hạng Ba
     public function Themxetdanhgiahcldhb($conn, $baseUrl, $data) {
         $message = "Lỗi khi thêm thể loại";
-    
-        // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
+
         foreach (self::$awardsCriteria as $awardType => $criteria) {
             try {
                 if (self::evaluateCriteria($data, $criteria)) {
@@ -451,58 +315,23 @@ class DanhgiaTT {
                 }
             } catch (Exception $e) {
                 $message = "Lỗi: " . $e->getMessage();
-                header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
-                exit();
+                $this->redirectWithMessage($baseUrl, "danhgiaTThubndtp", $message);
             }
         }
-    
+
         if (empty($this->DanhGia)) {
             $message = "Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
-            header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
-            exit();
+            $this->redirectWithMessage($baseUrl, "danhgiaTThubndtp", $message);
         }
-            // Sử dụng Prepared Statements
-            $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-    
-        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
-        if (is_array($this->MaKhoa)) {
-            $successCount = 0;
-            foreach ($this->MaKhoa as $khoa) {
-                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
-                if ($stmt->execute()) {
-                    if ($stmt->affected_rows > 0) {
-                        $successCount++;
-                    }
-                }
-            }
-            if ($successCount > 0) {
-                $message = "Đánh Giá thành công cho $successCount khoa";
-            } else {
-                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-            }
-        } else {
-            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
-            if ($stmt->execute()) {
-                if ($stmt->affected_rows > 0) {
-                    $message = "Đánh Giá là $this->DanhGia thành công";
-                } else {
-                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-                }
-            } else {
-                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
-            }
-        }
-    
-        header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
-        exit();
+
+        $this->insertDanhGia($conn, $message);
+        $this->redirectWithMessage($baseUrl, "danhgiaTThcldhbview", $message);
     }
 
-    // Thêm Đánh Giá Tập Thể Huân_Chương_Lao_Động_Hạng_Nhì
+    // Thêm Đánh Giá Tập Thể Huân chương Lao động hạng Nhì
     public function Themxetdanhgiahcldhn($conn, $baseUrl, $data) {
         $message = "Lỗi khi thêm thể loại";
-    
-        // Kiểm tra từng loại khen thưởng và đánh giá tiêu chí
+
         foreach (self::$awardsCriteria as $awardType => $criteria) {
             try {
                 if (self::evaluateCriteria($data, $criteria)) {
@@ -511,103 +340,64 @@ class DanhgiaTT {
                 }
             } catch (Exception $e) {
                 $message = "Lỗi: " . $e->getMessage();
-                header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
-                exit();
+                $this->redirectWithMessage($baseUrl, "danhgiaTThcldhbview", $message);
             }
         }
-    
+
         if (empty($this->DanhGia)) {
             $message = "Không đủ điều kiện nhận bất kỳ loại khen thưởng nào";
-            header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
-            exit();
+            $this->redirectWithMessage($baseUrl, "danhgiaTThcldhbview", $message);
         }
-    
-            // Sử dụng Prepared Statements
-            $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-    
-        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
+
+        $this->insertDanhGia($conn, $message);
+        $this->redirectWithMessage($baseUrl, "danhgiaTThcldhnview", $message);
+    }
+
+    // Thêm Khoa Vào Xét Đánh Giá
+    public function Themdanhgiatt($conn, $baseUrl) {
+        $message = "Lỗi khi thêm đánh giá";
+
+        $this->insertDanhGia($conn, $message);
+        $this->redirectWithMessage($baseUrl, "danhgiaTT", $message);
+    }
+
+    // Hàm phụ để chèn đánh giá vào cơ sở dữ liệu
+    private function insertDanhGia($conn, &$message) {
+        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia, Ngay, DonVi) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+
         if (is_array($this->MaKhoa)) {
             $successCount = 0;
             foreach ($this->MaKhoa as $khoa) {
-                $stmt->bind_param("ssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
-                if ($stmt->execute()) {
-                    if ($stmt->affected_rows > 0) {
-                        $successCount++;
-                    }
+                $stmt->bind_param("ssssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia, $this->Ngay, $this->DonVi);
+                if ($stmt->execute() && $stmt->affected_rows > 0) {
+                    $successCount++;
                 }
             }
-            if ($successCount > 0) {
-                $message = "Đánh Giá thành công cho $successCount khoa";
+            $message = $successCount > 0 ? "Đánh Giá thành công cho $successCount khoa" : "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+        } else {
+            $stmt->bind_param("ssssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia, $this->Ngay, $this->DonVi);
+            if ($stmt->execute() && $stmt->affected_rows > 0) {
+                $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
             } else {
                 $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
             }
-        } else {
-            $stmt->bind_param("ssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
-            if ($stmt->execute()) {
-                if ($stmt->affected_rows > 0) {
-                    $message = "Đánh Giá là $this->DanhGia thành công";
-                } else {
-                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-                }
-            } else {
-                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
-            }
         }
-    
-        header("Location: $baseUrl?p=danhgiaTThcldhnview&message=" . urlencode($message));
+    }
+
+    // Hàm phụ để chuyển hướng và truyền thông báo qua URL
+    private function redirectWithMessage($baseUrl, $page, $message) {
+        header("Location: $baseUrl?p=$page&message=" . urlencode($message));
         exit();
     }
 
-    //Thêm Khoa Vào Xét Đánh Giá
-    public function Themdanhgiatt($conn, $baseUrl) {
-        // Thông báo cần gửi
-        $message = "Lỗi khi thêm đánh giá";
-    
-        // tạo câu truy vấn để thêm đối tượng đánh giá mới vào cơ sở dữ liệu
-        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia) VALUES (?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
-    
-        // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
-        if (is_array($this->MaKhoa)) {
-            $successCount = 0;
-            foreach ($this->MaKhoa as $khoa) {
-                $stmt->bind_param("siss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia);
-                if ($stmt->execute()) {
-                    if ($stmt->affected_rows > 0) {
-                        $successCount++;
-                    }
-                }
-            }
-            if ($successCount > 0) {
-                $message = "Đánh Giá thành công cho $successCount khoa";
-            } else {
-                $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-            }
-        } else {
-            $stmt->bind_param("siss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia);
-            if ($stmt->execute()) {
-                if ($stmt->affected_rows > 0) {
-                    $message = "Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
-                } else {
-                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
-                }
-            } else {
-                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
-            }
-        }
-    
-        // Chuyển hướng trang và truyền thông báo qua URL
-        header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
-        exit();
-    }
 
     // Cập Nhật Đánh Giá Tập Thể
     public function Suadgtt($conn, $baseUrl) {
         $message = "Lỗi khi Sửa thể loại";
         // tạo câu truy vấn 
-        $stmt = $conn->prepare("UPDATE danhgiatt SET SoQD = ?, Manam = ?, DanhGia = ? WHERE MaDGTT = ?");
-        $stmt->bind_param("siss", $this->SoQD,$this->Manam,$this->DanhGia, $this->MaDGTT);
+        $stmt = $conn->prepare("UPDATE danhgiatt SET SoQD = ?, Manam = ?, DanhGia = ?, Ngay = ?, DonVi = ? WHERE MaDGTT = ?");
+        $stmt->bind_param("sissss", $this->SoQD,$this->Manam,$this->DanhGia, $this->Ngay, $this->DonVi,$this->MaDGTT);
         if ($stmt->execute()) {
             if ($stmt->affected_rows > 0) {
                 $message = "Sửa Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
@@ -690,14 +480,14 @@ class DanhgiaTT {
 
     //Phân Trang Đánh Giá
     public static function layTongSoDanhGia($conn) {
-        $sql = "SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')";
+        $sql = "SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('Hoàn Thành Xuất Sắc ', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')";
         $result = $conn->query($sql);
         $row = $result->fetch_row();
         return $row[0];
     }
 
     public static function layDanhGiaPhanTrang($conn, $startFrom, $recordsPerPage) {
-        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá') LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
 
         $danhgiattList = array();
@@ -712,6 +502,8 @@ class DanhgiaTT {
                 $danhgiatt_obj->SoQD = $row["SoQD"];
                 $danhgiatt_obj->Manam = $nam_obj->Nam;
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                $danhgiatt_obj->Ngay = $row["Ngay"];
+                $danhgiatt_obj->DonVi = $row["DonVi"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -730,7 +522,7 @@ class DanhgiaTT {
     }
 
     public static function layDanhGiaTTPhanTrang($conn, $startFrom, $recordsPerPage) {
-        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('TT_LAO_DONG_TIEN_TIEN') LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('TT_LAO_DONG_TIEN_TIEN') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
 
         $danhgiattList = array();
@@ -745,6 +537,8 @@ class DanhgiaTT {
                 $danhgiatt_obj->SoQD = $row["SoQD"];
                 $danhgiatt_obj->Manam = $nam_obj->Nam;
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                $danhgiatt_obj->Ngay = $row["Ngay"];
+                $danhgiatt_obj->DonVi = $row["DonVi"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -764,7 +558,7 @@ class DanhgiaTT {
     }
 
     public static function layDanhGiaxsPhanTrang($conn, $startFrom, $recordsPerPage) {
-        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('TT_LAO_DONG_XS') LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('TT_LAO_DONG_XS') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
 
         $danhgiattList = array();
@@ -779,6 +573,8 @@ class DanhgiaTT {
                 $danhgiatt_obj->SoQD = $row["SoQD"];
                 $danhgiatt_obj->Manam = $nam_obj->Nam;
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                $danhgiatt_obj->Ngay = $row["Ngay"];
+                $danhgiatt_obj->DonVi = $row["DonVi"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -797,7 +593,7 @@ class DanhgiaTT {
     }
 
     public static function layDanhGiahtPhanTrang($conn, $startFrom, $recordsPerPage) {
-        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('GK_Hieu_Truong') LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('GK_Hieu_Truong') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
 
         $danhgiattList = array();
@@ -812,6 +608,8 @@ class DanhgiaTT {
                 $danhgiatt_obj->SoQD = $row["SoQD"];
                 $danhgiatt_obj->Manam = $nam_obj->Nam;
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                $danhgiatt_obj->Ngay = $row["Ngay"];
+                $danhgiatt_obj->DonVi = $row["DonVi"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -829,7 +627,7 @@ class DanhgiaTT {
     }
 
     public static function layDanhGiaubndtpPhanTrang($conn, $startFrom, $recordsPerPage) {
-        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('BK_UBNDTP') LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('BK_UBNDTP') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
 
         $danhgiattList = array();
@@ -844,6 +642,8 @@ class DanhgiaTT {
                 $danhgiatt_obj->SoQD = $row["SoQD"];
                 $danhgiatt_obj->Manam = $nam_obj->Nam;
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                $danhgiatt_obj->Ngay = $row["Ngay"];
+                $danhgiatt_obj->DonVi = $row["DonVi"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -863,7 +663,7 @@ class DanhgiaTT {
     }
 
     public static function layDanhGiattcp($conn, $startFrom, $recordsPerPage) {
-        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('BK_TTCP') LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('BK_TTCP') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
 
         $danhgiattList = array();
@@ -878,6 +678,8 @@ class DanhgiaTT {
                 $danhgiatt_obj->SoQD = $row["SoQD"];
                 $danhgiatt_obj->Manam = $nam_obj->Nam;
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                $danhgiatt_obj->Ngay = $row["Ngay"];
+                $danhgiatt_obj->DonVi = $row["DonVi"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -896,7 +698,7 @@ class DanhgiaTT {
     }
 
     public static function layDanhGiahangba($conn, $startFrom, $recordsPerPage) {
-        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('Huan_Chuong_Lao_Dong_Hang_Ba') LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('Huan_Chuong_Lao_Dong_Hang_Ba') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
 
         $danhgiattList = array();
@@ -911,6 +713,8 @@ class DanhgiaTT {
                 $danhgiatt_obj->SoQD = $row["SoQD"];
                 $danhgiatt_obj->Manam = $nam_obj->Nam;
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                $danhgiatt_obj->Ngay = $row["Ngay"];
+                $danhgiatt_obj->DonVi = $row["DonVi"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -929,7 +733,7 @@ class DanhgiaTT {
     }
 
     public static function layDanhGiahangnhi($conn, $startFrom, $recordsPerPage) {
-        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('Huan_Chuong_Lao_Dong_Hang_Nhi') LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM danhgiatt WHERE DanhGia IN ('Huan_Chuong_Lao_Dong_Hang_Nhi') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
 
         $danhgiattList = array();
@@ -944,6 +748,8 @@ class DanhgiaTT {
                 $danhgiatt_obj->SoQD = $row["SoQD"];
                 $danhgiatt_obj->Manam = $nam_obj->Nam;
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                $danhgiatt_obj->Ngay = $row["Ngay"];
+                $danhgiatt_obj->DonVi = $row["DonVi"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -951,6 +757,7 @@ class DanhgiaTT {
         }
         return $danhgiattList;
     }
+    
 
     public static function layDanhSachTheonam($conn, $Manam) {
         $sql = "SELECT * FROM danhgiatt d INNER JOIN nam n ON d.Manam = n.Manam WHERE n.Manam = ?";

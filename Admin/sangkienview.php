@@ -66,6 +66,32 @@ if (isset($_GET["message"])) {
     border-color: #007bff;
 }
 
+.btn-custom {
+    background-color: #6fc3d0; /* Màu nền xanh nhạt */
+    border: none; /* Loại bỏ viền */
+    color: white; /* Màu chữ trắng */
+    padding: 9px 10px; /* Đệm trong nút (giảm kích thước) */
+    font-size: 12px; /* Cỡ chữ nhỏ hơn */
+    margin: 2px; /* Khoảng cách giữa các nút */
+    cursor: pointer; /* Đổi con trỏ khi hover */
+    border-radius: 4px; /* Bo tròn góc nhẹ */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Hiệu ứng chuyển màu và phóng to khi hover */
+}
+
+.btn-custom:hover {
+    background-color: #5a9eac; /* Màu nền khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+.btn-custom-primary {
+    background-color: #6fc3d0; /* Màu xanh nhạt */
+}
+
+.btn-custom-danger {
+    background-color: #d9534f; /* Màu đỏ nhẹ */
+}
+
+
 </style>
 
 <div class="combobox">
@@ -101,14 +127,11 @@ if (isset($_GET["message"])) {
             <td><?php echo $item->CapSK !== null ? htmlspecialchars($item->CapSK) : ''; ?></td>
 
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){ ?> 
-                <td>
-                    <select name="action" onchange="handleActionChange(this, '<?php echo $item->MaSK; ?>')">
-                        <option value="">Chọn hành động</option>
-                        <option value="sangkienct">Xem Chi Tiết</option>
-                        <option value="sangkiensua">Sửa Sáng Kiến</option>
-                        <option value="sangkienxoa">Xóa Sáng Kiến</option>
-                    </select>
-                </td>
+                    <td>
+                        <button class="btn btn-custom btn-custom-primary" onclick="handleAction('sangkienct', '<?php echo $item->MaSK; ?>')">Xem Chi Tiết</button>
+                        <button class="btn btn-custom btn-custom-primary" onclick="handleAction('sangkiensua', '<?php echo $item->MaSK; ?>')">Sửa Sáng Kiến</button>
+                        <button class="btn btn-custom btn-custom-danger" onclick="handleAction('sangkienxoa', '<?php echo $item->MaSK; ?>')">Xóa Sáng Kiến</button>
+                    </td>
                 <?php } ?>
             </tr>
         <?php
@@ -165,56 +188,50 @@ if (isset($_GET["message"])) {
         data.forEach(item => {
             console.log('Phản hồi từ server:', item);
 
-                const tr = document.createElement('tr');
+            const tr = document.createElement('tr');
 
-                const tdTenKhoa = document.createElement('td');
-                tdTenKhoa.textContent = item.HoTen;
-                tr.appendChild(tdTenKhoa);
+            const tdTenKhoa = document.createElement('td');
+            tdTenKhoa.textContent = item.HoTen;
+            tr.appendChild(tdTenKhoa);
 
-                const tdSoQD = document.createElement('td');
-                tdSoQD.textContent = item.TenSK || `Cần Thêm Số Quyết Định Cho ${item.MaKhoa}`;
-                tr.appendChild(tdSoQD);
+            const tdSoQD = document.createElement('td');
+            tdSoQD.textContent = item.TenSK || `Cần Thêm Số Quyết Định Cho ${item.MaKhoa}`;
+            tr.appendChild(tdSoQD);
 
-                const tdNam = document.createElement('td');
-                tdNam.textContent = item.Nam || `Cần Thêm Năm Cho ${item.Nam}`;
-                tr.appendChild(tdNam);
+            const tdNam = document.createElement('td');
+            tdNam.textContent = item.Nam || `Cần Thêm Năm Cho ${item.Nam}`;
+            tr.appendChild(tdNam);
 
-                const tdDanhGia = document.createElement('td');
-                tdDanhGia.textContent = item.CapSK;
-                tr.appendChild(tdDanhGia);
+            const tdDanhGia = document.createElement('td');
+            tdDanhGia.textContent = item.CapSK;
+            tr.appendChild(tdDanhGia);
 
-                if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
-                    const tdAction = document.createElement('td');
-                    const select = document.createElement('select');
-                    select.name = 'action';
-                    select.onchange = () => handleActionChange(select, item.MaDGTT);
+            // Thay thế combobox bằng các nút button
+            if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
+                const tdAction = document.createElement('td');
 
-                    const optionDefault = document.createElement('option');
-                    optionDefault.value = '';
-                    optionDefault.textContent = 'Chọn hành động';
-                    select.appendChild(optionDefault);
+                const buttonCT = document.createElement('button');
+                buttonCT.className = 'btn btn-custom btn-custom-primary';
+                buttonCT.textContent = 'Xem Chi Tiết';
+                buttonCT.onclick = () => handleAction('sangkienct', item.MaSK);
+                tdAction.appendChild(buttonCT);
 
-                    const optionct= document.createElement('option');
-                    optionct.value = 'sangkienct';
-                    optionct.textContent = 'Xem Chi Tiết';
-                    select.appendChild(optionct);
+                const buttonSua = document.createElement('button');
+                buttonSua.className = 'btn btn-custom btn-custom-primary';
+                buttonSua.textContent = 'Sửa Sáng Kiến';
+                buttonSua.onclick = () => handleAction('sangkiensua', item.MaSK);
+                tdAction.appendChild(buttonSua);
 
-                    const optionsua = document.createElement('option');
-                    optionsua.value = 'sangkiensua';
-                    optionsua.textContent = 'Sửa Sáng Kiến';
-                    select.appendChild(optionsua);
+                const buttonXoa = document.createElement('button');
+                buttonXoa.className = 'btn btn-custom btn-custom-danger';
+                buttonXoa.textContent = 'Xóa Sáng Kiến';
+                buttonXoa.onclick = () => handleAction('sangkienxoa', item.MaSK);
+                tdAction.appendChild(buttonXoa);
 
+                tr.appendChild(tdAction);
+            }
 
-                    const optionxoa = document.createElement('option');
-                    optionxoa.value = 'sangkienxoa';
-                    optionxoa.textContent = 'Xóa Sáng Kiến';
-                    select.appendChild(optionxoa);
-
-                    tdAction.appendChild(select);
-                    tr.appendChild(tdAction);
-                }
-
-                tableBody.appendChild(tr);
+            tableBody.appendChild(tr);
         });
     } catch (error) {
         console.error('Error fetching data:', error);
@@ -224,11 +241,12 @@ if (isset($_GET["message"])) {
 
 
 
-    function handleActionChange(select, id) {
-        var selectedAction = select.value;
-        if (selectedAction) {
+
+    function handleAction(action, id) {
+        if (action) {
             var baseUrl = "<?php echo $baseUrl; ?>";
-            window.location.href = baseUrl + "?p=" + selectedAction + "&id=" + id;
+            window.location.href = baseUrl + "?p=" + action + "&id=" + id;
         }
     }
+
 </script>

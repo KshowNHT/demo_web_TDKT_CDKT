@@ -50,7 +50,13 @@ if (isset($_GET["message"])) {
 ?>
 
 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
-    <a class="btn btn-primary btn-lg" href="<?php echo " $baseUrl?p=Khoath"; ?>">Thêm Khoa</a>
+    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=Khoath"; ?>">Thêm Khoa</a>
+<?php
+}
+?>
+
+<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
+    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=danhgiaTTth"; ?>">Thêm Đánh Giá Tập Thể</a>
 <?php
 }
 ?>
@@ -80,29 +86,49 @@ if (isset($_GET["message"])) {
     border-color: #007bff;
 }
 
+.table td {
+    vertical-align: middle; /* Căn giữa nội dung trong ô theo chiều dọc */
+    padding: 8px; /* Đệm trong ô để tránh bị dính quá sát */
+}
+
+.btn-group {
+    display: flex; /* Hiển thị các nút dưới dạng flexbox */
+    gap: 5px; /* Khoảng cách giữa các nút */
+}
+
+.btn-custom {
+    background-color: #6fc3d0; /* Màu nền xanh nhạt */
+    border: none; /* Loại bỏ viền */
+    color: white; /* Màu chữ trắng */
+    padding: 9px 13px; /* Đệm trong nút (giảm kích thước) */
+    font-size: 12px; /* Cỡ chữ nhỏ hơn */
+    margin: 2px; /* Khoảng cách giữa các nút */
+    cursor: pointer; /* Đổi con trỏ khi hover */
+    border-radius: 6px; /* Bo tròn góc nhẹ */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Hiệu ứng chuyển màu và phóng to khi hover */
+}
+
+.btn-custom:hover {
+    background-color: #5a9eac; /* Màu nền khi hover */
+    transform: scale(1.05); /* Phóng to nhẹ khi hover */
+}
+
+.btn-custom-primary {
+    background-color: #6fc3d0; /* Màu xanh nhạt */
+}
+
+.btn-custom-danger {
+    background-color: #d9534f; /* Màu đỏ nhẹ */
+}
+
 </style>
 
-<div class="combobox">
-    <label for="options">Chọn một tùy chọn:</label>
-    <select name="options" id="options" onchange="fetchAndDisplayKhoa(this.value)">
-        <option value="">Chọn khoa</option>
-        <?php foreach($options as $option): ?>
-            <option value="<?= htmlspecialchars($option->MaKhoa); ?>"><?= htmlspecialchars($option->TenKhoa); ?></option>
-        <?php endforeach; ?>
-    </select>
-</div>
-<div id="result">
-    <p id="result-text"></p>
-</div>
 
 <table class="table table-bordered">
     <thead>
         <tr>
             <th>Tên Khoa</th>
             <th>Mô Tả</th>
-            <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] == 'Quản Trị'){?> 
-                <th>Hành Động</th>
-            <?php } ?>
         </tr>
     </thead>
     <tbody id="khoa-table-body">
@@ -111,12 +137,9 @@ if (isset($_GET["message"])) {
                 <td scope="row"><?php echo $item->TenKhoa ;?></td>
                 <td><?php echo $item->MoTa;?></td>
                 <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] == 'Quản Trị'){?> 
-                <td>
-                    <select name="action" onchange="handleActionChange(this, '<?php echo $item->MaKhoa; ?>')">
-                        <option value="">Chọn hành động</option>
-                        <option value="Khoasua">Sửa Khoa</option>
-                        <option value="Khoaxoa">Xóa Khoa</option>
-                    </select>
+                    <td>
+                    <button class="btn btn-custom btn-custom-primary" onclick="handleActionChange('Khoasua', '<?php echo $item->MaKhoa; ?>', event)">Sửa Khoa</button>
+                    <button class="btn btn-custom btn-custom-danger" onclick="handleActionChange('Khoaxoa', '<?php echo $item->MaKhoa; ?>', event)">Xóa</button>
                 </td>
                 <?php } ?>
             </tr>
@@ -153,70 +176,11 @@ if (isset($_GET["message"])) {
 
 
 <script>
-    function fetchAndDisplayKhoa(maKhoa) {
-        if (maKhoa === '') {
-            window.location.reload();
-            return;
-        }
-
-        var xhr = new XMLHttpRequest();
-        xhr.open('GET', 'Khoa.php?MaKhoa=' + maKhoa, true); 
-        xhr.onreadystatechange = function () {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-                var data = JSON.parse(xhr.responseText);
-                var tableBody = document.getElementById('khoa-table-body'); 
-                tableBody.innerHTML = '';
-
-                data.forEach(function (item) {
-                    var tr = document.createElement('tr');
-
-                    var tdTenKhoa = document.createElement('td');
-                    tdTenKhoa.scope = 'row';
-                    tdTenKhoa.textContent = item.TenKhoa;
-                    tr.appendChild(tdTenKhoa);
-
-                    var tdMoTa = document.createElement('td');
-                    tdMoTa.textContent = item.MoTa;
-                    tr.appendChild(tdMoTa);
-
-                    if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] == 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
-                        var tdAction = document.createElement('td');
-                        var select = document.createElement('select');
-                        select.name = 'action';
-                        select.onchange = function() { handleActionChange(this, item.MaKhoa) };
-
-                        var optionDefault = document.createElement('option');
-                        optionDefault.value = '';
-                        optionDefault.textContent = 'Chọn hành động';
-                        select.appendChild(optionDefault);
-
-
-                        var optionSua = document.createElement('option');
-                        optionSua.value = 'Khoasua';
-                        optionSua.textContent = 'Sửa Khoa';
-                        select.appendChild(optionSua);
-
-                        var optionXoa = document.createElement('option');
-                        optionXoa.value = 'Khoaxoa';
-                        optionXoa.textContent = 'Xóa Khoa';
-                        select.appendChild(optionXoa);
-
-                        tdAction.appendChild(select);
-                        tr.appendChild(tdAction);
-                    }
-
-                    tableBody.appendChild(tr);
-                });
-            }
-        };
-        xhr.send();
+    function handleActionChange(action, id, event) {
+    event.preventDefault(); // Ngăn không cho form submit hoặc hành động mặc định diễn ra
+    if (action) {
+        var baseUrl = "<?php echo $baseUrl; ?>";
+        window.location.href = baseUrl + "?p=" + action + "&id=" + id;
     }
-
-    function handleActionChange(select, id) {
-        var selectedAction = select.value;
-        if (selectedAction) {
-            var baseUrl = "<?php echo $baseUrl; ?>";
-            window.location.href = baseUrl + "?p=" + selectedAction + "&id=" + id;
-        }
     }
 </script>
