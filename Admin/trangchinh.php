@@ -12,11 +12,11 @@ if (!isset($_SESSION['TenTk'])) {
 
 // Truy vấn dữ liệu từ database
 $query = "SELECT 
-                 (SELECT COUNT(*) FROM danhgiacn) AS total_danhgiacn, 
-                 (SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ')) AS total_danhgiatt,
-                 (SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('TT_LAO_DONG_TIEN_TIEN', 'TT_LAO_DONG_XS', 'GK_Hieu_Truong', 'BK_UBNDTP', 'BK_TTCP', 'Huan_Chuong_Lao_Dong_Hang_Ba', 'Huan_Chuong_Lao_Dong_Hang_Nhi')) AS total_khenthuong,
-                 (SELECT COUNT(*) FROM sangkien) AS total_sangkien,
-                 (SELECT COUNT(*) FROM khoa) AS total_khoa";
+        (SELECT COUNT(*) FROM danhgiacn) AS total_danhgiacn, 
+        (SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ')) AS total_danhgiatt,
+        (SELECT COUNT(*) FROM danhgiatt WHERE DanhGia IN ('TT_LAO_DONG_TIEN_TIEN', 'TT_LAO_DONG_XS', 'GK_Hieu_Truong', 'BK_UBNDTP', 'BK_TTCP', 'Huan_Chuong_Lao_Dong_Hang_Ba', 'Huan_Chuong_Lao_Dong_Hang_Nhi')) AS total_khenthuong,
+        (SELECT COUNT(*) FROM sangkien) AS total_sangkien,
+        (SELECT COUNT(*) FROM khoa) AS total_khoa";
 
 $result = mysqli_query($conn, $query);
 $data = mysqli_fetch_assoc($result);
