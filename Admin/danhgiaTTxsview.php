@@ -204,7 +204,6 @@ if (isset($_GET["message"])) {
 
 <script>
    async function fetchAndDisplayDanhGia(Manam) {
-    console.log('Năm đã chọn:', Manam);
     if (Manam === '') {
         window.location.reload();
         return;
@@ -220,7 +219,6 @@ if (isset($_GET["message"])) {
         tableBody.innerHTML = '';
 
         data.forEach(item => {
-            console.log('Phản hồi từ server:', item);
 
             const validDanhGia = ['TT_LAO_DONG_XS'];
             if (validDanhGia.includes(item.DanhGia)) {
@@ -283,23 +281,28 @@ async function searchData() {
     const searchTenKhoa = document.getElementById('searchTenKhoa').value.trim();
     const selectedManam = document.getElementById('options').value;
 
-    // Mảng các giá trị đánh giá hợp lệ
-    const validDanhGia = ['TT_LAO_DONG_XS'];
+    console.log('Phản hồi từ server:', searchSoQD, searchTenKhoa, selectedManam);
 
+    const validDanhGia = ['TT_LAO_DONG_XS'];
     const queryString = `getnamdanhgia.php?SoQD=${encodeURIComponent(searchSoQD)}&TenKhoa=${encodeURIComponent(searchTenKhoa)}&Manam=${encodeURIComponent(selectedManam)}`;
 
     try {
         const response = await fetch(queryString);
         if (!response.ok) {
-            throw new Error('Mạng lỗi');
+            throw new Error('Lỗi mạng hoặc URL không chính xác');
         }
         const data = await response.json();
+        console.log('Phản hồi từ server:', data);
 
-        const tableBody = document.getElementById('danhgiatt-table-body');
-        tableBody.innerHTML = '';
+        if (!Array.isArray(data)) {
+            throw new Error('Dữ liệu không hợp lệ');
+        }
+
+        const tableBody = document.getElementById('danhgiaxs-table-body');
+
+        tableBody.innerHTML = ''; // Xóa nội dung cũ
 
         data.forEach(item => {
-            // Kiểm tra nếu giá trị DanhGia nằm trong validDanhGia
             if (validDanhGia.includes(item.DanhGia)) {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
@@ -311,23 +314,26 @@ async function searchData() {
                     <td>${item.DonVi}</td>
                 `;
                 tableBody.appendChild(tr);
+
                 if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
                     const tdAction = document.createElement('td');
-
                     const buttonSua = document.createElement('button');
                     buttonSua.className = 'btn btn-custom btn-custom-primary';
                     buttonSua.textContent = 'Sửa Đánh Giá';
                     buttonSua.onclick = () => handleAction('xetdanhgiaTTsua', item.MaDGTT);
                     tdAction.appendChild(buttonSua);
-
                     tr.appendChild(tdAction);
                 }
             }
         });
     } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error('Lỗi khi lấy dữ liệu:', error);
+        alert('Đã xảy ra lỗi khi tìm kiếm. Vui lòng thử lại.');
     }
 }
+
+
+
 
 
     function handleAction(action, id) {

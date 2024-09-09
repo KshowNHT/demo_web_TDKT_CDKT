@@ -101,7 +101,29 @@ if (isset($_GET["message"])) {
     background-color: #d9534f; /* Màu đỏ nhẹ */
 }
 
+.search-box {
+    margin-bottom: 15px;
+}
+
+.search-box input {
+    padding: 8px;
+    margin-right: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.search-box button {
+    padding: 8px 12px;
+}
+
+
 </style>
+
+<div class="search-box">
+    <input type="text" id="searchSoQD" placeholder="Nhập Số Quyết Định" />
+    <input type="text" id="searchTenKhoa" placeholder="Nhập Tên Khoa" />
+    <button class="btn btn-custom btn-custom-primary" onclick="searchData()">Tìm Kiếm</button>
+</div>
 
 <div class="combobox">
     <label for="options">Chọn một tùy chọn:</label>
@@ -181,6 +203,7 @@ if (isset($_GET["message"])) {
 </nav>
 
 <script>
+//function Tìm Kiếm theo năm trong combox
    async function fetchAndDisplayDanhGia(Manam) {
     console.log('Năm đã chọn:', Manam);
     if (Manam === '') {
@@ -255,6 +278,62 @@ if (isset($_GET["message"])) {
 }
 
 
+//function Tìm Kiếm 
+async function searchData() {
+    const searchSoQD = document.getElementById('searchSoQD').value.trim();
+    const searchTenKhoa = document.getElementById('searchTenKhoa').value.trim();
+    const selectedManam = document.getElementById('options').value;
+
+    console.log('Phản hồi từ server:', searchSoQD, searchTenKhoa, selectedManam);
+
+    const validDanhGia = ['BK_UBNDTP'];
+    const queryString = `getnamdanhgia.php?SoQD=${encodeURIComponent(searchSoQD)}&TenKhoa=${encodeURIComponent(searchTenKhoa)}&Manam=${encodeURIComponent(selectedManam)}`;
+
+    try {
+        const response = await fetch(queryString);
+        if (!response.ok) {
+            throw new Error('Lỗi mạng hoặc URL không chính xác');
+        }
+        const data = await response.json();
+        console.log('Phản hồi từ server:', data);
+
+        if (!Array.isArray(data)) {
+            throw new Error('Dữ liệu không hợp lệ');
+        }
+
+        const tableBody = document.getElementById('danhgiatp-table-body');
+
+        tableBody.innerHTML = ''; // Xóa nội dung cũ
+
+        data.forEach(item => {
+            if (validDanhGia.includes(item.DanhGia)) {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${item.TenKhoa}</td>
+                    <td>${item.SoQD || `Cần Thêm Số Quyết Định Cho ${item.TenKhoa}`}</td>
+                    <td>${item.Nam || `Cần Thêm Năm Cho ${item.Nam}`}</td>
+                    <td>${item.DanhGia}</td>
+                    <td>${new Date(item.Ngay).toLocaleDateString('vi-VN')}</td>
+                    <td>${item.DonVi}</td>
+                `;
+                tableBody.appendChild(tr);
+
+                if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
+                    const tdAction = document.createElement('td');
+                    const buttonSua = document.createElement('button');
+                    buttonSua.className = 'btn btn-custom btn-custom-primary';
+                    buttonSua.textContent = 'Sửa Đánh Giá';
+                    buttonSua.onclick = () => handleAction('xetdanhgiaTTsua', item.MaDGTT);
+                    tdAction.appendChild(buttonSua);
+                    tr.appendChild(tdAction);
+                }
+            }
+        });
+    } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu:', error);
+        alert('Đã xảy ra lỗi khi tìm kiếm. Vui lòng thử lại.');
+    }
+}
 
 
 function handleAction(action, id) {
