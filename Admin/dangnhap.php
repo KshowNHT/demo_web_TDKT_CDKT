@@ -59,7 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             border-radius: 15px;
         }
         .bg-login-image {
-            background: url('./images/logo.jpg') no-repeat center center;
+            background: url('./images/logoCTEC.png') no-repeat center center;
             background-size: cover;
         }
         .btn-primary {
