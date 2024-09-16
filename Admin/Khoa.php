@@ -85,7 +85,7 @@ class Khoa {
             WHERE k.MaKhoa NOT IN (
                 SELECT d.MaKhoa 
                 FROM danhgiatt d 
-                WHERE d.Manam = ? AND d.DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')
+                WHERE d.Manam = ? AND d.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')
             )";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ii", $year, $year); // Truyền tham số năm hai lần
@@ -107,7 +107,7 @@ class Khoa {
             LEFT JOIN danhgiatt d ON d.MaKhoa = k.MaKhoa AND d.Manam = n.Manam
             GROUP BY k.MaKhoa, n.Nam
             HAVING SUM(CASE WHEN d.DanhGia = 'TT_LAO_DONG_TIEN_TIEN' THEN 1 ELSE 0 END) = 0
-            AND SUM(CASE WHEN d.DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ') THEN 1 ELSE 0 END) > 0;";
+            AND SUM(CASE WHEN d.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ') THEN 1 ELSE 0 END) > 0;";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $year);
         $stmt->execute();

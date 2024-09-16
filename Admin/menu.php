@@ -27,7 +27,7 @@ session_start();
         <li><a href="<?php echo "$baseUrl?p=sangkien"; ?>"><?php echo $pages['sangkien'][0]; ?> <i class="fa-solid fa-ranking-star"></i></a></li>
         <li><a href="<?php echo "$baseUrl?p=danhgiaTT"; ?>"><?php echo $pages['danhgiaTT'][0]; ?> <i class="fa-solid fa-file-alt"></i></a></li>
         <li><a href="<?php echo "$baseUrl?p=danhgiaCN"; ?>"><?php echo $pages['danhgiaCN'][0]; ?> <i class="fa-solid fa-chart-bar"></i></a></li>
-        <li><a href="<?php echo "$baseUrl?p=taikhoan"; ?>"><?php echo $pages['taikhoan'][0]; ?> <i class="fa-solid fa-users"></i></a></li>
+        
         
         <ul>
             <li> Quản Lý Khen Thưởng
@@ -51,7 +51,9 @@ session_start();
                 </ul>
             </li>
         </ul>
+        <li><a href="<?php echo "$baseUrl?p=dexuatkhenthuong"; ?>"><?php echo $pages['dexuatkhenthuong'][0];?></a></li>
         <li><a href="<?php echo "$baseUrl?p=Nam"; ?>"><?php echo $pages['Nam'][0];?> <i class="fa-solid fa-calendar"></i></a></li>
+        <li><a href="<?php echo "$baseUrl?p=taikhoan"; ?>"><?php echo $pages['taikhoan'][0]; ?> <i class="fa-solid fa-users"></i></a></li>
     <?php } ?>
     <li><a href="<?php echo "$baseUrl?p=taikhoansua"; ?>"><?php echo $pages['taikhoansua'][0]; ?> <i class="fa-solid fa-user-edit"></i></a></li>
     <li><a href="<?php echo "$baseUrl?p=dangxuat"; ?>"><i class="fa-solid fa-sign-out-alt"></i></a></li>

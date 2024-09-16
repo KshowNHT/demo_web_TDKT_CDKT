@@ -139,7 +139,7 @@ $datakhoa = Khoa::layDanhSach($conn);
             <label for="DanhGia">Đánh Giá</label>
             <select class="form-control" name="DanhGia" id="DanhGia">
                 <option value="1">Đang Đánh Giá</option>
-                <option value="Hoàn Thành Xuất">Hoàn Thành Xuất</option>
+                <option value="Hoàn Thành Xuất Sắc">Hoàn Thành Xuất Sắc</option>
                 <option value="Hoàn Thành Tốt Nhiệm Vụ">Hoàn Thành Tốt Nhiệm Vụ</option>
                 <option value="Hoàn Thành Nhiệm Vụ">Hoàn Thành Nhiệm Vụ</option>
                 <option value="Không Hoàn Thành Nhiệm Vụ">Không Hoàn Thành Nhiệm Vụ</option>

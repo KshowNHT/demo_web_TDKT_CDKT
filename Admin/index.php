@@ -9,6 +9,7 @@
         'taikhoanxoa' => array('Xóa Tài Khoản', 'taikhoanxoa.php'),
         'taikhoansua' => array('Đổi Mật Khẩu', 'doimatkhau.php'),
         'dangxuat' => array('Đăng Xuất', 'dangxuat.php'),
+        'dexuatkhenthuong' => array('Đề Xuất Khen Thưởng ', 'dexuatdanhgiaview.php'),
         // Thông Tin Cá Nhân
         'thongtincanhan' => array('Quản Lý Thông Tin Cá Nhân', 'thongtincanhanview.php'),
         'thongtincanhanth' => array('Thêm Thông Tin', 'thongtincanhanthem.php'),
