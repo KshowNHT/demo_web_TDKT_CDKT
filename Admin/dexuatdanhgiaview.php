@@ -99,6 +99,12 @@ if (isset($_GET["message"])) {
 
 </style>
 
+<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
+    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=danhgiaTThcldhnthem"; ?>">Xét Đánh Giá Tập Thể</a>
+<?php
+}
+?>
+
 <div class="search-box">
     <input type="text" id="searchTenKhoa" placeholder="Nhập Tên Khoa" />
     <button class="btn btn-custom btn-custom-primary" onclick="searchData()">Tìm Kiếm</button>

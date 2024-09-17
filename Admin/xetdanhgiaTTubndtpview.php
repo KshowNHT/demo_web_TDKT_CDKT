@@ -1,6 +1,6 @@
 <?php
 include('./danhgiaTT.php');
-$data = DanhgiaTT::laydanhsachdanhgiaubndtp($conn);
+
 
 
 // Số bản ghi trên mỗi trang
@@ -26,7 +26,7 @@ $data = DanhgiaTT::layDanhGiaubndtpPhanTrang($conn, $startFrom, $recordsPerPage)
 
 // Mảng ánh xạ
 $awardMap = array(
-    'BK_UBNDTP' => 'Bằng Khen Ủy Ban Nhân Dân Thành Phố',
+    'Bằng Khen Ủy Ban Nhân Dân Thành Phố' => 'Bằng Khen Ủy Ban Nhân Dân Thành Phố',
 );
 
 $Manam = isset($_GET['Manam']) ? $_GET['Manam'] : null;
@@ -224,7 +224,7 @@ if (isset($_GET["message"])) {
         data.forEach(item => {
             console.log('Phản hồi từ server:', item);
 
-            const validDanhGia = ['BK_UBNDTP'];
+            const validDanhGia = ['Bằng Khen Ủy Ban Nhân Dân Thành Phố'];
             if (validDanhGia.includes(item.DanhGia)) {
                 const tr = document.createElement('tr');
 
@@ -286,7 +286,7 @@ async function searchData() {
 
     console.log('Phản hồi từ server:', searchSoQD, searchTenKhoa, selectedManam);
 
-    const validDanhGia = ['BK_UBNDTP'];
+    const validDanhGia = ['Bằng Khen Ủy Ban Nhân Dân Thành Phố'];
     const queryString = `getnamdanhgia.php?SoQD=${encodeURIComponent(searchSoQD)}&TenKhoa=${encodeURIComponent(searchTenKhoa)}&Manam=${encodeURIComponent(selectedManam)}`;
 
     try {

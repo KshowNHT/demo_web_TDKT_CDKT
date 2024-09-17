@@ -1,6 +1,5 @@
 <?php
 include('./danhgiaTT.php');
-$data = DanhgiaTT::laydanhsachdanhgiahcldhb($conn);
 
 
 // Số bản ghi trên mỗi trang
@@ -26,7 +25,7 @@ $data = DanhgiaTT::layDanhGiahangba($conn, $startFrom, $recordsPerPage);
 
 // Mảng ánh xạ
 $awardMap = array(
-    'Huan_Chuong_Lao_Dong_Hang_Ba' => 'Huân Chương Lao Động Hạng Ba',
+    'Huân Chương Lao Động Hạng Ba' => 'Huân Chương Lao Động Hạng Ba',
 );
 
 $Manam = isset($_GET['Manam']) ? $_GET['Manam'] : null;

@@ -53,13 +53,13 @@
             <label >Đánh Giá</label>
             <select name="DanhGia" id="DanhGia">
                 <option value="Chưa Đánh Giá" <?php echo ($data->DanhGia == 'Chưa Đánh Giá') ? 'selected' : ''; ?>>Chưa Đánh Giá</option>
-                <option value="TT_LAO_DONG_TIEN_TIEN" <?php echo ($data->DanhGia == 'TT_LAO_DONG_TIEN_TIEN') ? 'selected' : ''; ?>>Lao Đông Tiên Tiến</option>
-                <option value="TT_LAO_DONG_XS" <?php echo ($data->DanhGia == 'TT_LAO_DONG_XS') ? 'selected' : ''; ?>>Lao Đông Xuất Sắc</option>
-                <option value="GK_Hieu_Truong" <?php echo ($data->DanhGia == 'GK_Hieu_Truong') ? 'selected' : ''; ?>>Giấy Khen Hiệu Trưởng</option>
-                <option value="BK_UBNDTP" <?php echo ($data->DanhGia == 'BK_UBNDTP') ? 'selected' : ''; ?>>Bằng Khen UBND Thành Phố</option>
-                <option value="BK_TTCP" <?php echo ($data->DanhGia == 'BK_TTCP') ? 'selected' : ''; ?>>Bằng Khen Thủ Tướng Chính Phủ</option>
-                <option value="Huan_Chuong_Lao_Dong_Hang_Ba" <?php echo ($data->DanhGia == 'Huan_Chuong_Lao_Dong_Hang_Ba') ? 'selected' : ''; ?>>Huân Chương Lao Động Hạng Ba</option>
-                <option value="Huan_Chuong_Lao_Dong_Hang_Nhi" <?php echo ($data->DanhGia == 'Huan_Chuong_Lao_Dong_Hang_Nhi') ? 'selected' : ''; ?>>Huân Chương Lao Động Hạng Nhì</option>
+                <option value="Tập Thể Lao Động Tiên Tiến" <?php echo ($data->DanhGia == 'Tập Thể Lao Động Tiên Tiến') ? 'selected' : ''; ?>>Lao Đông Tiên Tiến</option>
+                <option value="Tập Thể Lao Động Xuất Sắc" <?php echo ($data->DanhGia == 'Tập Thể Lao Động Xuất Sắc') ? 'selected' : ''; ?>>Lao Đông Xuất Sắc</option>
+                <option value="Giấy Khen Hiệu Trưởng" <?php echo ($data->DanhGia == 'Giấy Khen Hiệu Trưởng') ? 'selected' : ''; ?>>Giấy Khen Hiệu Trưởng</option>
+                <option value="Bằng Khen Ủy Ban Nhân Dân Thành Phố" <?php echo ($data->DanhGia == 'Bằng Khen Ủy Ban Nhân Dân Thành Phố') ? 'selected' : ''; ?>>Bằng Khen UBND Thành Phố</option>
+                <option value="Bằng Khen Thủ Tướng Chính Phủ" <?php echo ($data->DanhGia == 'Bằng Khen Thủ Tướng Chính Phủ') ? 'selected' : ''; ?>>Bằng Khen Thủ Tướng Chính Phủ</option>
+                <option value="Huân Chương Lao Động Hạng Ba" <?php echo ($data->DanhGia == 'Huân Chương Lao Động Hạng Ba') ? 'selected' : ''; ?>>Huân Chương Lao Động Hạng Ba</option>
+                <option value="Huân Chương Lao Động Hạng Nhì" <?php echo ($data->DanhGia == 'Huân Chương Lao Động Hạng Nhì') ? 'selected' : ''; ?>>Huân Chương Lao Động Hạng Nhì</option>
 
             </select>
         </div>

@@ -1,6 +1,5 @@
 <?php
 include('./danhgiaTT.php');
-$data = DanhgiaTT::laydanhsachdanhgiattcp($conn);
 
 
 // Số bản ghi trên mỗi trang
@@ -26,7 +25,7 @@ $data = DanhgiaTT::layDanhGiattcp($conn, $startFrom, $recordsPerPage);
 
 // Mảng ánh xạ
 $awardMap = array(
-    'BK_TTCP' => 'Bằng Khen Thủ Tướng Chính Phủ',
+    'Bằng Khen Thủ Tướng Chính Phủ' => 'Bằng Khen Thủ Tướng Chính Phủ',
 );
 
 $Manam = isset($_GET['Manam']) ? $_GET['Manam'] : null;

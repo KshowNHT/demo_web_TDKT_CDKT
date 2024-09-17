@@ -203,24 +203,24 @@ class Khoa {
     }
 
     //lấy Khoa chửa có đánh theo từng năm 
-    public static function layDanhSachChuaDanhGiahangnhi($conn, $year) {
-        $sql = "SELECT k.*, n.Nam
-            FROM khoa k
-            INNER JOIN nam n ON n.Manam = ?
-            LEFT JOIN danhgiatt d ON d.MaKhoa = k.MaKhoa AND d.Manam = n.Manam
-            GROUP BY k.MaKhoa, n.Nam  
-            HAVING SUM(CASE WHEN d.DanhGia = 'Huan_Chuong_Lao_Dong_Hang_Nhi' THEN 1 ELSE 0 END) = 0
-            AND SUM(CASE WHEN d.DanhGia IN ('Huan_Chuong_Lao_Dong_Hang_Ba') THEN 1 ELSE 0 END) > 0;";
+    public static function layDanhSachChuaDanhGiaTheoLoai($conn, $year, $danhGia) {
+        $sql = "SELECT k.MaKhoa, k.TenKhoa
+                FROM khoa k
+                LEFT JOIN danhgiatt d ON d.MaKhoa = k.MaKhoa AND d.Manam = ?
+                WHERE d.DanhGia IS NULL OR (d.DanhGia != ?)";
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $year);
+        $stmt->bind_param("is", $year, $danhGia);
         $stmt->execute();
         $result = $stmt->get_result();
-        $data = [];
-        while ($row = $result->fetch_object()) {
-            $data[] = $row;
+        
+        $khoaList = [];
+        while($row = $result->fetch_object()) {
+            $khoaList[] = $row;
         }
-        return $data;
+        return $khoaList;
     }
+    
+    
 
     //phân trang Khoa
     public static function layTongSokhoa($conn) {

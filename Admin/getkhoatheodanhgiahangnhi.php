@@ -2,8 +2,10 @@
 include('./connectdb.php'); 
 include('./Khoa.php');
 
-if(isset($_POST['year'])) {
-    $year = $_POST['year'];
+if(isset($_POST['year']) && isset($_POST['danhGia'])) {
+    // Xác thực và lọc đầu vào
+    $year = filter_var($_POST['year'], FILTER_VALIDATE_INT);
+    $danhGia = htmlspecialchars($_POST['danhGia']);
 
     // Truy vấn để lấy giá trị 'Nam' dựa trên 'year'
     $sql = "SELECT Nam FROM nam WHERE Manam = ?";
@@ -12,58 +14,54 @@ if(isset($_POST['year'])) {
     $stmt->execute();
     $result = $stmt->get_result();
     $row = $result->fetch_assoc();
-    
-    // Kiểm tra nếu không có kết quả từ truy vấn
+
     if ($row) {
         $nam = $row['Nam'];
 
-        $datakhoa = Khoa::layDanhSachChuaDanhGiahangnhi($conn, $year);
+        // Lấy danh sách các khoa chưa được đánh giá theo 'danhGia' trong năm đã chọn
+        $datakhoa = Khoa::layDanhSachChuaDanhGiaTheoLoai($conn, $year, $danhGia);
 
-        if ($datakhoa) {
-            // Bắt đầu bảng
+        // Kiểm tra và hiển thị danh sách
+        if (is_array($datakhoa) && count($datakhoa) > 0) {
             echo '<table class="table table-bordered">';
             echo '<thead>';
             echo '<tr>';
-            echo '<th><input type="checkbox" id="checkAll"> Chọn tất cả</th>'; // Thêm checkbox "Chọn tất cả"
+            echo '<th><input type="checkbox" id="checkAll"> Chọn tất cả</th>';
             echo '<th>Tên Khoa</th>';
             echo '</tr>';
             echo '</thead>';
             echo '<tbody>';
 
-            // Lặp qua các dữ liệu và tạo hàng trong bảng
             foreach($datakhoa as $item) {
                 echo '<tr>';
-                echo '<td><input type="checkbox" class="form-check-input" name="MaKhoa[]" value="'. $item->MaKhoa.'"></td>';
+                echo '<td><input type="checkbox" class="form-check-input" name="MaKhoa[]" value="'. $item->MaKhoa .'"></td>';
                 echo '<td>' . $item->TenKhoa . '</td>';
+
+
                 echo '</tr>';
             }
 
             echo '</tbody>';
-            echo '</table>'; // Kết thúc bảng
-            
-            echo 'Danh sách các khoa chưa đánh giá cho năm '.$nam;
+            echo '</table>';
+            echo 'Danh sách các khoa chưa đánh giá '.$danhGia.' cho năm '.$nam;
         } else {
-            echo '<h5 style="color: #007bff; margin-top: 20px;">Các Khoa Trong Năm '.$nam.' Đã Được Đánh Giá</h5>';
+            echo '<h5 style="color: #007bff; margin-top: 20px;">Tất cả các Khoa đã được đánh giá '.$danhGia.' trong năm '.$nam.'</h5>';
         }
     } else {
-        echo '<h5 style="color: Red; margin-top: 20px;">Vui Lòng Chọn Năm Để Đánh Giá Các Khoa</h5>';
+        echo '<h5 style="color: Red; margin-top: 20px;">Vui Lòng Chọn Năm và Đánh Giá Để Hiển Thị Các Khoa</h5>';
     }
 
 } else {
-    echo 'Year not set!';
+    echo 'Year or DanhGia not set!';
 }
-?>
 
+?>
 
 <script>
     $(document).ready(function() {
         // Checkbox "Chọn tất cả"
         $('#checkAll').click(function() {
-            if ($(this).is(':checked')) {
-                $('input[name="MaKhoa[]"]').prop('checked', true);
-            } else {
-                $('input[name="MaKhoa[]"]').prop('checked', false);
-            }
+            $('input[name="MaKhoa[]"]').prop('checked', this.checked);
         });
     });
 </script>

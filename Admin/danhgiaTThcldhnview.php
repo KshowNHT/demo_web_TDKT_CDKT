@@ -1,6 +1,5 @@
 <?php
 include('./danhgiaTT.php');
-$data = DanhgiaTT::laydanhsachdanhgiahcldhn($conn);
 
 // Số bản ghi trên mỗi trang
 $recordsPerPage = 10;
@@ -25,7 +24,7 @@ $data = DanhgiaTT::layDanhGiahangnhi($conn, $startFrom, $recordsPerPage);
 
 // Mảng ánh xạ
 $awardMap = array(
-    'Huan_Chuong_Lao_Dong_Hang_Nhi' => 'Huân Chương Lao Động Hạng Nhì',
+    'Huân Chương Lao Động Hạng Nhì' => 'Huân Chương Lao Động Hạng Nhì',
 );
 
 $Manam = isset($_GET['Manam']) ? $_GET['Manam'] : null;
@@ -224,7 +223,7 @@ if (isset($_GET["message"])) {
 
         data.forEach(item => {
 
-            const validDanhGia = ['Huan_Chuong_Lao_Dong_Hang_Nhi'];
+            const validDanhGia = ['Huân Chương Lao Động Hạng Nhì'];
             if (validDanhGia.includes(item.DanhGia)) {
                 const tr = document.createElement('tr');
 
@@ -284,7 +283,7 @@ async function searchData() {
     const selectedManam = document.getElementById('options').value;
 
 
-    const validDanhGia = ['Huan_Chuong_Lao_Dong_Hang_Nhi'];
+    const validDanhGia = ['Huân Chương Lao Động Hạng Nhì'];
     const queryString = `getnamdanhgia.php?SoQD=${encodeURIComponent(searchSoQD)}&TenKhoa=${encodeURIComponent(searchTenKhoa)}&Manam=${encodeURIComponent(selectedManam)}`;
 
     try {

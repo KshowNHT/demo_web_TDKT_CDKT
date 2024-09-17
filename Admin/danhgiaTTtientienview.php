@@ -1,6 +1,5 @@
 <?php
 include('./danhgiaTT.php');
-$data = DanhgiaTT::laydanhsachdanhgiatientien($conn);
 
 
 
@@ -27,7 +26,7 @@ $data = DanhgiaTT::layDanhGiaTTPhanTrang($conn, $startFrom, $recordsPerPage);
 
 // Mảng ánh xạ
 $awardMap = array(
-    'TT_LAO_DONG_TIEN_TIEN' => 'Tập Thể Lạo Động Tiên Tiến',
+    'Tập Thể Lạo Động Tiên Tiến' => 'Tập Thể Lạo Động Tiên Tiến',
 );
 
 $Manam = isset($_GET['Manam']) ? $_GET['Manam'] : null;
@@ -45,13 +44,6 @@ if (isset($_GET["message"])) {
 <?php
 }
 ?>
-
-<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
-    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=xetdanhgiaTT"; ?>">Xét Đánh Giá Tập Thể</a>
-<?php
-}
-?>
-
 
 <style>
     .pagination {
@@ -229,7 +221,7 @@ if (isset($_GET["message"])) {
         data.forEach(item => {
             console.log('Phản hồi từ server:', item);
 
-            const validDanhGia = ['TT_LAO_DONG_TIEN_TIEN'];
+            const validDanhGia = ['Tập Thể Lao Động Tiên Tiến'];
             if (validDanhGia.includes(item.DanhGia)) {
                 const tr = document.createElement('tr');
 
@@ -289,7 +281,7 @@ async function searchData() {
     const selectedManam = document.getElementById('options').value;
 
     // Mảng các giá trị đánh giá hợp lệ
-    const validDanhGia = ['TT_LAO_DONG_TIEN_TIEN'];
+    const validDanhGia = ['Tập Thể Lao Động Tiên Tiến'];
 
     const queryString = `getnamdanhgia.php?SoQD=${encodeURIComponent(searchSoQD)}&TenKhoa=${encodeURIComponent(searchTenKhoa)}&Manam=${encodeURIComponent(selectedManam)}`;
 

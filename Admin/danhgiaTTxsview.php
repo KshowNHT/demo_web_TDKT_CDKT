@@ -1,12 +1,10 @@
 <?php
 error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 include('./danhgiaTT.php');
-$data = DanhgiaTT::laydanhsachdanhgiaxs($conn);
 
-// Mảng ánh xạ
-$awardMap = array(
-    'TT_LAO_DONG_XS' => 'Tập Thể Lao Động Xuất Sắc',
-);
+$awardMap = [
+    'Tập Thể Lao Động Xuất Sắc' => 'Tập Thể Lao Động Xuất Sắc',
+];
 
 // Số bản ghi trên mỗi trang
 $recordsPerPage = 10;
@@ -45,11 +43,6 @@ if (isset($_GET["message"])) {
 }
 ?>
 
-<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
-    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=danhgiaTTxsvahieutruong"; ?>">Xét Đánh Giá Tập Thể</a>
-<?php
-}
-?>
 
 <style>
 .pagination {
@@ -215,60 +208,64 @@ if (isset($_GET["message"])) {
             throw new Error('Mạng lỗi');
         }
         const data = await response.json();
+        console.log('dữ liệu data: ', data);
         const tableBody = document.getElementById('danhgiaxs-table-body');
         tableBody.innerHTML = '';
 
         data.forEach(item => {
+    // Mảng này nên chứa tất cả các giá trị đánh giá mà bạn cho là hợp lệ
+    const validDanhGia = ['Tập Thể Lao Động Xuất Sắc'];
 
-            const validDanhGia = ['TT_LAO_DONG_XS'];
-            if (validDanhGia.includes(item.DanhGia)) {
-                const tr = document.createElement('tr');
+    // Kiểm tra xem DanhGia có trong danh sách hợp lệ hay không
+    if (item.DanhGia && validDanhGia.includes(item.DanhGia)) {
+        const tr = document.createElement('tr');
 
-                const tdTenKhoa = document.createElement('td');
-                tdTenKhoa.textContent = item.TenKhoa;
-                tr.appendChild(tdTenKhoa);
+        const tdTenKhoa = document.createElement('td');
+        tdTenKhoa.textContent = item.TenKhoa;
+        tr.appendChild(tdTenKhoa);
 
-                const tdSoQD = document.createElement('td');
-                tdSoQD.textContent = item.SoQD || `Cần Thêm Số Quyết Định Cho ${item.MaKhoa}`;
-                tr.appendChild(tdSoQD);
+        const tdSoQD = document.createElement('td');
+        tdSoQD.textContent = item.SoQD || `Cần Thêm Số Quyết Định Cho ${item.MaKhoa}`;
+        tr.appendChild(tdSoQD);
 
-                const tdNam = document.createElement('td');
-                tdNam.textContent = item.Nam || `Cần Thêm Năm Cho ${item.Manam}`;
-                tr.appendChild(tdNam);
+        const tdNam = document.createElement('td');
+        tdNam.textContent = item.Nam || `Cần Thêm Năm Cho ${item.Manam}`;
+        tr.appendChild(tdNam);
 
-                // Kiểm tra xem danhGia có trong mảng ánh xạ không
-                const danhGia = awardMap[item.DanhGia] !== undefined ? awardMap[item.DanhGia] : item.DanhGia;
-                const tdDanhGia = document.createElement('td');
-                tdDanhGia.textContent = danhGia;
-                tr.appendChild(tdDanhGia);
+        // Kiểm tra xem danhGia có trong mảng ánh xạ không
+        const danhGia = awardMap[item.DanhGia] !== undefined ? awardMap[item.DanhGia] : item.DanhGia;
+        const tdDanhGia = document.createElement('td');
+        tdDanhGia.textContent = danhGia;
+        tr.appendChild(tdDanhGia);
 
-                const dateObj = new Date(item.Ngay);
-                const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth() + 1).toString().padStart(2, '0')}/${dateObj.getFullYear()}`;
+        const dateObj = new Date(item.Ngay);
+        const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth() + 1).toString().padStart(2, '0')}/${dateObj.getFullYear()}`;
 
-                const tdNgay = document.createElement('td');
-                tdNgay.textContent = formattedDate;
-                tr.appendChild(tdNgay);
+        const tdNgay = document.createElement('td');
+        tdNgay.textContent = formattedDate;
+        tr.appendChild(tdNgay);
 
-                const tdDonVi = document.createElement('td');
-                tdDonVi.textContent = item.DonVi;
-                tr.appendChild(tdDonVi);
-                
+        const tdDonVi = document.createElement('td');
+        tdDonVi.textContent = item.DonVi;
+        tr.appendChild(tdDonVi);
 
-                if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
-                    const tdAction = document.createElement('td');
+        if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
+            const tdAction = document.createElement('td');
 
-                    const buttonSua = document.createElement('button');
-                    buttonSua.className = 'btn btn-custom btn-custom-primary';
-                    buttonSua.textContent = 'Sửa Đánh Giá';
-                    buttonSua.onclick = () => handleAction('xetdanhgiaTTsua', item.MaDGTT);
-                    tdAction.appendChild(buttonSua);
+            const buttonSua = document.createElement('button');
+            buttonSua.className = 'btn btn-custom btn-custom-primary';
+            buttonSua.textContent = 'Sửa Đánh Giá';
+            buttonSua.onclick = () => handleAction('xetdanhgiaTTsua', item.MaDGTT);
+            tdAction.appendChild(buttonSua);
 
-                    tr.appendChild(tdAction);
-                }
+            tr.appendChild(tdAction);
+        }
 
-                tableBody.appendChild(tr);
-            }
-        });
+        tableBody.appendChild(tr);
+    }
+});
+
+
     } catch (error) {
         console.error('Error fetching data:', error);
     }
@@ -283,7 +280,7 @@ async function searchData() {
 
     console.log('Phản hồi từ server:', searchSoQD, searchTenKhoa, selectedManam);
 
-    const validDanhGia = ['TT_LAO_DONG_XS'];
+    const validDanhGia = ['Tập Thể Lao Động Xuất Sắc'];
     const queryString = `getnamdanhgia.php?SoQD=${encodeURIComponent(searchSoQD)}&TenKhoa=${encodeURIComponent(searchTenKhoa)}&Manam=${encodeURIComponent(selectedManam)}`;
 
     try {

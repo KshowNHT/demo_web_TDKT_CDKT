@@ -1,10 +1,9 @@
 <?php
 include('./danhgiaTT.php');
-$data = DanhgiaTT::laydanhsachdanhgiahieutruong($conn);
 
 // Mảng ánh xạ
 $awardMap = array(
-    'GK_Hieu_Truong' => 'Giấy Khen Hiệu Trưởng',
+    'Giấy Khen Hiệu Trưởng' => 'Giấy Khen Hiệu Trưởng',
 );
 
 // Số bản ghi trên mỗi trang
@@ -219,7 +218,7 @@ if (isset($_GET["message"])) {
 
         data.forEach(item => {
 
-            const validDanhGia = ['GK_Hieu_Truong'];
+            const validDanhGia = ['Giấy Khen Hiệu Trưởng'];
             if (validDanhGia.includes(item.DanhGia)) {
                 const tr = document.createElement('tr');
 
@@ -278,7 +277,7 @@ async function searchData() {
     const selectedManam = document.getElementById('options').value;
 
 
-    const validDanhGia = ['GK_Hieu_Truong'];
+    const validDanhGia = ['Giấy Khen Hiệu Trưởng'];
     const queryString = `getnamdanhgia.php?SoQD=${encodeURIComponent(searchSoQD)}&TenKhoa=${encodeURIComponent(searchTenKhoa)}&Manam=${encodeURIComponent(selectedManam)}`;
 
     try {
