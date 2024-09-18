@@ -10,6 +10,7 @@
         'taikhoansua' => array('Đổi Mật Khẩu', 'doimatkhau.php'),
         'dangxuat' => array('Đăng Xuất', 'dangxuat.php'),
         'dexuatkhenthuong' => array('Đề Xuất Khen Thưởng ', 'dexuatdanhgiaview.php'),
+        'xuatdanhgiaxlsx' => array('Đánh Giá Tập Thể Excel ', 'danhgiaTTxlsx.php'),
         // Thông Tin Cá Nhân
         'thongtincanhan' => array('Quản Lý Thông Tin Cá Nhân', 'thongtincanhanview.php'),
         'thongtincanhanth' => array('Thêm Thông Tin', 'thongtincanhanthem.php'),

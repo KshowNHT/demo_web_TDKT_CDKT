@@ -7,6 +7,7 @@ session_start();
     <li><a href="<?php echo "$baseUrl?p=trangchinh"; ?>" ><?php echo $pages['trangchinh'][0]; ?> <i class="fa-solid fa-house"></i></a></li>
     <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Khoa'){?>
         <li><a href="<?php echo "$baseUrl?p=danhgiaTT"; ?>"><?php echo $pages['danhgiaTT'][0]; ?> <i class="fa-solid fa-file-alt"></i></a></li>
+        <li><a href="<?php echo "$baseUrl?p=dexuatkhenthuong"; ?>"><?php echo $pages['dexuatkhenthuong'][0];?></a></li>
         <ul>
             <li><a href="<?php echo "$baseUrl?p=danhgiaTTtientienview"; ?>"><?php echo $pages['danhgiaTTtientienview'][0]; ?> <i class="fa-solid fa-medal"></i></a></li>
             <li><a href="<?php echo "$baseUrl?p=danhgiaTTxs"; ?>"><?php echo $pages['danhgiaTTxs'][0]; ?> <i class="fa-solid fa-star"></i></a></li>

@@ -118,6 +118,7 @@ if (isset($_GET["message"])) {
 
 </style>
 
+<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=xuatdanhgiaxlsx"; ?>">Xuất File Excel</a>
 
 <div class="search-box">
     <input type="text" id="searchSoQD" placeholder="Nhập Số Quyết Định" />

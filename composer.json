@@ -1,0 +1,17 @@
+{
+    "name": "admin/demo_web_tdkt_cdkt",
+    "autoload": {
+        "psr-4": {
+            "Admin\\DemoWebTdktCdkt\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Nguyen Huu Thuan",
+            "email": "nguyenhuuthuan6392@gmail.com"
+        }
+    ],
+    "require": {
+        "phpoffice/phpspreadsheet": "^2.2"
+    }
+}

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Sep 09, 2024 at 12:00 PM
+-- Generation Time: Sep 18, 2024 at 11:17 AM
 -- Server version: 10.4.24-MariaDB
 -- PHP Version: 8.1.6
 
@@ -44,7 +44,8 @@ CREATE TABLE `danhgiacn` (
 
 INSERT INTO `danhgiacn` (`MaDGCN`, `MaCN`, `MaKhoa`, `SoQD`, `Manam`, `DanhGia`, `Ngay`, `DonVi`) VALUES
 (24, 29, 25, 'test', 3, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-08-02', 'Kinh Tế'),
-(25, 35, 25, 'test', 3, 'Hoàn Thành Xuất Sắc', '2024-08-02', 'Kinh Tế');
+(25, 35, 25, 'test', 3, 'Hoàn Thành Xuất Sắc', '2024-08-02', 'Kinh Tế'),
+(26, 35, 25, '09', 1, 'Hoàn Thành Xuất Sắc', '2024-09-13', 'Công Nghệ Thông Tin');
 
 -- --------------------------------------------------------
 
@@ -67,31 +68,23 @@ CREATE TABLE `danhgiatt` (
 --
 
 INSERT INTO `danhgiatt` (`MaDGTT`, `MaKhoa`, `SoQD`, `Manam`, `DanhGia`, `Ngay`, `DonVi`) VALUES
-(156, 25, 'test', 1, 'TT_LAO_DONG_TIEN_TIEN', '2024-08-09', 'Xây Dựng'),
-(157, 28, 'test', 1, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-08-09', 'Công Nghệ Thông Tin'),
-(158, 29, 'test', 1, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-08-09', 'Công Nghệ Thông Tin'),
-(159, 30, 'test', 1, 'Hoàn Thành Xuất Sắc', '2024-08-09', 'Công Nghệ Thông Tin'),
-(161, 28, 'test', 1, 'TT_LAO_DONG_TIEN_TIEN', '2024-08-16', 'Ngoại Ngữ'),
-(162, 29, 'test', 1, 'TT_LAO_DONG_TIEN_TIEN', '2024-08-16', 'Ngoại Ngữ'),
-(163, 30, 'test', 1, 'TT_LAO_DONG_TIEN_TIEN', '2024-08-16', 'Ngoại Ngữ'),
-(164, 25, 'test1', 1, 'TT_LAO_DONG_XS', '2024-08-18', 'Xây Dựng'),
-(165, 28, 'test1', 1, 'TT_LAO_DONG_XS', '2024-08-18', 'Xây Dựng'),
-(166, 29, 'test', 1, 'GK_Hieu_Truong', '2024-08-25', 'Kinh Tế'),
-(167, 30, 'test', 2, 'GK_Hieu_Truong', '2024-08-25', 'Kinh Tế'),
-(168, 25, 'test', 1, 'BK_UBNDTP', '2024-08-09', 'Kinh Tế'),
-(169, 28, 'test', 1, 'BK_UBNDTP', '2024-08-09', 'Kinh Tế'),
-(170, 29, 'test', 1, 'BK_UBNDTP', '2024-08-09', 'Kinh Tế'),
-(171, 25, 'test', 1, 'BK_TTCP', '2024-08-16', 'Kinh Tế'),
-(172, 28, 'test', 1, 'BK_TTCP', '2024-08-16', 'Kinh Tế'),
-(173, 29, 'test', 1, 'BK_TTCP', '2024-08-16', 'Kinh Tế'),
-(174, 25, 'test', 1, 'Huan_Chuong_Lao_Dong_Hang_Ba', '2024-08-08', 'Ngoại Ngữ'),
-(175, 28, 'test', 1, 'Huan_Chuong_Lao_Dong_Hang_Ba', '2024-08-08', 'Ngoại Ngữ'),
-(176, 29, 'test', 1, 'Huan_Chuong_Lao_Dong_Hang_Ba', '2024-08-08', 'Ngoại Ngữ'),
-(177, 25, 'test', 1, 'Huan_Chuong_Lao_Dong_Hang_Nhi', '2024-08-24', 'Xây Dựng'),
-(178, 28, 'test', 1, 'Huan_Chuong_Lao_Dong_Hang_Nhi', '2024-08-24', 'Xây Dựng'),
-(179, 29, 'test', 1, 'Huan_Chuong_Lao_Dong_Hang_Nhi', '2024-08-24', 'Xây Dựng'),
-(180, 25, '12', 1, 'Hoàn Thành Xuất', '2024-07-31', 'Công Nghệ Thông Tin'),
-(181, 30, '12', 1, 'Hoàn Thành Xuất', '2024-07-31', 'Công Nghệ Thông Tin');
+(186, 25, 'test2', 1, 'Hoàn Thành Xuất Sắc', '2024-08-31', 'Xây Dựng'),
+(187, 28, 'test', 2, 'Hoàn Thành Xuất Sắc', '2024-08-31', 'Xây Dựng'),
+(188, 29, 'test', 2, 'Hoàn Thành Xuất Sắc', '2024-08-31', 'Xây Dựng'),
+(189, 30, 'test', 2, 'Hoàn Thành Xuất Sắc', '2024-08-31', 'Xây Dựng'),
+(191, 25, 'test1', 1, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-09-06', 'Kinh Tế'),
+(192, 28, 'test1', 1, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-09-06', 'Kinh Tế'),
+(193, 29, 'test1', 1, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-09-06', 'Kinh Tế'),
+(194, 30, 'test1', 1, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-09-06', 'Kinh Tế'),
+(202, 25, 'demo', 4, 'Huân Chương Lao Động Hạng Ba', '2024-09-05', 'Ngoại Ngữ'),
+(203, 28, 'demo', 1, 'Giấy Khen Hiệu Trưởng', '2024-09-05', 'Ngoại Ngữ'),
+(204, 29, 'demo', 3, 'Tập Thể Lao Động Tiên Tiến', '2024-09-05', 'Ngoại Ngữ'),
+(205, 30, 'demo', 3, 'Tập Thể Lao Động Tiên Tiến', '2024-09-05', 'Ngoại Ngữ'),
+(206, 25, 'test', 1, 'Tập Thể Lao Động Xuất Sắc', '2024-08-28', 'Ngoại Ngữ'),
+(207, 25, 'test', 1, 'Tập Thể Lao Động Xuất Sắc', '2024-08-28', 'Ngoại Ngữ'),
+(208, 28, 'test', 1, 'Tập Thể Lao Động Xuất Sắc', '2024-08-28', 'Ngoại Ngữ'),
+(209, 29, 'test', 1, 'Tập Thể Lao Động Xuất Sắc', '2024-08-28', 'Ngoại Ngữ'),
+(210, 30, 'test', 1, 'Tập Thể Lao Động Xuất Sắc', '2024-08-28', 'Ngoại Ngữ');
 
 -- --------------------------------------------------------
 
@@ -268,13 +261,13 @@ ALTER TABLE `thongtincanhan`
 -- AUTO_INCREMENT for table `danhgiacn`
 --
 ALTER TABLE `danhgiacn`
-  MODIFY `MaDGCN` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `MaDGCN` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `danhgiatt`
 --
 ALTER TABLE `danhgiatt`
-  MODIFY `MaDGTT` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=182;
+  MODIFY `MaDGTT` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
 
 --
 -- AUTO_INCREMENT for table `khoa`

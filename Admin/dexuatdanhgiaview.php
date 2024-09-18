@@ -2,13 +2,13 @@
 include('./danhgiaTT.php');
 $data = DanhgiaTT::laydexuatdanhgia($conn);
 $awardMap = array(
-    'TT_LAO_DONG_TIEN_TIEN'=>'Tập Thể Lao Động Tiên Tiến',
-    'TT_LAO_DONG_XS'=>'Tập Thể Lao Động Xuất Sắc',
-    'GK_Hieu_Truong'=>'Giấy Khen Hiệu Trưởng',
-    'BK_UBNDTP'=>'Bằng Khen UBND Thành Phố',
-    'BK_TTCP'=>'Bằng Khen Thủ Tướng Chính Phủ',
-    'Huan_Chuong_Lao_Dong_Hang_Ba'=>'Huân Chương Lao Động Hạng Ba',
-    'Huan_Chuong_Lao_Dong_Hang_Nhi'=>'Huân Chương Lao Động Hạng Nhì'
+    'Tập Thể Lao Động Tiên Tiến'=>'Tập Thể Lao Động Tiên Tiến',
+    'Tập Thể Lao Động Xuất Sắc'=>'Tập Thể Lao Động Xuất Sắc',
+    'Giấy Khen Hiệu Trưởng'=>'Giấy Khen Hiệu Trưởng',
+    'Bằng Khen UBND Thành Phố'=>'Bằng Khen UBND Thành Phố',
+    'Bằng Khen Thủ Tướng Chính Phủ'=>'Bằng Khen Thủ Tướng Chính Phủ',
+    'Huân Chương Lao Động Hạng Ba'=>'Huân Chương Lao Động Hạng Ba',
+    'Huân Chương Lao Động Hạng Nhì'=>'Huân Chương Lao Động Hạng Nhì'
 );
 
 
@@ -27,9 +27,16 @@ if (isset($_GET["message"])) {
 <?php
 }
 ?>
+<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Khoa'){?> 
     <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=dexuatkhenthuong"; ?>">Đề Xuất Khen Thưởng Tập Thể</a>
+<?php
+}
+?>
+<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Giảng Viên'){?> 
     <a class="btn btn-custom btn-custom-primary" href="#">Đề Xuất Khen Thưởng Cá Nhân</a>
-
+<?php
+}
+?>
 
 <style>
     .pagination {
@@ -159,13 +166,13 @@ if (isset($_GET["message"])) {
 
 <script>
     const awardMap = {
-        'TT_LAO_DONG_TIEN_TIEN': 'Tập Thể Lao Động Tiên Tiến',
-        'TT_LAO_DONG_XS': 'Tập Thể Lao Động Xuất Sắc',
-        'GK_Hieu_Truong': 'Giấy Khen Hiệu Trưởng',
-        'BK_UBNDTP': 'Bằng Khen UBND Thành Phố',
-        'BK_TTCP': 'Bằng Khen Thủ Tướng Chính Phủ',
-        'Huan_Chuong_Lao_Dong_Hang_Ba': 'Huân Chương Lao Động Hạng Ba',
-        'Huan_Chuong_Lao_Dong_Hang_Nhi': 'Huân Chương Lao Động Hạng Nhì'
+        'Tập Thể Lao Động Tiên Tiến': 'Tập Thể Lao Động Tiên Tiến',
+    'Tập Thể Lao Động Xuất Sắc': 'Tập Thể Lao Động Xuất Sắc',
+    'Giấy Khen Hiệu Trưởng': 'Giấy Khen Hiệu Trưởng',
+    'Bằng Khen UBND Thành Phố': 'Bằng Khen UBND Thành Phố',
+    'Bằng Khen Thủ Tướng Chính Phủ': 'Bằng Khen Thủ Tướng Chính Phủ',
+    'Huân Chương Lao Động Hạng Ba': 'Huân Chương Lao Động Hạng Ba',
+    'Huân Chương Lao Động Hạng Nhì': 'Huân Chương Lao Động Hạng Nhì'
     };
 
     // Fetch data based on the selected year

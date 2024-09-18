@@ -574,56 +574,56 @@ class DanhgiaTT {
                              SELECT 1 FROM danhgiatt dg2 
                              WHERE dg.MaKhoa = dg2.MaKhoa 
                              AND dg.Manam = dg2.Manam 
-                             AND dg2.DanhGia IN ('TT_LAO_DONG_TIEN_TIEN', 'TT_LAO_DONG_XS', 'GK_Hieu_Truong')
-                         ) THEN 'TT_LAO_DONG_TIEN_TIEN'
+                             AND dg2.DanhGia IN ('Tập Thể Lao Động Tiên Tiến', 'Tập Thể Lao Động Xuất Sắc', 'Giấy Khen Hiệu Trưởng')
+                         ) THEN 'Tập Thể Lao Động Tiên Tiến'
         
-                    WHEN dg.DanhGia = 'TT_LAO_DONG_TIEN_TIEN'
+                    WHEN dg.DanhGia = 'Tập Thể Lao Động Tiên Tiến'
                          AND NOT EXISTS (
                              SELECT 1 FROM danhgiatt dg2 
                              WHERE dg.MaKhoa = dg2.MaKhoa 
                              AND dg.Manam = dg2.Manam 
-                             AND dg2.DanhGia = 'TT_LAO_DONG_XS'
-                         ) THEN 'TT_LAO_DONG_XS'
+                             AND dg2.DanhGia = 'Tập Thể Lao Động Xuất Sắc'
+                         ) THEN 'Tập Thể Lao Động Xuất Sắc'
         
-                    WHEN dg.DanhGia = 'TT_LAO_DONG_TIEN_TIEN'
+                    WHEN dg.DanhGia = 'Tập Thể Lao Động Tiên Tiến'
                          AND NOT EXISTS (
                              SELECT 1 FROM danhgiatt dg2 
                              WHERE dg.MaKhoa = dg2.MaKhoa 
                              AND dg.Manam = dg2.Manam 
-                             AND dg2.DanhGia = 'GK_Hieu_Truong'
-                         ) THEN 'GK_Hieu_Truong'
+                             AND dg2.DanhGia = 'Giấy Khen Hiệu Trưởng'
+                         ) THEN 'Giấy Khen Hiệu Trưởng'
         
-                    WHEN dg.DanhGia IN ('TT_LAO_DONG_XS', 'GK_Hieu_Truong')
+                    WHEN dg.DanhGia IN ('Tập Thể Lao Động Xuất Sắc', 'Giấy Khen Hiệu Trưởng')
                          AND NOT EXISTS (
                              SELECT 1 FROM danhgiatt dg2 
                              WHERE dg.MaKhoa = dg2.MaKhoa 
                              AND dg.Manam = dg2.Manam 
-                             AND dg2.DanhGia = 'BK_UBNDTP'
-                         ) THEN 'BK_UBNDTP'
+                             AND dg2.DanhGia = 'Bằng Khen Ủy Ban Nhân Dân Thành Phố'
+                         ) THEN 'Bằng Khen Ủy Ban Nhân Dân Thành Phố'
         
-                    WHEN dg.DanhGia = 'BK_UBNDTP'
+                    WHEN dg.DanhGia = 'Bằng Khen Ủy Ban Nhân Dân Thành Phố'
                          AND NOT EXISTS (
                              SELECT 1 FROM danhgiatt dg2 
                              WHERE dg.MaKhoa = dg2.MaKhoa 
                              AND dg.Manam = dg2.Manam 
-                             AND dg2.DanhGia = 'BK_TTCP'
-                         ) THEN 'BK_TTCP'
+                             AND dg2.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
+                         ) THEN 'Bằng Khen Thủ Tướng Chính Phủ'
         
-                    WHEN dg.DanhGia = 'BK_TTCP'
+                    WHEN dg.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
                          AND NOT EXISTS (
                              SELECT 1 FROM danhgiatt dg2 
                              WHERE dg.MaKhoa = dg2.MaKhoa 
                              AND dg.Manam = dg2.Manam 
-                             AND dg2.DanhGia = 'Huan_Chuong_Lao_Dong_Hang_Ba'
-                         ) THEN 'Huan_Chuong_Lao_Dong_Hang_Ba'
+                            AND dg2.DanhGia = 'Huân Chương Lao Động Hạng Ba'
+                         ) THEN 'Huân Chương Lao Động Hạng Ba'
         
-                    WHEN dg.DanhGia = 'Huan_Chuong_Lao_Dong_Hang_Ba'
+                    WHEN dg.DanhGia = 'Huân Chương Lao Động Hạng Ba'
                          AND NOT EXISTS (
                              SELECT 1 FROM danhgiatt dg2 
                              WHERE dg.MaKhoa = dg2.MaKhoa 
                              AND dg.Manam = dg2.Manam 
-                             AND dg2.DanhGia = 'Huan_Chuong_Lao_Dong_Hang_Nhi'
-                         ) THEN 'Huan_Chuong_Lao_Dong_Hang_Nhi'
+                             AND dg2.DanhGia = 'Huân Chương Lao Động Hạng Nhì'
+                         ) THEN 'Huân Chương Lao Động Hạng Nhì'
         
                     ELSE NULL
                 END AS 'DeXuatKhenThuong'
