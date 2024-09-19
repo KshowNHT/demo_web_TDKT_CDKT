@@ -6,25 +6,33 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use PhpOffice\PhpSpreadsheet\Style\Border;
-use PhpOffice\PhpSpreadsheet\Style\Color;
 use PhpOffice\PhpSpreadsheet\Style\Fill;
-
-
 
 // Lấy dữ liệu từ bảng `danhgiatt`
 $sql = "SELECT * FROM danhgiatt d 
         INNER JOIN nam n ON d.Manam = n.Manam 
         INNER JOIN khoa k ON d.MaKhoa = k.MaKhoa 
-        WHERE 1=1";
+        WHERE d.DanhGia IN ('Tập Thể Lao Động Tiên Tiến', 'Tập Thể Lao Động Xuất Sắc', 'Giấy Khen Hiệu Trưởng', 'Bằng Khen Ủy Ban Nhân Dân Thành Phố', 'Bằng Khen Thủ Tướng Chính Phủ', 'Huân Chương Lao Động Hạng Ba', 'Huân Chương Lao Động Hạng Nhì')";
 $result = $conn->query($sql);
+
+// Khởi tạo các loại đánh giá có thể có
+$evaluationTypes = [
+    'Tập Thể Lao Động Tiên Tiến',
+    'Tập Thể Lao Động Xuất Sắc',
+    'Giấy Khen Hiệu Trưởng',
+    'Bằng Khen Ủy Ban Nhân Dân Thành Phố',
+    'Bằng Khen Thủ Tướng Chính Phủ',
+    'Huân Chương Lao Động Hạng Ba',
+    'Huân Chương Lao Động Hạng Nhì'
+];
 
 if ($result->num_rows > 0) {
     // Tạo file Excel mới
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
 
-    // Định nghĩa tiêu đề
-    $headers = [ 'Tên Khoa', 'Năm', 'Đánh Giá', 'Số Quyết Định'];
+    // Định nghĩa tiêu đề: Đơn Vị, Năm, và các loại đánh giá
+    $headers = array_merge(['Đơn Vị', 'Năm'], $evaluationTypes);
     $sheet->fromArray($headers, NULL, 'A1');
 
     // Định dạng tiêu đề
@@ -48,39 +56,31 @@ if ($result->num_rows > 0) {
             ],
         ],
     ];
-    $sheet->getStyle('A1:M1')->applyFromArray($styleArrayHeader);
 
-    // Định nghĩa màu nền cho tiêu đề "Khoa Tài chính - Kế toán"
-    $sheet->getStyle('A2:M2')->applyFromArray([
-        'fill' => [
-            'fillType' => Fill::FILL_SOLID,
-            'startColor' => [
-                'argb' => 'FFFF00', // Màu vàng
-            ],
-        ],
-    ]);
+    // Áp dụng định dạng cho tiêu đề
+    $sheet->getStyle('A1:' . chr(65 + count($headers) - 1) . '1')->applyFromArray($styleArrayHeader);
 
     // Thêm dữ liệu vào các dòng tiếp theo
     $rowNumber = 2;
     while ($row = $result->fetch_assoc()) {
-    
-        // Xử lý dữ liệu sau khi kiểm tra
+        // Xử lý dữ liệu
         $dataRow = [
             isset($row['TenKhoa']) ? $row['TenKhoa'] : '',   // Tên khoa
             isset($row['Nam']) ? $row['Nam'] : '',           // Năm
-            isset($row['DanhGia']) ? $row['DanhGia'] : '',   // Đánh giá
-            isset($row['SoQD']) ? $row['SoQD'] : '',         // Số quyết định
         ];
-    
+
+        // Kiểm tra và đánh dấu 'X' cho từng loại đánh giá
+        foreach ($evaluationTypes as $type) {
+            $dataRow[] = ($row['DanhGia'] === $type) ? 'X' : '';
+        }
+
         // Đưa dữ liệu vào Excel
         $sheet->fromArray($dataRow, NULL, 'A' . $rowNumber);
         $rowNumber++;
     }
-    
-    
 
     // Định dạng cho tất cả các ô (căn giữa, đường viền)
-    $sheet->getStyle('A2:M' . ($rowNumber - 1))->applyFromArray([
+    $sheet->getStyle('A2:' . chr(65 + count($headers) - 1) . ($rowNumber - 1))->applyFromArray([
         'alignment' => [
             'horizontal' => Alignment::HORIZONTAL_CENTER,
             'vertical' => Alignment::VERTICAL_CENTER,
@@ -93,13 +93,13 @@ if ($result->num_rows > 0) {
     ]);
 
     // Đặt kích thước cột tự động cho phù hợp với nội dung
-    foreach (range('A', 'M') as $columnID) {
+    foreach (range('A', chr(65 + count($headers) - 1)) as $columnID) {
         $sheet->getColumnDimension($columnID)->setAutoSize(true);
     }
 
     // Lưu file Excel
     $writer = new Xlsx($spreadsheet);
-    $writer->save('danhgia_output.xlsx');
+    $writer->save('KhenThuong_output.xlsx');
 
     echo "Xuất dữ liệu thành công!";
 } else {
