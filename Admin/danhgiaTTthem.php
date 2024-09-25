@@ -8,12 +8,22 @@
         $data->DanhGia = $_POST["DanhGia"];
         $data->Ngay = $_POST["Ngay"];
         $data->DonVi = $_POST["Ldonvi"];
-        $data->Themdanhgiatt($conn,$baseUrl);
+
+        // Kiểm tra và lấy file PDF từ biến $_FILES
+        if(isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
+            $data->FilePDF = $_FILES['file'];  // Gán file PDF vào thuộc tính FilePDF
+        } else {
+            $data->FilePDF = null; // Nếu không có file hoặc có lỗi khi upload
+        }
+
+        // Thực hiện thêm đánh giá vào database
+        $data->Themdanhgiatt($conn, $baseUrl);
     }
 
     $Lnam = Nam::layDanhSach($conn);
     $datakhoa = Khoa::layDanhSach($conn);
 ?>
+
 
 <style>
 body {
@@ -118,7 +128,7 @@ h2 {
 </style>
 
 <div class="container">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data"> <!-- Thêm enctype để có thể upload file -->
         <h2>Đánh Giá Thành Tích</h2>
 
         <div class="form-group">
@@ -162,6 +172,12 @@ h2 {
             </div>
         </div>
 
+        <!-- Thêm phần chọn file PDF -->
+        <div class="form-group">
+            <label for="file">Chọn file PDF:</label>
+            <input type="file" name="file" id="file" accept="application/pdf">
+        </div>
+
         <div class="form-group">
             <label>Chọn Khoa</label>
             <div class="form-check" id="khoa-list">
@@ -174,6 +190,7 @@ h2 {
         </div>
     </form>
 </div>
+
 
 
 <script>

@@ -2,61 +2,244 @@
 ob_start();
 session_start();
 ?>
-<h3>Chào <?php echo $_SESSION['VaiTro']; ?>: <?php echo $_SESSION['TenTk']; ?></h3>
-<ul class="nav nav-pills nav-stacked">
-    <li><a href="<?php echo "$baseUrl?p=trangchinh"; ?>" ><?php echo $pages['trangchinh'][0]; ?> <i class="fa-solid fa-house"></i></a></li>
-    <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Khoa'){?>
-        <li><a href="<?php echo "$baseUrl?p=danhgiaTT"; ?>"><?php echo $pages['danhgiaTT'][0]; ?> <i class="fa-solid fa-file-alt"></i></a></li>
-        <li><a href="<?php echo "$baseUrl?p=dexuatkhenthuong"; ?>"><?php echo $pages['dexuatkhenthuong'][0];?></a></li>
-        <ul>
-            <li><a href="<?php echo "$baseUrl?p=danhgiaTTtientienview"; ?>"><?php echo $pages['danhgiaTTtientienview'][0]; ?> <i class="fa-solid fa-medal"></i></a></li>
-            <li><a href="<?php echo "$baseUrl?p=danhgiaTTxs"; ?>"><?php echo $pages['danhgiaTTxs'][0]; ?> <i class="fa-solid fa-star"></i></a></li>
-            <li><a href="<?php echo "$baseUrl?p=danhgiaTThieutruong"; ?>"><?php echo $pages['danhgiaTThieutruong'][0]; ?> <i class="fa-solid fa-school"></i></a></li>
-            <li><a href="<?php echo "$baseUrl?p=danhgiaTThubndtp"; ?>"><?php echo $pages['danhgiaTThubndtp'][0]; ?> <i class="fa-solid fa-city"></i></a></li>
-            <li><a href="<?php echo "$baseUrl?p=danhgiaTTttcpview"; ?>"><?php echo $pages['danhgiaTTttcpview'][0]; ?> <i class="fa-solid fa-university"></i></a></li>
-            <li><a href="<?php echo "$baseUrl?p=danhgiaTThcldhbview"; ?>"><?php echo $pages['danhgiaTThcldhbview'][0]; ?> <i class="fa-solid fa-building"></i></a></li>
-            <li><a href="<?php echo "$baseUrl?p=danhgiaTThcldhnview"; ?>"><?php echo $pages['danhgiaTThcldhnview'][0]; ?> <i class="fa-solid fa-landmark"></i></i></a></li>
-        </ul>
-    <?php } ?>
-    <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Giảng Viên'){?>
-        <li><a href="<?php echo "$baseUrl?p=danhgiaCN"; ?>"><?php echo $pages['danhgiaCN'][0]; ?> <i class="fa-solid fa-chart-bar"></i></a></li>
-        <li><a href="<?php echo "$baseUrl?p=sangkien"; ?>"><?php echo $pages['sangkien'][0]; ?> <i class="fa-solid fa-ranking-star"></i></a></li>
-    <?php } ?>
-    <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị'){ ?>
-        <li><a href="<?php echo "$baseUrl?p=thongtincanhan"; ?>"><?php echo $pages['thongtincanhan'][0]; ?> <i class="fa-solid fa-users-line"></i></a></li>
-        <li><a href="<?php echo "$baseUrl?p=Khoa"; ?>"><?php echo $pages['Khoa'][0]; ?> <i class="fa-solid fa-hotel"></i></a></li>
-        <li><a href="<?php echo "$baseUrl?p=sangkien"; ?>"><?php echo $pages['sangkien'][0]; ?> <i class="fa-solid fa-ranking-star"></i></a></li>
-        <li><a href="<?php echo "$baseUrl?p=danhgiaTT"; ?>"><?php echo $pages['danhgiaTT'][0]; ?> <i class="fa-solid fa-file-alt"></i></a></li>
-        <li><a href="<?php echo "$baseUrl?p=danhgiaCN"; ?>"><?php echo $pages['danhgiaCN'][0]; ?> <i class="fa-solid fa-chart-bar"></i></a></li>
-        
-        
-        <ul>
-            <li> Quản Lý Khen Thưởng
-                <ul>
-                    <li>Cá Nhân
-                        <ul>
-                            <!-- Add subitems here if any -->
-                        </ul>
-                    </li>
-                    <li>Tập Thể
-                        <ul>
-                        <li><a href="<?php echo "$baseUrl?p=danhgiaTTtientienview";?>"><?php echo $pages['danhgiaTTtientienview'][0];?><i class="fa-solid fa-medal"></i></a></li>
-                        <li><a href="<?php echo "$baseUrl?p=danhgiaTTxs";?>"><?php echo $pages['danhgiaTTxs'][0];?><i class="fa-solid fa-star"></i></a></li>
-                        <li><a href="<?php echo "$baseUrl?p=danhgiaTThieutruong";?>"><?php echo $pages['danhgiaTThieutruong'][0];?><i class="fa-solid fa-school"></i></a></li>
-                        <li><a href="<?php echo "$baseUrl?p=danhgiaTThubndtp";?>"><?php echo $pages['danhgiaTThubndtp'][0];?><i class="fa-solid fa-city"></i></a></li>
-                        <li><a href="<?php echo "$baseUrl?p=danhgiaTTttcpview";?>"><?php echo $pages['danhgiaTTttcpview'][0];?><i class="fa-solid fa-university"></i></a></li>
-                        <li><a href="<?php echo "$baseUrl?p=danhgiaTThcldhbview";?>"><?php echo $pages['danhgiaTThcldhbview'][0];?><i class="fa-solid fa-building"></i></a></li>
-                        <li><a href="<?php echo "$baseUrl?p=danhgiaTThcldhnview";?>"><?php echo $pages['danhgiaTThcldhnview'][0];?><i class="fa-solid fa-landmark"></i></a></li>
-                        </ul>
-                    </li>
-                </ul>
+<div class="sidebar">
+<div class="user-panel mt-3 pb-3 mb-3 d-flex">
+    <div class="info">
+        <a href="#" class="d-block"> Chào <?php echo $_SESSION['VaiTro']; ?>: <?php echo $_SESSION['TenTk']; ?> </a>
+    </div>
+</div>      
+<nav class="mt-2">
+    <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Khoa'){?>
+            <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=danhgiaTT"; ?>" class="nav-link">
+                    <i class="fa-solid fa-file-alt"></i>
+                    <P> <?php echo $pages['danhgiaTT'][0]; ?> </P> 
+                </a>
             </li>
-        </ul>
-        <li><a href="<?php echo "$baseUrl?p=dexuatkhenthuong"; ?>"><?php echo $pages['dexuatkhenthuong'][0];?></a></li>
-        <li><a href="<?php echo "$baseUrl?p=Nam"; ?>"><?php echo $pages['Nam'][0];?> <i class="fa-solid fa-calendar"></i></a></li>
-        <li><a href="<?php echo "$baseUrl?p=taikhoan"; ?>"><?php echo $pages['taikhoan'][0]; ?> <i class="fa-solid fa-users"></i></a></li>
-    <?php } ?>
-    <li><a href="<?php echo "$baseUrl?p=taikhoansua"; ?>"><?php echo $pages['taikhoansua'][0]; ?> <i class="fa-solid fa-user-edit"></i></a></li>
-    <li><a href="<?php echo "$baseUrl?p=dangxuat"; ?>"><i class="fa-solid fa-sign-out-alt"></i></a></li>
-</ul>
+            <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=dexuatkhenthuong"; ?>" class="nav-link">
+                   <p> <?php echo $pages['dexuatkhenthuong'][0];?> </p>
+                </a>
+             </li>
+             <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                   <p> 
+                                        Tập Thể
+                                        <i class="fas fa-angle-left right"></i>
+                                   </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTTtientienview";?>" class="nav-link">
+                                        <i class="fa-solid fa-medal"></i>
+                                        <p><?php echo $pages['danhgiaTTtientienview'][0];?> </p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTTxs";?>" class="nav-link">
+                                        <i class="fa-solid fa-star"></i>
+                                        <p> <?php echo $pages['danhgiaTTxs'][0];?> </p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTThieutruong";?>" class="nav-link">
+                                        <i class="fa-solid fa-school"></i>
+                                        <p> <?php echo $pages['danhgiaTThieutruong'][0];?> </p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTThubndtp";?>" class="nav-link">
+                                        <i class="fa-solid fa-city"></i>
+                                        <p> <?php echo $pages['danhgiaTThubndtp'][0];?> </p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTTttcpview";?>" class="nav-link">
+                                        <i class="fa-solid fa-university"></i>
+                                        <p> <?php echo $pages['danhgiaTTttcpview'][0];?> </p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTThcldhbview";?>" class="nav-link">
+                                        <i class="fa-solid fa-building"></i>
+                                        <P> <?php echo $pages['danhgiaTThcldhbview'][0];?> </P>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTThcldhnview";?>" class="nav-link">
+                                        <i class="fa-solid fa-landmark"></i>
+                                        <p> <?php echo $pages['danhgiaTThcldhnview'][0];?> </p>
+                                    </a>
+                                </li>
+                                </ul>
+                            </li>
+        <?php } ?>
+        <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Giảng Viên'){?>
+            <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=danhgiaCN"; ?>" class="nav-link">
+                    <i class="fa-solid fa-chart-bar"></i>
+                   <p> <?php echo $pages['danhgiaCN'][0]; ?> </p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=sangkien"; ?>" class="nav-link">
+                    <i class="fa-solid fa-ranking-star"></i>
+                   <p> <?php echo $pages['sangkien'][0]; ?> </p> 
+                </a>
+            </li>
+            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                   <p> 
+                                        Cá Nhân 
+                                        <i class="fas fa-angle-left right"></i>
+                                   </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <!-- khen thưởng tập thể -->
+                                </ul>
+                            </li>
+        <?php } ?>
+        <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị'){ ?>
+            <li class="nav-item" >
+                <a href="<?php echo "$baseUrl?p=thongtincanhan"; ?>" class="nav-link">
+                    <i class="fa-solid fa-users-line"></i>
+                   <p> <?php echo $pages['thongtincanhan'][0]; ?></p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=Khoa"; ?>" class="nav-link">
+                    <i class="fa-solid fa-hotel"></i>
+                   <P> <?php echo $pages['Khoa'][0]; ?> </P>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=sangkien"; ?>" class="nav-link">
+                    <i class="fa-solid fa-ranking-star"></i>
+                   <p> <?php echo $pages['sangkien'][0]; ?> </p> 
+                </a>
+            </li>
+             <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=danhgiaTT"; ?>" class="nav-link">
+                    <i class="fa-solid fa-file-alt"></i>
+                    <P> <?php echo $pages['danhgiaTT'][0]; ?> </P> 
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=danhgiaCN"; ?>" class="nav-link">
+                    <i class="fa-solid fa-chart-bar"></i>
+                   <p> <?php echo $pages['danhgiaCN'][0]; ?> </p>
+                </a>
+            </li>
+            
+            <li class="nav-item">
+                <a href="#" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                 <p>
+                     Quản Lý Khen Thưởng
+                     <i class="fas fa-angle-left right"></i>
+                 </p>
+                </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                   <p> 
+                                        Cá Nhân 
+                                        <i class="fas fa-angle-left right"></i>
+                                   </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <!-- khen thưởng tập thể -->
+                                </ul>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                   <p> 
+                                        Tập Thể
+                                        <i class="fas fa-angle-left right"></i>
+                                   </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTTtientienview";?>" class="nav-link">
+                                        <i class="fa-solid fa-medal"></i>
+                                        <p><?php echo $pages['danhgiaTTtientienview'][0];?> </p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTTxs";?>" class="nav-link">
+                                        <i class="fa-solid fa-star"></i>
+                                        <p> <?php echo $pages['danhgiaTTxs'][0];?> </p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTThieutruong";?>" class="nav-link">
+                                        <i class="fa-solid fa-school"></i>
+                                        <p> <?php echo $pages['danhgiaTThieutruong'][0];?> </p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTThubndtp";?>" class="nav-link">
+                                        <i class="fa-solid fa-city"></i>
+                                        <p> <?php echo $pages['danhgiaTThubndtp'][0];?> </p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTTttcpview";?>" class="nav-link">
+                                        <i class="fa-solid fa-university"></i>
+                                        <p> <?php echo $pages['danhgiaTTttcpview'][0];?> </p>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTThcldhbview";?>" class="nav-link">
+                                        <i class="fa-solid fa-building"></i>
+                                        <P> <?php echo $pages['danhgiaTThcldhbview'][0];?> </P>
+                                    </a>
+                                </li>
+                                 <li class="nav-item">
+                                    <a href="<?php echo "$baseUrl?p=danhgiaTThcldhnview";?>" class="nav-link">
+                                        <i class="fa-solid fa-landmark"></i>
+                                        <p> <?php echo $pages['danhgiaTThcldhnview'][0];?> </p>
+                                    </a>
+                                </li>
+                                </ul>
+                            </li>
+                        </ul>
+            </li>
+             <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=dexuatkhenthuong"; ?>" class="nav-link">
+                   <p> <?php echo $pages['dexuatkhenthuong'][0];?> </p>
+                </a>
+             </li>
+             <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=Nam"; ?>" class="nav-link">
+                    <i class="fa-solid fa-calendar"></i>
+                    <p> <?php echo $pages['Nam'][0];?> </p> 
+                </a>
+            </li>
+             <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=taikhoan"; ?>" class="nav-link">
+                    <i class="fa-solid fa-users"></i>
+                    <p> <?php echo $pages['taikhoan'][0]; ?> </p> 
+                </a>
+            </li>
+        <?php } ?>
+         <li class="nav-item">
+            <a href="<?php echo "$baseUrl?p=taikhoansua"; ?>" class="nav-link">
+                <i class="fa-solid fa-user-edit"></i>
+               <p> <?php echo $pages['taikhoansua'][0]; ?> </p> 
+            </a>
+        </li>
+         <li class="nav-item">
+            <a href="<?php echo "$baseUrl?p=dangxuat"; ?>" class="nav-link">
+                <i class="fa-solid fa-sign-out-alt"></i>
+            </a>
+        </li>
+    </ul>
+</nav>
+</div>
 <?php ob_end_flush(); ?>

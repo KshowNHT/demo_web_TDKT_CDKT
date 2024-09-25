@@ -31,8 +31,8 @@ if ($result->num_rows > 0) {
     $spreadsheet = new Spreadsheet();
     $sheet = $spreadsheet->getActiveSheet();
 
-    // Định nghĩa tiêu đề: Đơn Vị, Năm, và các loại đánh giá
-    $headers = array_merge(['Đơn Vị', 'Năm'], $evaluationTypes);
+    // Định nghĩa tiêu đề: STT, Đơn Vị, Năm, và các loại đánh giá
+    $headers = array_merge(['STT', 'Đơn Vị', 'Năm'], $evaluationTypes);
     $sheet->fromArray($headers, NULL, 'A1');
 
     // Định dạng tiêu đề
@@ -62,9 +62,11 @@ if ($result->num_rows > 0) {
 
     // Thêm dữ liệu vào các dòng tiếp theo
     $rowNumber = 2;
+    $index = 1;  // Biến đếm cho Số thứ tự
     while ($row = $result->fetch_assoc()) {
         // Xử lý dữ liệu
         $dataRow = [
+            $index,  // Số thứ tự
             isset($row['TenKhoa']) ? $row['TenKhoa'] : '',   // Tên khoa
             isset($row['Nam']) ? $row['Nam'] : '',           // Năm
         ];
@@ -77,6 +79,7 @@ if ($result->num_rows > 0) {
         // Đưa dữ liệu vào Excel
         $sheet->fromArray($dataRow, NULL, 'A' . $rowNumber);
         $rowNumber++;
+        $index++;  // Tăng số thứ tự
     }
 
     // Định dạng cho tất cả các ô (căn giữa, đường viền)

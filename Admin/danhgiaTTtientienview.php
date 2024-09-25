@@ -142,6 +142,7 @@ if (isset($_GET["message"])) {
             <th>Đánh Giá</th>
             <th>Ngày</th>
             <th>Đơn Vị</th>
+            <th>File PDF</th>
         </tr>
     </thead>
     <tbody id="danhgiatt-table-body">
@@ -156,7 +157,16 @@ if (isset($_GET["message"])) {
                 <td><?php echo htmlspecialchars($item->Manam ?? "Cần Thêm Năm Cho $item->MaKhoa"); ?></td>
                 <td><?php echo htmlspecialchars($danhGia);?></td> 
                 <td><?php echo date_format(date_create($item->Ngay), "d/m/Y");?></td> 
-                <td><?php echo htmlspecialchars($item->DonVi); ?></td> 
+                <td><?php echo htmlspecialchars($item->DonVi); ?></td>
+                <td>
+                    <?php if ($item->FilePDF): ?>
+                        <a href="./<?php echo htmlspecialchars($item->FilePDF); ?>" target="_blank">
+                            Tải về / Xem PDF
+                        </a>
+                    <?php else: ?>
+                        Chưa có file
+                    <?php endif; ?>
+                </td>
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
                 <td>
                     <button class="btn btn-custom btn-custom-primary" onclick="handleAction('xetdanhgiaTTsua', '<?php echo $item->MaDGTT; ?>')">Sửa Đánh Giá</button>
@@ -219,54 +229,31 @@ if (isset($_GET["message"])) {
         tableBody.innerHTML = '';
 
         data.forEach(item => {
-            console.log('Phản hồi từ server:', item);
+
 
             const validDanhGia = ['Tập Thể Lao Động Tiên Tiến'];
             if (validDanhGia.includes(item.DanhGia)) {
                 const tr = document.createElement('tr');
-
-                const tdTenKhoa = document.createElement('td');
-                tdTenKhoa.textContent = item.TenKhoa;
-                tr.appendChild(tdTenKhoa);
-
-                const tdSoQD = document.createElement('td');
-                tdSoQD.textContent = item.SoQD || `Cần Thêm Số Quyết Định Cho ${item.MaKhoa}`;
-                tr.appendChild(tdSoQD);
-
-                const tdNam = document.createElement('td');
-                tdNam.textContent = item.Nam || `Cần Thêm Năm Cho ${item.nam}`;
-                tr.appendChild(tdNam);
-
-                // Kiểm tra xem danhGia có trong mảng ánh xạ không
-                const danhGia = awardMap[item.DanhGia] !== undefined ? awardMap[item.DanhGia] : item.DanhGia;
-                const tdDanhGia = document.createElement('td');
-                tdDanhGia.textContent = danhGia;
-                tr.appendChild(tdDanhGia);
-
-                const dateObj = new Date(item.Ngay);
-                const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth() + 1).toString().padStart(2, '0')}/${dateObj.getFullYear()}`;
-
-                const tdNgay = document.createElement('td');
-                tdNgay.textContent = formattedDate;
-                tr.appendChild(tdNgay);
-
-                const tdDonVi = document.createElement('td');
-                tdDonVi.textContent = item.DonVi;
-                tr.appendChild(tdDonVi);
+                tr.innerHTML = `
+                    <td>${item.TenKhoa}</td>
+                    <td>${item.SoQD || `Cần Thêm Số Quyết Định Cho ${item.MaKhoa}`}</td>
+                    <td>${item.Nam || `Cần Thêm Năm Cho ${item.MaKhoa}`}</td>
+                    <td>${item.DanhGia}</td>
+                    <td>${new Date(item.Ngay).toLocaleDateString('vi-VN')}</td>
+                    <td>${item.DonVi}</td>
+                    <td>${item.FilePDF ? `<a href='./${item.FilePDF}' target='_blank'>Tải về / Xem PDF</a>` : 'Chưa có file'}</td>
+                `;
+                tableBody.appendChild(tr);
 
                 if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
                     const tdAction = document.createElement('td');
-
                     const buttonSua = document.createElement('button');
                     buttonSua.className = 'btn btn-custom btn-custom-primary';
                     buttonSua.textContent = 'Sửa Đánh Giá';
                     buttonSua.onclick = () => handleAction('xetdanhgiaTTsua', item.MaDGTT);
                     tdAction.appendChild(buttonSua);
-
                     tr.appendChild(tdAction);
                 }
-
-                tableBody.appendChild(tr);
             }
         });
     } catch (error) {
@@ -306,6 +293,7 @@ async function searchData() {
                     <td>${item.DanhGia}</td>
                     <td>${new Date(item.Ngay).toLocaleDateString('vi-VN')}</td>
                     <td>${item.DonVi}</td>
+                    <td>${item.FilePDF ? `<a href='./${item.FilePDF}' target='_blank'>Tải về / Xem PDF</a>` : 'Chưa có file'}</td>
                 `;
                 tableBody.appendChild(tr);
                 if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
@@ -323,6 +311,7 @@ async function searchData() {
         });
     } catch (error) {
         console.error('Error fetching data:', error);
+        alert('Đã xảy ra lỗi khi tìm kiếm. Vui lòng thử lại.');
     }
 }
 

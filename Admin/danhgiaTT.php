@@ -12,6 +12,8 @@ class DanhgiaTT {
     public $Ngay;
     public $DonVi;
     public $DeXuatDanhGia;
+    public $FilePDF;
+
     
 
 
@@ -97,67 +99,98 @@ class DanhgiaTT {
         // Thông báo cần gửi
         $message = "Lỗi khi thêm đánh giá";
     
-        // tạo câu truy vấn để thêm đối tượng đánh giá cá nhân mới vào cơ sở dữ liệu
-        $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia, Ngay, DonVi) VALUES (?, ?, ?, ?, ?, ?)";
-        $stmt = $conn->prepare($sql);
+        // Kiểm tra file PDF
+        if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
+            $fileTmpPath = $_FILES['file']['tmp_name'];
+            $fileName = $_FILES['file']['name'];
+            $fileSize = $_FILES['file']['size'];
+            $fileType = $_FILES['file']['type'];
+            $fileNameCmps = explode(".", $fileName);
+            $fileExtension = strtolower(end($fileNameCmps));
     
-        // Kiểm tra nếu MaCN là một mảng (nhiều lựa chọn)
-        if (is_array($this->MaKhoa)) {
-            $successCount = 0;
-            foreach ($this->MaKhoa as $khoa) {
-                $stmt->bind_param("ssssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia, $this->Ngay, $this->DonVi);
-                if ($stmt->execute()) {
-                    if ($stmt->affected_rows > 0) {
-                        $successCount++;
+            // Kiểm tra định dạng file
+            $allowedfileExtensions = array('pdf');
+            if (in_array($fileExtension, $allowedfileExtensions)) {
+                // Đặt đường dẫn file lưu vào hệ thống 
+                $uploadFileDir = './uploads/';
+                $newFileName = time() . '_' . $fileName;
+                $dest_path = $uploadFileDir . $newFileName;
+    
+                // Di chuyển file từ thư mục tạm sang vị trí lưu trữ
+                if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                    $sql = "INSERT INTO danhgiatt (MaKhoa, SoQD, Manam, DanhGia, Ngay, DonVi, FilePDF) VALUES (?, ?, ?, ?, ?, ?, ?)";
+                    $stmt = $conn->prepare($sql);
+    
+                    // Kiểm tra nếu MaKhoa là một mảng (nhiều lựa chọn)
+                    if (is_array($this->MaKhoa)) {
+                        $successCount = 0;
+                        foreach ($this->MaKhoa as $khoa) {
+                            $stmt->bind_param("sssssss", $khoa, $this->SoQD, $this->Manam, $this->DanhGia, $this->Ngay, $this->DonVi, $dest_path);
+                            if ($stmt->execute()) {
+                                if ($stmt->affected_rows > 0) {
+                                    $successCount++;
+                                }
+                            }
+                        }
+                        if ($successCount > 0) {
+                            $message = "Đánh Giá thành công cho $successCount Tập Thể và đã lưu file PDF";
+                        } else {
+                            $message = "Không có thay đổi nào được thực hiện hoặc mã cá nhân không tồn tại";
+                        }
+                    } else {
+                        $stmt->bind_param("sssssss", $this->MaKhoa, $this->SoQD, $this->Manam, $this->DanhGia, $this->Ngay, $this->DonVi, $dest_path);
+                        if ($stmt->execute()) {
+                            if ($stmt->affected_rows > 0) {
+                                $message = "Đánh Giá $this->MaKhoa thành công và đã lưu file PDF";
+                            } else {
+                                $message = "Không có thay đổi nào được thực hiện hoặc mã Tập Thể không tồn tại";
+                            }
+                        } else {
+                            $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
+                        }
                     }
+    
+                    // Chuyển hướng sau khi thực hiện xong
+                    switch ($this->DanhGia) {
+                        case "Tập Thể Lao Động Tiên Tiến":
+                            header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
+                            break;
+                        case "Tập Thể Lao Động Xuất Sắc":
+                            header("Location: $baseUrl?p=danhgiaTTxs&message=" . urlencode($message));
+                            break;
+                        case "Giấy Khen Hiệu Trưởng":
+                            header("Location: $baseUrl?p=danhgiaTThieutruong&message=" . urlencode($message));
+                            break;
+                        case "Bằng Khen Ủy Ban Nhân Dân Thành Phố":
+                            header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
+                            break;
+                        case "Bằng Khen Thủ Tướng Chính Phủ":
+                            header("Location: $baseUrl?p=danhgiaTTttcpview&message=" . urlencode($message));
+                            break;
+                        case "Huân Chương Lao Động Hạng Ba":
+                            header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
+                            break;
+                        case "Huân Chương Lao Động Hạng Nhì":
+                            header("Location: $baseUrl?p=danhgiaTThcldhnview&message=" . urlencode($message));
+                            break;
+                        default:
+                            header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
+                    }
+    
+                } else {
+                    $message = "Lỗi khi di chuyển file PDF vào thư mục lưu trữ.";
                 }
-            }
-            if ($successCount > 0) {
-                $message = "Đánh Giá thành công cho $successCount Tập Thể";
             } else {
-                $message = "Không có thay đổi nào được thực hiện hoặc mã cá nhân không tồn tại";
+                $message = "Chỉ chấp nhận file PDF.";
             }
         } else {
-            $stmt->bind_param("ssiss", $this->MaKhoa, $this->Manam, $this->SoQD, $this->DanhGia , $this->Ngay, $this->DonVi);
-            if ($stmt->execute()) {
-                if ($stmt->affected_rows > 0) {
-                    $message = "Đánh Giá $this->MaKhoa thành công";
-                } else {
-                    $message = "Không có thay đổi nào được thực hiện hoặc mã Tập Thể không tồn tại";
-                }
-            } else {
-                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
-            }
+            $message = "Vui lòng chọn file PDF để tải lên.";
         }
     
-        // Chuyển hướng trang và truyền thông báo qua URL
-        switch ($this->DanhGia) {
-            case "Tập Thể Lao Động Tiên Tiến":
-                header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
-                break;
-            case "Tập Thể Lao Động Xuất Sắc":
-                header("Location: $baseUrl?p=danhgiaTTxs&message=" . urlencode($message));
-                break;
-            case "Giấy Khen Hiệu Trưởng":
-                header("Location: $baseUrl?p=danhgiaTThieutruong&message=" . urlencode($message));
-                break;
-            case "Bằng Khen Ủy Ban Nhân Dân Thành Phố":
-                header("Location: $baseUrl?p=danhgiaTThubndtp&message=" . urlencode($message));
-                break;
-            case "Bằng Khen Thủ Tướng Chính Phủ":
-                header("Location: $baseUrl?p=danhgiaTTttcpview&message=" . urlencode($message));
-                break;
-            case "Huân Chương Lao Động Hạng Ba":
-                header("Location: $baseUrl?p=danhgiaTThcldhbview&message=" . urlencode($message));
-                break;
-            case "Huân Chương Lao Động Hạng Nhì":
-                header("Location: $baseUrl?p=danhgiaTThcldhnview&message=" . urlencode($message));
-                break;
-            default:
-                header("Location: $baseUrl?p=danhgiaTT&message=" . urlencode($message));
-        }
-        exit();
+        // Trả về thông báo kết quả
+        return $message;
     }
+    
 
 
 
@@ -274,6 +307,7 @@ class DanhgiaTT {
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
                 $danhgiatt_obj->Ngay = $row["Ngay"];
                 $danhgiatt_obj->DonVi = $row["DonVi"];
+                $danhgiatt_obj->FilePDF = $row["FilePDF"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -309,6 +343,7 @@ class DanhgiaTT {
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
                 $danhgiatt_obj->Ngay = $row["Ngay"];
                 $danhgiatt_obj->DonVi = $row["DonVi"];
+                $danhgiatt_obj->FilePDF = $row["FilePDF"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -345,6 +380,7 @@ class DanhgiaTT {
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
                 $danhgiatt_obj->Ngay = $row["Ngay"];
                 $danhgiatt_obj->DonVi = $row["DonVi"];
+                $danhgiatt_obj->FilePDF = $row["FilePDF"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -380,6 +416,7 @@ class DanhgiaTT {
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
                 $danhgiatt_obj->Ngay = $row["Ngay"];
                 $danhgiatt_obj->DonVi = $row["DonVi"];
+                $danhgiatt_obj->FilePDF = $row["FilePDF"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -414,6 +451,7 @@ class DanhgiaTT {
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
                 $danhgiatt_obj->Ngay = $row["Ngay"];
                 $danhgiatt_obj->DonVi = $row["DonVi"];
+                $danhgiatt_obj->FilePDF = $row["FilePDF"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -450,6 +488,7 @@ class DanhgiaTT {
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
                 $danhgiatt_obj->Ngay = $row["Ngay"];
                 $danhgiatt_obj->DonVi = $row["DonVi"];
+                $danhgiatt_obj->FilePDF = $row["FilePDF"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -485,6 +524,7 @@ class DanhgiaTT {
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
                 $danhgiatt_obj->Ngay = $row["Ngay"];
                 $danhgiatt_obj->DonVi = $row["DonVi"];
+                $danhgiatt_obj->FilePDF = $row["FilePDF"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;
@@ -520,6 +560,7 @@ class DanhgiaTT {
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
                 $danhgiatt_obj->Ngay = $row["Ngay"];
                 $danhgiatt_obj->DonVi = $row["DonVi"];
+                $danhgiatt_obj->FilePDF = $row["FilePDF"];
 
 
                 $danhgiattList[] = $danhgiatt_obj;

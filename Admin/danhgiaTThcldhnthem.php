@@ -2,13 +2,22 @@
     include('./danhgiaTT.php');
     if(isset($_POST["SoQD"])){
         $data = new DanhgiaTT();
-        $data->MaKhoa = $_POST["MaKhoa"]; 
+        $data->MaKhoa = $_POST["MaKhoa"];  // This should be an array for multiple selections
         $data->SoQD = $_POST["SoQD"];
         $data->Manam = $_POST["Lnam"];
         $data->DanhGia = $_POST["DanhGia"];
         $data->Ngay = $_POST["Ngay"];
         $data->DonVi = $_POST["Ldonvi"];
-        $data->Themdanhgiatt($conn,$baseUrl);
+
+        // Kiểm tra và lấy file PDF từ biến $_FILES
+        if(isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
+            $data->FilePDF = $_FILES['file'];  // Gán file PDF vào thuộc tính FilePDF
+        } else {
+            $data->FilePDF = null; // Nếu không có file hoặc có lỗi khi upload
+        }
+
+        // Thực hiện thêm đánh giá vào database
+        $data->Themdanhgiatt($conn, $baseUrl);
     }
 
     $Lnam = Nam::layDanhSach($conn);
@@ -118,7 +127,7 @@ h2 {
 </style>
 
 <div class="container">
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <h2>Đánh Giá Thành Tích</h2>
 
         <div class="form-group">
@@ -163,6 +172,11 @@ h2 {
                     <?php } ?>
                 </select>
             </div>
+        </div>
+
+        <div class="form-group">
+            <label for="file">Chọn file PDF:</label>
+            <input type="file" name="file" id="file" accept="application/pdf">
         </div>
 
         <div class="form-group">
