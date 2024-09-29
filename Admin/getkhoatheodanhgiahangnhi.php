@@ -61,7 +61,11 @@ if(isset($_POST['year']) && isset($_POST['danhGia'])) {
     $(document).ready(function() {
         // Checkbox "Chọn tất cả"
         $('#checkAll').click(function() {
-            $('input[name="MaKhoa[]"]').prop('checked', this.checked);
+            if ($(this).is(':checked')) {
+                $('input[name="MaKhoa[]"]').prop('checked', true);
+            } else {
+                $('input[name="MaKhoa[]"]').prop('checked', false);
+            }
         });
     });
 </script>

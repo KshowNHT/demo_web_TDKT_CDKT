@@ -43,37 +43,6 @@ class DanhgiaTT {
         }
         return $danhgiattList;
     }
-
-    // Lấy danh sách đánh giá theo loại
-    private static function layDanhSachDanhGiaTheoLoai($conn, $id) {
-        $sql = "SELECT * FROM `danhgiatt` WHERE DanhGia = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("s", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $danhgiattList = array();
-
-        if ($result->num_rows > 0) {
-            while ($row = $result->fetch_assoc()) {
-                $khoa_obj = Khoa::layKhoa($conn, $row["MaKhoa"]);
-                $nam_obj = Nam::laynam($conn, $row["Manam"]);
-                if ($khoa_obj) {
-                    $danhgiatt_obj = new DanhgiaTT();
-                    $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
-                    $danhgiatt_obj->MaKhoa = $khoa_obj->TenKhoa;
-                    $danhgiatt_obj->SoQD = $row["SoQD"];
-                    $danhgiatt_obj->Manam = $nam_obj->Nam;
-                    $danhgiatt_obj->DanhGia = $row["DanhGia"];
-                    $danhgiatt_obj->Ngay = $row["Ngay"];
-                    $danhgiatt_obj->DonVi = $row["DonVi"];
-                    $danhgiattList[] = $danhgiatt_obj;
-                }
-            }
-        }
-        return $danhgiattList;
-    }
-
     
     // Lấy Đánh Giá Tập Thể theo ID
     public static function laydgtt($conn, $id) {
@@ -85,10 +54,11 @@ class DanhgiaTT {
         $danhgiatt_obj->MaDGTT = $row["MaDGTT"];
         $danhgiatt_obj->MaKhoa = Khoa::layKhoa($conn, $row["MaKhoa"]);
         $danhgiatt_obj->SoQD = $row["SoQD"];
-        $danhgiatt_obj->Manam = Nam::laynam($conn, $row["Manam"]);
+        $danhgiatt_obj->Manam = $row["Manam"];
         $danhgiatt_obj->DanhGia = $row["DanhGia"];
         $danhgiatt_obj->Ngay = $row["Ngay"];
         $danhgiatt_obj->DonVi = $row["DonVi"];
+        $danhgiatt_obj->FilePDF = $row["FilePDF"];
         return $danhgiatt_obj;
     }
 
@@ -193,13 +163,43 @@ class DanhgiaTT {
     
 
 
-
-    // Cập Nhật Đánh Giá Tập Thể
+    // Sửa Đánh Giá
     public function Suadgtt($conn, $baseUrl) {
-        $message = "Lỗi khi Sửa thể loại";
-        // tạo câu truy vấn 
-        $stmt = $conn->prepare("UPDATE danhgiatt SET SoQD = ?, Manam = ?, DanhGia = ?, Ngay = ?, DonVi = ? WHERE MaDGTT = ?");
-        $stmt->bind_param("sissss", $this->SoQD,$this->Manam,$this->DanhGia, $this->Ngay, $this->DonVi,$this->MaDGTT);
+        $message = "Lỗi khi sửa đánh giá tập thể";
+    
+        // Kiểm tra nếu có tải lên file PDF mới
+        if (isset($_FILES['FilePDF']) && $_FILES['FilePDF']['error'] == 0) {
+            // Thư mục lưu file PDF
+            $uploadDir = './uploads/';
+            // Kiểm tra nếu thư mục không tồn tại, thì tạo mới
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0777, true);
+            }
+            
+            $fileName = basename($_FILES['FilePDF']['name']);
+            $targetFile = $uploadDir . $fileName;
+    
+            // Kiểm tra loại file và kích thước trước khi upload
+            $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+            if ($fileType != "pdf") {
+                $message = "Chỉ chấp nhận file PDF";
+            } elseif ($_FILES['FilePDF']['size'] > 5000000) { // Giới hạn kích thước 5MB
+                $message = "File PDF quá lớn. Giới hạn là 5MB.";
+            } elseif (move_uploaded_file($_FILES['FilePDF']['tmp_name'], $targetFile)) {
+                // Lưu đường dẫn file PDF vào đối tượng
+                $this->FilePDF = $targetFile;
+            } else {
+                $message = "Lỗi khi tải file PDF";
+            }
+        } else {
+            // Nếu không có file mới, giữ nguyên giá trị cũ của file PDF
+            $this->FilePDF = $this->getCurrentPDF($conn);
+        }
+    
+        // Tạo câu truy vấn SQL
+        $stmt = $conn->prepare("UPDATE danhgiatt SET SoQD = ?, Manam = ?, DanhGia = ?, Ngay = ?, DonVi = ?, FilePDF = ? WHERE MaDGTT = ?");
+        $stmt->bind_param("sisssss", $this->SoQD, $this->Manam, $this->DanhGia, $this->Ngay, $this->DonVi, $this->FilePDF, $this->MaDGTT);
+    
         if ($stmt->execute()) {
             if ($stmt->affected_rows > 0) {
                 $message = "Sửa Đánh Giá $this->MaKhoa là $this->DanhGia thành công";
@@ -209,10 +209,9 @@ class DanhgiaTT {
         } else {
             $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
         }
-        
-
+    
         $stmt->close();
-
+    
         switch ($this->DanhGia) {
             case "Tập Thể Lao Động Tiên Tiến":
                 header("Location: $baseUrl?p=danhgiaTTtientienview&message=" . urlencode($message));
@@ -240,7 +239,28 @@ class DanhgiaTT {
         }
         exit();
     }
+    
 
+    // Hàm lấy FilePDF hiện tại
+    private function getCurrentPDF($conn) {
+        $FilePDF = null; 
+    
+        $stmt = $conn->prepare("SELECT FilePDF FROM danhgiatt WHERE MaDGTT = ?");
+        $stmt->bind_param("s", $this->MaDGTT);
+        $stmt->execute();
+        $stmt->bind_result($FilePDF);
+        $stmt->fetch();
+        $stmt->close();
+
+        if (empty($FilePDF)) {
+            $FilePDF = "Không có file PDF";
+        }
+    
+        $this->FilePDF = $FilePDF; 
+    
+        return $FilePDF;
+    }
+    
 
 
     // Xóa Đánh Giá

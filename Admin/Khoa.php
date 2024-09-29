@@ -204,10 +204,13 @@ class Khoa {
 
     //lấy Khoa chửa có đánh theo từng năm 
     public static function layDanhSachChuaDanhGiaTheoLoai($conn, $year, $danhGia) {
-        $sql = "SELECT k.MaKhoa, k.TenKhoa
-                FROM khoa k
-                LEFT JOIN danhgiatt d ON d.MaKhoa = k.MaKhoa AND d.Manam = ?
-                WHERE d.DanhGia IS NULL OR (d.DanhGia != ?)";
+        $sql = "SELECT k.*, n.Nam
+            FROM khoa k
+            INNER JOIN nam n ON n.Manam = ?
+            LEFT JOIN danhgiatt d ON d.MaKhoa = k.MaKhoa AND d.Manam = n.Manam
+            GROUP BY k.MaKhoa, n.Nam  
+            HAVING SUM(CASE WHEN d.DanhGia = ? THEN 1 ELSE 0 END) = 0
+            AND SUM(CASE WHEN d.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ') THEN 1 ELSE 0 END) > 0;";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("is", $year, $danhGia);
         $stmt->execute();

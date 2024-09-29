@@ -42,7 +42,7 @@
         'danhgiaTTttcpview' => array('Tập Thể BK TTCP', 'xetdanhgiaTTttcpview.php'),
         'danhgiaTThcldhbthem' => array('Xét Đánh Giá Tập Thể Huân Chương Lao Động Hạng Ba', 'xetdanhgiaTThcldhbthem.php'),
         'danhgiaTThcldhbview' => array('Tập Thể Huân Chương Lao Động Hạng Ba', 'xetdanhgiaTThcldhbview.php'),
-        'danhgiaTThcldhnthem' => array('Xét Đánh Giá Tập Thể Huân Chương Lao Động Hạng Nhì', 'danhgiaTThcldhnthem.php'),
+        'danhgiaTThcldhnthem' => array('Xét Đánh Giá Tập Thể', 'danhgiaTThcldhnthem.php'),
         'danhgiaTThcldhnview' => array(' Tập Thể Huân Chương Lao Động Hạng Nhì', 'danhgiaTThcldhnview.php'),
         // Đánh Giá Cá Nhân
         'danhgiaCN' => array('Quản lý Đánh Giá Cá Nhân', 'danhgiaCNview.php'),
@@ -55,10 +55,14 @@
         'sangkienth' => array('Thêm Sáng Kiến', 'sangkienth.php'),
         'sangkienxoa' => array('Xóa Sáng kiến', 'sangkienxoa.php'),
         'sangkienct' => array('Xem Chi Tiết Sáng kiến', 'sangkienct.php'),
+        // Khen Thưởng Kỷ Luật
+        'ktkyluat' => array('Quản lý Khen Thưởng Kỷ Luật', 'ktkyluatview.php'),
+        'ktkyluatsua' => array('Sửa Khen Thưởng Kỷ Luật', 'ktkyluatsua.php'),
+        'ktkyluatth' => array('Thêm Khen Thưởng Kỷ Luật', 'ktkyluatthem.php'),
+        'ktkyluatxoa' => array('Xóa Khen Thưởng Kỷ Luật', 'ktkyluatxoa.php'),
         
     );
     //connect các trang 
     include('../Admin/connectdb.php');
-    //include('../client/theme.php'); 
     include('../Admin/them.php')
 ?>

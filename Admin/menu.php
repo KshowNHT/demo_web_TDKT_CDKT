@@ -212,7 +212,8 @@ session_start();
             </li>
              <li class="nav-item">
                 <a href="<?php echo "$baseUrl?p=dexuatkhenthuong"; ?>" class="nav-link">
-                   <p> <?php echo $pages['dexuatkhenthuong'][0];?> </p>
+                    <i class="far fa-circle nav-icon"></i>
+                    <p> <?php echo $pages['dexuatkhenthuong'][0];?> </p>
                 </a>
              </li>
              <li class="nav-item">
@@ -228,6 +229,12 @@ session_start();
                 </a>
             </li>
         <?php } ?>
+        <li class="nav-item">
+            <a href="<?php echo "$baseUrl?p=ktkyluat"; ?>" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+               <p> <?php echo $pages['ktkyluat'][0]; ?> </p> 
+            </a>
+        </li>
          <li class="nav-item">
             <a href="<?php echo "$baseUrl?p=taikhoansua"; ?>" class="nav-link">
                 <i class="fa-solid fa-user-edit"></i>
