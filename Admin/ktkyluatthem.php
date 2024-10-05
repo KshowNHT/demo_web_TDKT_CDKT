@@ -13,7 +13,7 @@
         }
         $data->SoQuyetDinh = $_POST["SoQuyetDinh"];
         $data->NgayQuyetDinh = $_POST["Ngay"];
-        $data->DonVi = $_POST["Ldonvi"];
+        $data->MaKhoa = $_POST["MaKhoa"];
         $data->GhiChu = $_POST["GhiChu"];
 
         // Kiểm tra và lấy file PDF từ biến $_FILES
@@ -25,10 +25,13 @@
 
         // Thực hiện thêm đánh giá vào database
         $data->Themktkyluat($conn, $baseUrl);
+    }else{
+        $id = ($_GET["id"]);
+        $data = new thongtincanhan();
+        $data  =  $data->laythongtincanhan($conn,$id); 
+        $ten = $data->HoTen;
     }
-
     $Lnam = Nam::layDanhSach($conn);
-    $datakhoa = Khoa::layDanhSach($conn);
 ?>
 
 
@@ -138,6 +141,12 @@ h2 {
     <form method="post" enctype="multipart/form-data">
         <h2>Đánh Giá Thành Tích</h2>
 
+
+        <div class="form-group">
+            <label for="MaCN">Họ Và Tên: <?php echo $ten?></label>
+            <input type="hidden" class="form-control" id="MaCN" name="MaCN" value="<?php echo htmlspecialchars($data->MaCN); ?>" readonly>
+        </div>
+
         <div class="form-group">
             <label for="Lnam">Năm</label>
             <select class="form-control" name="Lnam" id="Lnam">
@@ -149,27 +158,14 @@ h2 {
         </div>
 
         <div class="form-group">
-            <label for="Lkhoa">Khoa</label>
-            <select class="form-control" name="Lkhoa" id="Lkhoa">
-                <option value="">Chọn Khoa</option>
-                <?php foreach($datakhoa as $L) { ?>
-                    <option value="<?php echo $L->MaKhoa; ?>"><?php echo $L->TenKhoa; ?></option>
-                <?php } ?>
-            </select>
+        <label for="MaKhoa">Đơn Vị: <?php echo isset($data->MaKhoa->TenKhoa) ? $data->MaKhoa->TenKhoa : 'Không xác định'; ?></label>
+        <input type="hidden" class="form-control" id="MaKhoa" name="MaKhoa" value="<?php echo htmlspecialchars($data->MaKhoa->MaKhoa); ?>" readonly>
+
         </div>
 
         <div class="form-group">
-            <label for="KhenThuong">Khen Thưởng</label>
-            <select class="form-control" name="KhenThuong" id="KhenThuong">
-            <option value="1">Đang Khen Thưởng</option>
-                <option value="Tập Thể Lao Động Tiên Tiến">Tập Thể Lao Động Tiên Tiến</option>
-                <option value="Tập Thể Lao Động Xuất Sắc">Tập Thể Lao Động Xuất Sắc</option>
-                <option value="Giấy Khen Hiệu Trưởng">Giấy Khen Hiệu Trưởng</option>
-                <option value="Bằng Khen Ủy Ban Nhân Dân Thành Phố">Bằng Khen Ủy Ban Nhân Dân Thành Phố</option>
-                <option value="Bằng Khen Thủ Tướng Chính Phủ">Bằng Khen Thủ Tướng Chính Phủ</option>
-                <option value="Huân Chương Lao Động Hạng Ba">Huân Chương Lao Động Hạng Ba</option>
-                <option value="Huân Chương Lao Động Hạng Nhì">Huân Chương Lao Động Hạng Nhì</option>
-            </select>
+        <label for="KhenThuong">Khen Thưởng:</label>
+        <input type="text" class="form-control" id="KhenThuong" name="KhenThuong">
         </div>
 
         <div class="form-group row">
@@ -194,15 +190,6 @@ h2 {
                 <label for="Ngay">Ngày :</label>
                 <input type="date" class="form-control" id="Ngay" name="Ngay">
             </div>
-            <div class="col">
-                <label for="Ldonvi">Đơn Vị</label>
-                <select class="form-control" name="Ldonvi" id="Ldonvi">
-                    <option value="">Đơn Vị</option>
-                    <?php foreach($datakhoa as $L) { ?>
-                        <option value="<?php echo $L->TenKhoa; ?>"><?php echo $L->TenKhoa; ?></option>
-                    <?php } ?>
-                </select>
-            </div>
         </div>
 
         <!-- Thêm phần chọn file PDF -->
@@ -217,34 +204,11 @@ h2 {
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Thông Tin Cá Nhân</label>
-            <div class="form-check" id="thongtin-list">
-                <h5>Vui Lòng Chọn Khoa Để Đánh Giá Các Cá Nhân</h5>
-            </div>
-        </div>
 
         <div class="form-group">
-            <input type="submit" class="btn btn-primary" value="Cập Nhật Đánh Giá">
+            <input type="submit" class="btn btn-primary" value="Thêm">
         </div>
     </form>
 </div>
 
 
-
-<script>
-$(document).ready(function(){
-        $('#Lkhoa').change(function(){
-            var khoa = $(this).val();
-            console.log('Dữ Liệu:', khoa);
-            $.ajax({
-                url: 'getthongtintheokhoa.php',
-                type: 'POST',
-                data: {khoa: khoa},
-                success: function(data) {
-                    $('#thongtin-list').html(data);
-                }
-            });
-        });
-    });
-</script>

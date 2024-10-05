@@ -154,7 +154,7 @@
                         SELECT d.MaCN 
                         FROM danhgiacn d 
                         WHERE d.MaKhoa = ? 
-                        AND d.DanhGia IN ('Hoàn Thành Xuất', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')
+                        AND d.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')
                     )";
             $stmt = $conn->prepare($sql);
             

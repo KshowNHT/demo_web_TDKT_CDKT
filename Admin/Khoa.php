@@ -38,6 +38,15 @@ class Khoa {
         return $Khoa;
     }
 
+    public static function lay($conn, $maKhoa) {
+        $sql = "SELECT * FROM Khoa WHERE MaKhoa = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $maKhoa);
+        $stmt->execute();
+        return $stmt->get_result()->fetch_object();
+    }
+    
+
     // Thêm Khoa
     public function ThemKhoa($conn, $baseUrl) {
         $message = "Lỗi khi thêm thể loại";

@@ -11,6 +11,14 @@ if (isset($_POST["SoQD"])) {
     $data->DanhGia = $_POST["DanhGia"];
     $data->Ngay = $_POST["Ngay"];
     $data->DonVi = $_POST["Ldonvi"];
+
+    // Kiểm tra và lấy file PDF từ biến $_FILES
+    if(isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
+        $data->FilePDF = $_FILES['file'];  // Gán file PDF vào thuộc tính FilePDF
+    } else {
+        $data->FilePDF = null; // Nếu không có file hoặc có lỗi khi upload
+    }
+    
     $data->Themdanhgiacn($conn, $baseUrl);
 } 
 $Lnam = Nam::layDanhSach($conn);
@@ -112,7 +120,7 @@ $datakhoa = Khoa::layDanhSach($conn);
 
 <div class="container">
     <?php if (isset($message)) { echo "<p style='color: red;'>$message</p>"; } ?>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
         <h2>Đánh Giá Thành Tích</h2>
         <div class="form-row">
     <div class="form-group">
@@ -171,6 +179,11 @@ $datakhoa = Khoa::layDanhSach($conn);
                     </select>
                 </div>
             </div>
+        </div>
+
+        <div class="form-group">
+            <label for="file">Chọn file PDF:</label>
+            <input type="file" name="file" id="file" accept="application/pdf">
         </div>
 
         <div class="form-group">

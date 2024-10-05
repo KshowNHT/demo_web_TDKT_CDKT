@@ -120,6 +120,7 @@ include('../Admin/chimuckhoa.php');
             <th>Đánh Giá</th>
             <th>Ngày</th>
             <th>Đơn Vị</th>
+            <th>File PDF</th>
         </tr>
     </thead>
     <tbody id="danhgia-table-body">
@@ -134,7 +135,16 @@ include('../Admin/chimuckhoa.php');
                 <td><?php echo $item->SoQD;?></td>
                 <td><?php echo $item->DanhGia;?></td>
                 <td><?php echo date_format(date_create($item->Ngay), "d/m/Y");?></td> 
-                <td><?php echo htmlspecialchars($item->DonVi); ?></td> 
+                <td><?php echo htmlspecialchars($item->DonVi); ?></td>
+                <td>
+                <?php if ($item->FilePDF): ?>
+                    <a href="./<?php echo htmlspecialchars($item->FilePDF); ?>" target="_blank">
+                        Tải về / Xem PDF
+                    </a>
+                <?php else: ?>
+                    Chưa có file
+                <?php endif; ?>
+            </td>
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
                 <td>
                 <button class="btn btn-custom btn-custom-primary" onclick="handleAction('danhgiaCNsua', '<?php echo $item->MaDGCN; ?>')">Sửa Đánh Giá</button>
@@ -200,39 +210,17 @@ async function fetchAndDisplayDanhGia(Manam) {
             const validDanhGia = ['Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá'];
             if (validDanhGia.includes(item.DanhGia)) {
                 const tr = document.createElement('tr');
-
-                const tdHoTen = document.createElement('td');
-                tdHoTen.textContent = item.HoTen ?? "Cập Nhật Họ Và Tên";
-                tr.appendChild(tdHoTen);
-
-                const tdKhoa = document.createElement('td');
-                tdKhoa.textContent = item.TenKhoa ?? "Cập Nhật Khoa";
-                tr.appendChild(tdKhoa);
-
-                const tdNam = document.createElement('td');
-                tdNam.textContent = item.Nam || `Cần Thêm Năm Cho ${item.MaKhoa}`;
-                tr.appendChild(tdNam);
-
-                const tdSoQD = document.createElement('td');
-                tdSoQD.textContent = item.SoQD ?? "Cần Thêm Số Quyết Định";
-                tr.appendChild(tdSoQD);
-
-                
-
-                const tdDanhGia = document.createElement('td');
-                tdDanhGia.textContent = item.DanhGia;
-                tr.appendChild(tdDanhGia);
-
-                const dateObj = new Date(item.Ngay);
-                const formattedDate = `${dateObj.getDate().toString().padStart(2, '0')}/${(dateObj.getMonth() + 1).toString().padStart(2, '0')}/${dateObj.getFullYear()}`;
-
-                const tdNgay = document.createElement('td');
-                tdNgay.textContent = formattedDate;
-                tr.appendChild(tdNgay);
-
-                const tdDonVi = document.createElement('td');
-                tdDonVi.textContent = item.DonVi;
-                tr.appendChild(tdDonVi);
+                tr.innerHTML = `
+                    <td>${item.HoTen}</td>
+					<td>${item.TenKhoa}</td>
+					<td>${item.Nam || `Cần Thêm Năm Cho ${item.MaKhoa}`}</td>
+                    <td>${item.SoQD || `Cần Thêm Số Quyết Định Cho ${item.MaKhoa}`}</td>
+                    <td>${item.DanhGia}</td>
+                    <td>${new Date(item.Ngay).toLocaleDateString('vi-VN')}</td>
+                    <td>${item.DonVi}</td>
+                    <td>${item.FilePDF ? `<a href='./${item.FilePDF}' target='_blank'>Tải về / Xem PDF</a>` : 'Chưa có file'}</td>
+                `;
+                tableBody.appendChild(tr);
 
                 if ('<?php echo isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] === 'Quản Trị' ? "true" : "false"; ?>' === 'true') {
                     const tdAction = document.createElement('td');

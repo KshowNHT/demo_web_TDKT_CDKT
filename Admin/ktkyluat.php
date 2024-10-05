@@ -10,7 +10,7 @@ class ktkyluat{
     public $Manam;
     public $SoQuyetDinh;
     public $NgayQuyetDinh;
-    public $DonVi;
+    public $MaKhoa;
     public $GhiChu;
     public $FilePDF;
 
@@ -33,6 +33,7 @@ class ktkyluat{
             while($row = $result->fetch_assoc()) {
                 $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
                 $nam_obj = Nam::laynam($conn,$row["Manam"]);
+                $khoa_obj = Khoa::layKhoa($conn,$row["MaKhoa"]);
                 $ktkyluat_obj = new ktkyluat();
                 $ktkyluat_obj->MaKTKL = $row["MaKTKL"];
                 $ktkyluat_obj->MaCN = $thongtincanhan_obj->HoTen;
@@ -41,7 +42,7 @@ class ktkyluat{
                 $ktkyluat_obj->KyLuat = $row["KyLuat"];
                 $ktkyluat_obj->SoQuyetDinh = $row["SoQuyetDinh"];
                 $ktkyluat_obj->NgayQuyetDinh = $row["NgayQuyetDinh"];
-                $ktkyluat_obj->DonVi = $row["DonVi"];
+                $ktkyluat_obj->MaKhoa = $khoa_obj->TenKhoa;
                 $ktkyluat_obj->GhiChu = $row["GhiChu"];
                 $ktkyluat_obj->FilePDF = $row["FilePDF"];
 
@@ -67,7 +68,7 @@ class ktkyluat{
         $ktkyluat_obj->KyLuat = $row["KyLuat"];
         $ktkyluat_obj->SoQuyetDinh = $row["SoQuyetDinh"];
         $ktkyluat_obj->NgayQuyetDinh = $row["NgayQuyetDinh"];
-        $ktkyluat_obj->DonVi = $row["DonVi"];
+        $ktkyluat_obj->MaKhoa = Khoa::layKhoa($conn,$row["MaKhoa"]);
         $ktkyluat_obj->GhiChu = $row["GhiChu"];
         $ktkyluat_obj->FilePDF = $row["FilePDF"];
         return $ktkyluat_obj;
@@ -97,13 +98,13 @@ class ktkyluat{
     
                 // Di chuyển file từ thư mục tạm sang vị trí lưu trữ
                 if (move_uploaded_file($fileTmpPath, $dest_path)) {
-                    $sql = "INSERT INTO khethuongkyluat (MaCN, KhenThuong, KyLuat, Manam, SoQuyetDinh, NgayQuyetDinh, DonVi, FilePDF, GhiChu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $sql = "INSERT INTO khethuongkyluat (MaCN, KhenThuong, KyLuat, Manam, SoQuyetDinh, NgayQuyetDinh, MaKhoa, FilePDF, GhiChu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     $stmt = $conn->prepare($sql);
     
                     if (is_array($this->MaCN)) {
                         $successCount = 0;
                         foreach ($this->MaCN as $ttcn) {
-                            $stmt->bind_param("sssssssss", $ttcn, $this->KhenThuong, $this->KyLuat, $this->Manam, $this->SoQuyetDinh, $this->NgayQuyetDinh, $this->DonVi ,$dest_path, $this->GhiChu);
+                            $stmt->bind_param("sssssssss", $ttcn, $this->KhenThuong, $this->KyLuat, $this->Manam, $this->SoQuyetDinh, $this->NgayQuyetDinh, $this->MaKhoa ,$dest_path, $this->GhiChu);
                             if ($stmt->execute()) {
                                 if ($stmt->affected_rows > 0) {
                                     $successCount++;
@@ -116,7 +117,7 @@ class ktkyluat{
                             $message = "Không có thay đổi nào được thực hiện hoặc mã cá nhân không tồn tại";
                         }
                     } else {
-                        $stmt->bind_param("sssssssss", $this->MaCN ,$this->KhenThuong, $this->KyLuat, $this->Manam, $this->SoQuyetDinh, $this->NgayQuyetDinh, $this->DonVi ,$dest_path, $this->GhiChu);
+                        $stmt->bind_param("sssssssss", $this->MaCN ,$this->KhenThuong, $this->KyLuat, $this->Manam, $this->SoQuyetDinh, $this->NgayQuyetDinh, $this->MaKhoa ,$dest_path, $this->GhiChu);
                         if ($stmt->execute()) {
                             if ($stmt->affected_rows > 0) {
                                 $message = "Đánh Giá $this->MaCN thành công và đã lưu file PDF";
@@ -179,8 +180,9 @@ class ktkyluat{
         }
     
         // Tạo câu truy vấn SQL
-        $stmt = $conn->prepare("UPDATE khethuongkyluat SET KhenThuong = ?, KyLuat = ?, Manam = ?, SoQuyetDinh = ?, NgayQuyetDinh = ?, DonVi = ?,FilePDF = ?, GhiChu = ? WHERE MaKTKL = ?");
-        $stmt->bind_param("sssssss", $this->KhenThuong, $this->KyLuat, $this->Manam, $this->SoQuyetDinh, $this->NgayQuyetDinh, $this->DonVi,$this->FilePDF, $this->GhiChu, $this->MaKTKL);
+        $stmt = $conn->prepare("UPDATE khethuongkyluat SET KhenThuong = ?, KyLuat = ?, Manam = ?, SoQuyetDinh = ?, NgayQuyetDinh = ?, MaKhoa = ?, FilePDF = ?, GhiChu = ? WHERE MaKTKL = ?");
+        $stmt->bind_param("sssssssss", $this->KhenThuong, $this->KyLuat, $this->Manam, $this->SoQuyetDinh, $this->NgayQuyetDinh, $this->MaKhoa, $this->FilePDF, $this->GhiChu, $this->MaKTKL);
+
     
         if ($stmt->execute()) {
             if ($stmt->affected_rows > 0) {

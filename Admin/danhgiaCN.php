@@ -11,6 +11,7 @@
         public $DanhGia;
         public $Ngay;
         public $DonVi;
+        public $FilePDF;
 
 
         public static function layDanhSach($conn) 
@@ -94,6 +95,7 @@
         $danhgiacn_obj->DanhGia = $row["DanhGia"];
         $danhgiacn_obj->Ngay = $row["Ngay"];
         $danhgiacn_obj->DonVi = $row["DonVi"];
+        $danhgiacn_obj->FilePDF = $row["FilePDF"];
         // Trả về đối tượng Đánh Giá Tập Thể
         return $danhgiacn_obj;
         }
@@ -103,39 +105,67 @@
         public function Themdanhgiacn($conn, $baseUrl) {
             // Thông báo cần gửi
             $message = "Lỗi khi thêm đánh giá";
+            // Kiểm tra file PDF
+            if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
+                $fileTmpPath = $_FILES['file']['tmp_name'];
+                $fileName = $_FILES['file']['name'];
+                $fileSize = $_FILES['file']['size'];
+                $fileType = $_FILES['file']['type'];
+                $fileNameCmps = explode(".", $fileName);
+                $fileExtension = strtolower(end($fileNameCmps));
         
-            // tạo câu truy vấn để thêm đối tượng đánh giá cá nhân mới vào cơ sở dữ liệu
-            $sql = "INSERT INTO danhgiacn (MaCN, MaKhoa, Manam, SoQD, DanhGia, Ngay, DonVi) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            $stmt = $conn->prepare($sql);
-        
-            // Kiểm tra nếu MaCN là một mảng (nhiều lựa chọn)
-            if (is_array($this->MaCN)) {
-                $successCount = 0;
-                foreach ($this->MaCN as $cn) {
-                    $stmt->bind_param("ssissss", $cn, $this->MaKhoa, $this->Manam, $this->SoQD, $this->DanhGia, $this->Ngay, $this->DonVi);
-                    if ($stmt->execute()) {
-                        if ($stmt->affected_rows > 0) {
-                            $successCount++;
+                // Kiểm tra định dạng file
+                $allowedfileExtensions = array('pdf');
+                if (in_array($fileExtension, $allowedfileExtensions)) {
+                    // Đặt đường dẫn file lưu vào hệ thống 
+                    $uploadFileDir = './uploads/';
+                    $newFileName = time() . '_' . $fileName;
+                    $dest_path = $uploadFileDir . $newFileName;
+            
+
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                // tạo câu truy vấn để thêm đối tượng đánh giá cá nhân mới vào cơ sở dữ liệu
+                $sql = "INSERT INTO danhgiacn (MaCN, MaKhoa, Manam, SoQD, DanhGia, Ngay, DonVi,FilePDF) VALUES (?, ?, ?, ?, ?, ?, ?,?)";
+                $stmt = $conn->prepare($sql);
+            
+                // Kiểm tra nếu MaCN là một mảng (nhiều lựa chọn)
+                if (is_array($this->MaCN)) {
+                    $successCount = 0;
+                    foreach ($this->MaCN as $cn) {
+                        $stmt->bind_param("ssssssss", $cn, $this->MaKhoa, $this->Manam, $this->SoQD, $this->DanhGia, $this->Ngay, $this->DonVi, $dest_path);
+                        if ($stmt->execute()) {
+                            if ($stmt->affected_rows > 0) {
+                                $successCount++;
+                            }
                         }
                     }
-                }
-                if ($successCount > 0) {
-                    $message = "Đánh Giá thành công cho $successCount cá nhân";
-                } else {
-                    $message = "Không có thay đổi nào được thực hiện hoặc mã cá nhân không tồn tại";
-                }
-            } else {
-                $stmt->bind_param("ssiss", $this->MaCN, $this->MaKhoa, $this->Manam, $this->SoQD, $this->DanhGia , $this->Ngay, $this->DonVi);
-                if ($stmt->execute()) {
-                    if ($stmt->affected_rows > 0) {
-                        $message = "Đánh Giá $this->MaCN thành công";
+                    if ($successCount > 0) {
+                        $message = "Đánh Giá thành công cho $successCount cá nhân";
                     } else {
                         $message = "Không có thay đổi nào được thực hiện hoặc mã cá nhân không tồn tại";
                     }
                 } else {
-                    $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
+                    $stmt->bind_param("ssiss", $this->MaCN, $this->MaKhoa, $this->Manam, $this->SoQD, $this->DanhGia , $this->Ngay, $this->DonVi, $dest_path);
+                    if ($stmt->execute()) {
+                        if ($stmt->affected_rows > 0) {
+                            $message = "Đánh Giá $this->MaCN thành công";
+                        } else {
+                            $message = "Không có thay đổi nào được thực hiện hoặc mã cá nhân không tồn tại";
+                        }
+                    } else {
+                        $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
+                    }
                 }
+            } else {
+                    $message = "Lỗi khi di chuyển file PDF vào thư mục lưu trữ.";
+                }
+            } else {
+                $message = "Chỉ chấp nhận file PDF.";
             }
+        } else {
+            $message = "Vui lòng chọn file PDF để tải lên.";
+        }
+
         
             // Chuyển hướng trang và truyền thông báo qua URL
             header("Location: $baseUrl?p=danhgiaCN&message=" . urlencode($message));
@@ -144,19 +174,76 @@
         
         //Cập Nhật Đánh Giá Tập Cá Nhân
         public function Suadgcn($conn,$baseUrl) {
-            // Thông báo cần gửi
-            $message = "Lỗi khi Sửa thể loại";
-            // Chuẩn bị câu truy vấn SQL để cập nhật thông tin 
-            $sql = "UPDATE danhgiacn SET SoQD = '$this->SoQD', DanhGia = '$this->DanhGia', Ngay = '$this->Ngay', DonVi = '$this->DonVi' WHERE MaDGCN = $this->MaDGCN";
+            $message = "Lỗi khi sửa đánh giá tập thể";
+    
+            // Kiểm tra nếu có tải lên file PDF mới
+            if (isset($_FILES['FilePDF']) && $_FILES['FilePDF']['error'] == 0) {
+                // Thư mục lưu file PDF
+                $uploadDir = './uploads/';
+                // Kiểm tra nếu thư mục không tồn tại, thì tạo mới
+                if (!is_dir($uploadDir)) {
+                    mkdir($uploadDir, 0777, true);
+                }
+                
+                $fileName = basename($_FILES['FilePDF']['name']);
+                $targetFile = $uploadDir . $fileName;
         
-            // thực thi câu truy vấn và kiểm tra kết quả
-            if (mysqli_query($conn, $sql)) {
-                $id = mysqli_insert_id($conn);
-                $message = "Cập Đánh Giá $this->MaCN thành công";
+                // Kiểm tra loại file và kích thước trước khi upload
+                $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+                if ($fileType != "pdf") {
+                    $message = "Chỉ chấp nhận file PDF";
+                } elseif ($_FILES['FilePDF']['size'] > 5000000) { // Giới hạn kích thước 5MB
+                    $message = "File PDF quá lớn. Giới hạn là 5MB.";
+                } elseif (move_uploaded_file($_FILES['FilePDF']['tmp_name'], $targetFile)) {
+                    // Lưu đường dẫn file PDF vào đối tượng
+                    $this->FilePDF = $targetFile;
+                } else {
+                    $message = "Lỗi khi tải file PDF";
+                }
+            } else {
+                // Nếu không có file mới, giữ nguyên giá trị cũ của file PDF
+                $this->FilePDF = $this->getCurrentPDF($conn);
             }
-             // Chuyển hướng trang và truyền thông báo qua URL
+        
+            // Tạo câu truy vấn SQL
+            $stmt = $conn->prepare("UPDATE danhgiacn SET SoQD = ?, Manam = ?, DanhGia = ?, Ngay = ?, DonVi = ?, FilePDF = ? WHERE MaDGCN = ?");
+            $stmt->bind_param("sisssss", $this->SoQD, $this->Manam, $this->DanhGia, $this->Ngay, $this->DonVi, $this->FilePDF, $this->MaDGCN);
+        
+            if ($stmt->execute()) {
+                if ($stmt->affected_rows > 0) {
+                    $message = "Sửa Đánh Giá $this->MaCN thành công";
+                } else {
+                    $message = "Không có thay đổi nào được thực hiện hoặc mã đánh giá không tồn tại";
+                }
+            } else {
+                $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
+            }
+        
+            $stmt->close();
+        
             header("Location: $baseUrl?p=danhgiaCN&message=" . urlencode($message));
             exit();
+        }
+
+
+        // Hàm lấy FilePDF hiện tại
+        private function getCurrentPDF($conn) {
+            $FilePDF = null; 
+        
+            $stmt = $conn->prepare("SELECT FilePDF FROM danhgiacn WHERE MaDGCN = ?");
+            $stmt->bind_param("s", $this->MaDGCN);
+            $stmt->execute();
+            $stmt->bind_result($FilePDF);
+            $stmt->fetch();
+            $stmt->close();
+
+            if (empty($FilePDF)) {
+                $FilePDF = "Không có file PDF";
+            }
+        
+            $this->FilePDF = $FilePDF; 
+        
+            return $FilePDF;
         }
 
         //Phân Trang Đánh Giá
@@ -189,6 +276,7 @@
                     $danhgiacn_obj->DanhGia = $row["DanhGia"];
                     $danhgiacn_obj->Ngay = $row["Ngay"];
                     $danhgiacn_obj->DonVi = $row["DonVi"];
+                    $danhgiacn_obj->FilePDF = $row["FilePDF"];
 
 
                     $danhgiacnList[] = $danhgiacn_obj;

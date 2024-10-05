@@ -109,12 +109,6 @@ if (isset($_GET["message"])) {
 
 </style>
 
-<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
-    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=ktkyluatth"; ?>">Thêm Khen Thưởng và kỷ Luật</a>
-<?php
-}
-?>
-
 <div class="search-box">
     <input type="text" id="searchSoQD" placeholder="Nhập Số Quyết Định" />
     <input type="text" id="searchTenKhoa" placeholder="Nhập Họ và Tên" />
@@ -154,12 +148,12 @@ if (isset($_GET["message"])) {
         ?>
             <tr>
                 <td scope="row"><?php echo htmlspecialchars($item->MaCN) ; ?></td>
-                <td><?php echo htmlspecialchars($KhenThuong);?></td>
-                <td><?php echo htmlspecialchars($KyLuat);?></td>
+                <td><?php echo htmlspecialchars($item->KhenThuong ?? "Không Có Khen Thưởng");?></td>
+                <td><?php echo nl2br(htmlspecialchars(str_replace(',', "\n", $item->KyLuat) ?? 'Không có Kỷ Luật')); ?></td>
                 <td><?php echo htmlspecialchars($item->Manam ?? "Cần Thêm Năm Cho $item->MaCN"); ?></td>
-                <td><?php echo htmlspecialchars($item->SoQD ?? "Cần Thêm Số Quyết Đinh Cho $item->MaCN");?></td>
+                <td><?php echo htmlspecialchars($item->SoQuyetDinh ?? "Cần Thêm Số Quyết Đinh Cho $item->MaCN");?></td>
                 <td><?php echo date_format(date_create($item->NgayQuyetDinh), "d/m/Y");?></td> 
-                <td><?php echo htmlspecialchars($item->DonVi); ?></td>
+                <td><?php echo htmlspecialchars($item->MaKhoa); ?></td>
                 <td>
                     <?php if ($item->FilePDF): ?>
                         <a href="./<?php echo htmlspecialchars($item->FilePDF); ?>" target="_blank">
@@ -172,7 +166,7 @@ if (isset($_GET["message"])) {
                 <td><?php echo htmlspecialchars($item->GhiChu); ?></td>
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
                 <td>
-                    <button class="btn btn-custom btn-custom-primary" onclick="handleAction('ktkyluatsua', '<?php echo $item->MaKTKL; ?>')">Sửa</button>
+                <button class="btn btn-custom btn-custom-primary" onclick="handleActionChange('ktkyluatsua', '<?php echo $item->MaKTKL; ?>', event)">Sửa</button>
                     <button class="btn btn-custom btn-custom-danger" onclick="handleActionChange('ktkyluatxoa', '<?php echo $item->MaKTKL; ?>', event)">Xóa</button>
                 </td>
                 <?php
@@ -326,10 +320,11 @@ async function searchData() {
 
 
 
-    function handleAction(action, id) {
-                if (action) {
-                    var baseUrl = "<?php echo $baseUrl; ?>";
-                    window.location.href = baseUrl + "?p=" + action + "&id=" + id;
-                }
-            }
+function handleActionChange(action, id, event) {
+    event.preventDefault(); // Ngăn không cho form submit hoặc hành động mặc định diễn ra
+    if (action) {
+        var baseUrl = "<?php echo $baseUrl; ?>";
+        window.location.href = baseUrl + "?p=" + action + "&id=" + id;
+    }
+    }
 </script>

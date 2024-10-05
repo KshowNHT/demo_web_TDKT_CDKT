@@ -20,10 +20,10 @@
 ?>
 
 <form method="post">
-            <div class="form-group">
-                <label for="MaCN">Họ Và Tên: <?php echo $ten?></label>
-                <input type="hidden" class="form-control" id="MaCN" name="MaCN" value="<?php echo htmlspecialchars($data->MaCN); ?>" readonly>
-            </div>
+    <div class="form-group">
+        <label for="MaCN">Họ Và Tên: <?php echo $ten?></label>
+        <input type="hidden" class="form-control" id="MaCN" name="MaCN" value="<?php echo htmlspecialchars($data->MaCN); ?>" readonly>
+    </div>
 
 
     <div class="form-group">

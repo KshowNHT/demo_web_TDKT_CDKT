@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3308
--- Thời gian đã tạo: Th9 27, 2024 lúc 07:01 AM
+-- Thời gian đã tạo: Th9 30, 2024 lúc 06:25 PM
 -- Phiên bản máy phục vụ: 10.4.24-MariaDB
 -- Phiên bản PHP: 8.1.6
 
@@ -55,6 +55,21 @@ CREATE TABLE `danhgiatt` (
   `FilePDF` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+--
+-- Đang đổ dữ liệu cho bảng `danhgiatt`
+--
+
+INSERT INTO `danhgiatt` (`MaDGTT`, `MaKhoa`, `SoQD`, `Manam`, `DanhGia`, `Ngay`, `DonVi`, `FilePDF`) VALUES
+(211, 32, 'test', 7, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/slide_chuong_1.pdf'),
+(212, 33, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/1727597631_ATBMTT_B3.pdf'),
+(213, 34, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/1727597631_ATBMTT_B3.pdf'),
+(214, 35, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/1727597631_ATBMTT_B3.pdf'),
+(215, 36, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/1727597631_ATBMTT_B3.pdf'),
+(216, 37, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/1727597631_ATBMTT_B3.pdf'),
+(217, 33, 'test', 16, 'Tập Thể Lao Động Tiên Tiến', '2024-08-28', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1727600760_slide_chuong_1.pdf'),
+(218, 34, 'test', 16, 'Tập Thể Lao Động Tiên Tiến', '2024-08-28', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1727600760_slide_chuong_1.pdf'),
+(219, 35, 'test', 16, 'Tập Thể Lao Động Tiên Tiến', '2024-08-28', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1727600760_slide_chuong_1.pdf');
+
 -- --------------------------------------------------------
 
 --
@@ -64,15 +79,25 @@ CREATE TABLE `danhgiatt` (
 CREATE TABLE `khethuongkyluat` (
   `MaKTKL` int(11) NOT NULL,
   `MaCN` int(11) NOT NULL,
-  `KhenThuong` varchar(30) NOT NULL,
+  `KhenThuong` varchar(30) NOT NULL DEFAULT 'Không Có Khen Thưởng',
   `KyLuat` varchar(30) NOT NULL,
   `Manam` int(20) NOT NULL,
   `SoQuyetDinh` varchar(30) NOT NULL,
   `NgayQuyetDinh` date NOT NULL,
-  `DonVi` varchar(30) NOT NULL,
+  `MaKhoa` int(20) NOT NULL,
   `FilePDF` varchar(50) NOT NULL,
   `GhiChu` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `khethuongkyluat`
+--
+
+INSERT INTO `khethuongkyluat` (`MaKTKL`, `MaCN`, `KhenThuong`, `KyLuat`, `Manam`, `SoQuyetDinh`, `NgayQuyetDinh`, `MaKhoa`, `FilePDF`, `GhiChu`) VALUES
+(4, 276, 'Giấy Khen Hiệu Trưởng', '', 7, 'test', '2024-09-05', 41, './uploads/1727680343_slide_chuong_1.pdf', 'test'),
+(5, 277, 'Tập Thể Lao Động Tiên Tiến', '', 16, 'test', '2024-09-05', 41, './uploads/1727680343_slide_chuong_1.pdf', 'test'),
+(6, 278, 'Tập Thể Lao Động Tiên Tiến', '', 16, 'test', '2024-09-05', 41, './uploads/1727680343_slide_chuong_1.pdf', 'test'),
+(7, 279, 'Tập Thể Lao Động Tiên Tiến', '', 16, 'test', '2024-09-05', 41, './uploads/1727680343_slide_chuong_1.pdf', 'test');
 
 -- --------------------------------------------------------
 
@@ -174,8 +199,7 @@ INSERT INTO `taikhoan` (`MaTk`, `TenTk`, `MatKhau`, `VaiTro`) VALUES
 (5, 'Thuan678', '$2y$10$PcKQeopNjJiFaME.1GOlQOyLAypMxfOeLWLgWL43JxBqRbIhWECEK', 'Khoa'),
 (6, 'giangvien', '$2y$10$NXemjRp4IZcz2wPth4ESv.qKOjjCz.90aZqFs5SxInNdeG3oIvsX.', 'Giảng Viên'),
 (7, 'quantri', '$2y$10$mse1.KlwY4dntjn4A6AZEer2S5Oy2zBfmndesRKrdCE2S0b/4zA16', 'Quản Trị'),
-(8, 'khoa', '$2y$10$20KJ/7mqGaacA4JJ2vylhOSja02BVmFk7R7u.hDVKq.YnABRl2Njm', 'Khoa'),
-(9, 'giangvien1', '$2y$10$rKkuex6uyyNIGT/MfeD/SOEoeENYrtCq3lWZtrcGPxHVNUnZo/4Pq', 'Giảng Viên');
+(8, 'khoa', '$2y$10$20KJ/7mqGaacA4JJ2vylhOSja02BVmFk7R7u.hDVKq.YnABRl2Njm', 'Khoa');
 
 -- --------------------------------------------------------
 
@@ -360,7 +384,8 @@ ALTER TABLE `danhgiatt`
 ALTER TABLE `khethuongkyluat`
   ADD PRIMARY KEY (`MaKTKL`),
   ADD KEY `fk_MaCn` (`MaCN`),
-  ADD KEY `fk_Manam` (`Manam`);
+  ADD KEY `fk_Manam` (`Manam`),
+  ADD KEY `fk_MaKhoa` (`MaKhoa`);
 
 --
 -- Chỉ mục cho bảng `khoa`
@@ -408,13 +433,13 @@ ALTER TABLE `danhgiacn`
 -- AUTO_INCREMENT cho bảng `danhgiatt`
 --
 ALTER TABLE `danhgiatt`
-  MODIFY `MaDGTT` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=211;
+  MODIFY `MaDGTT` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
 
 --
 -- AUTO_INCREMENT cho bảng `khethuongkyluat`
 --
 ALTER TABLE `khethuongkyluat`
-  MODIFY `MaKTKL` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `MaKTKL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT cho bảng `khoa`
@@ -469,6 +494,7 @@ ALTER TABLE `danhgiatt`
 --
 ALTER TABLE `khethuongkyluat`
   ADD CONSTRAINT `fk_MaCn` FOREIGN KEY (`MaCN`) REFERENCES `thongtincanhan` (`MaCN`) ON DELETE CASCADE,
+  ADD CONSTRAINT `fk_MaKhoa` FOREIGN KEY (`MaKhoa`) REFERENCES `khoa` (`MaKhoa`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_Manam` FOREIGN KEY (`Manam`) REFERENCES `nam` (`Manam`);
 
 --

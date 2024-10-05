@@ -8,16 +8,23 @@
         $data->Manam = $_POST["Lnam"];
         $data->DanhGia = $_POST["DanhGia"];
         $data->Ngay = $_POST["Ngay"];
+        if(isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
+            $data->FilePDF = $_FILES['file'];  // Gán file PDF vào thuộc tính FilePDF
+        } else {
+            $data->FilePDF = null; // Nếu không có file hoặc có lỗi khi upload
+        }
         $data->DonVi = $_POST["Ldonvi"];
+        
         $data->Suadgcn($conn,$baseUrl);
     }else{
         $id = ($_GET["id"]);
         $data = new DanhgiaCN();
         $data  =  $data->laydgcn($conn,$id);
+        $Lnam = Nam::layDanhSach($conn);
+        $datakhoa = Khoa::layDanhSach($conn);
     }
 
-    $Lnam = Nam::layDanhSach($conn);
-    $datakhoa = Khoa::layDanhSach($conn);
+    
     
 ?>
 
@@ -109,7 +116,7 @@ legend {
 
 </style>
 <div class="container">
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <div class="form-group">
         <label for="MaDGCN">Họ Và Tên: <?php echo $data->MaCN->HoTen ?></label>
         <input type="hidden" class="form-control" id="MaDGCN" name="MaDGCN" value ='<?php echo $data->MaDGCN ;?>'readonly>
@@ -119,19 +126,15 @@ legend {
             <label for="MaKhoa">Khoa: <?php echo $data->MaKhoa->TenKhoa ?></label>
     </div>
 
-    <div class="col">
-            <label >Năm</label>
-            <select  name="Lnam" id="Lnam" >
-            <?php
-            foreach($Lnam as $L ){
-            ?>
-            <option value="<?php echo $L->Manam ;?>" <?php echo ($L->Manam == $data->Manam) ? 'selected' : ''; ?>>
-                <?php echo $L->Nam ;?>
-            </option>
-        <?php
-            }
-        ?>
-        </select>
+        <div class="col">
+                <label >Năm</label>
+                <select name="Lnam" id="Lnam">
+                    <?php foreach($Lnam as $L) { ?>
+                        <option value="<?php echo $L->Manam; ?>" <?php echo ($L->Manam == $data->Manam) ? 'selected' : ''; ?>>
+                            <?php echo $L->Nam; ?>
+                        </option>
+                    <?php } ?>
+                </select>
         </div>
 
         <div class="form-group">
@@ -169,6 +172,18 @@ legend {
         </select>
     </div>
     </div>
+    
+    <div class="form-group">
+        <label for="FilePDF">Tải Lên File PDF:</label>
+        <input type="file" class="form-control" id="FilePDF" name="FilePDF">
+    </div>
+
+    <?php if (!empty($data->FilePDF)) { ?>
+        <div class="form-group">
+            <label for="CurrentFilePDF">File PDF Hiện Tại:</label>
+            <a href="<?php echo $data->FilePDF; ?>" target="_blank">Xem File PDF</a>
+        </div>
+    <?php } ?>
 
         
     <div class="form-group">

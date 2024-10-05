@@ -9,7 +9,7 @@
         $data->Manam = $_POST["Lnam"];
         $data->GhiChu = $_POST["GhiChu"];
         $data->NgayQuyetDinh = $_POST["Ngay"];
-        $data->DonVi = $_POST["Ldonvi"];
+        $data->MaKhoa = $_POST["MaKhoa"];
 
         if(isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
             $data->FilePDF = $_FILES['file'];  // Gán file PDF vào thuộc tính FilePDF
@@ -138,18 +138,8 @@ legend {
         </div>
 
         <div class="form-group">
-            <label >Đánh Giá</label>
-            <select name="KhenThuong" id="KhenThuong">
-            <option value="Chưa Đánh Giá" <?php echo ($data->KhenThuong == 'Chưa Đánh Giá') ? 'selected' : ''; ?>>Chưa Đánh Giá</option>
-                <option value="Tập Thể Lao Động Tiên Tiến" <?php echo ($data->KhenThuong == 'Tập Thể Lao Động Tiên Tiến') ? 'selected' : ''; ?>>Lao Đông Tiên Tiến</option>
-                <option value="Tập Thể Lao Động Xuất Sắc" <?php echo ($data->KhenThuong == 'Tập Thể Lao Động Xuất Sắc') ? 'selected' : ''; ?>>Lao Đông Xuất Sắc</option>
-                <option value="Giấy Khen Hiệu Trưởng" <?php echo ($data->KhenThuong == 'Giấy Khen Hiệu Trưởng') ? 'selected' : ''; ?>>Giấy Khen Hiệu Trưởng</option>
-                <option value="Bằng Khen Ủy Ban Nhân Dân Thành Phố" <?php echo ($data->KhenThuong == 'Bằng Khen Ủy Ban Nhân Dân Thành Phố') ? 'selected' : ''; ?>>Bằng Khen UBND Thành Phố</option>
-                <option value="Bằng Khen Thủ Tướng Chính Phủ" <?php echo ($data->KhenThuong == 'Bằng Khen Thủ Tướng Chính Phủ') ? 'selected' : ''; ?>>Bằng Khen Thủ Tướng Chính Phủ</option>
-                <option value="Huân Chương Lao Động Hạng Ba" <?php echo ($data->KhenThuong == 'Huân Chương Lao Động Hạng Ba') ? 'selected' : ''; ?>>Huân Chương Lao Động Hạng Ba</option>
-                <option value="Huân Chương Lao Động Hạng Nhì" <?php echo ($data->KhenThuong == 'Huân Chương Lao Động Hạng Nhì') ? 'selected' : ''; ?>>Huân Chương Lao Động Hạng Nhì</option>
-
-            </select>
+        <label for="KhenThuong">Khen Thưởng: </label>
+        <input type="text" class="form-control" id="KhenThuong" name="KhenThuong" value="<?php echo htmlspecialchars($data->KhenThuong); ?>">
         </div>
 
         <div class="form-group">
@@ -163,7 +153,7 @@ legend {
         </div>
 
 
-        <div class="form-group row">
+    <div class="form-group row">
         <div class="col">
             <label for="SoQD">Số Quyết Định: </label>
             <input type="text" class="form-control" id="SoQD" name="SoQD" value ='<?php echo $data->SoQuyetDinh; ?>'>
@@ -179,15 +169,8 @@ legend {
         </div>
 
         <div class="col">
-            <label for="Ldonvi">Đơn Vị</label>
-            <select class="form-control" name="Ldonvi" id="Ldonvi">
-                <option value="">Chọn Đơn Vị</option>
-                <?php foreach($datakhoa as $L) { ?>
-                    <option value="<?php echo $L->TenKhoa; ?>" <?php echo ($L->TenKhoa == $data->DonVi) ? 'selected' : ''; ?>>
-                        <?php echo $L->TenKhoa; ?>
-                    </option>
-                <?php } ?>
-            </select>
+            <label for="MaKhoa">Đơn Vị: <?php echo $data->MaKhoa->TenKhoa ?></label>
+            <input type="hidden" class="form-control" id="MaKhoa" name="MaKhoa" value ='<?php echo $data->MaKhoa->MaKhoa; ?>' readonly>
         </div>
     </div>
     <div class="form-group">
