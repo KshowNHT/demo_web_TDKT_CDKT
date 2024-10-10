@@ -97,6 +97,12 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
 include('../Admin/chimuckhoa.php');
 ?>
 
+<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?>
+<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=khenthuongth"; ?>">Xét Đánh Giá</a>
+<?php
+}
+?>
+
 <div class="combobox">
     <label for="options">Chọn một tùy chọn:</label>
     <select name="options" id="options" onchange="fetchAndDisplayDanhGia(this.value)">

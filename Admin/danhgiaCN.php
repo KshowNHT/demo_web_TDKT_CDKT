@@ -156,6 +156,40 @@
                         $message = "Lỗi khi thực hiện câu lệnh: " . $stmt->error;
                     }
                 }
+
+                // Chuyển hướng sau khi thực hiện xong
+                switch ($this->DanhGia) {
+                    case "Lao Động Tiên Tiến":
+                        header("Location: $baseUrl?p=khenthuongtt&message=" . urlencode($message));
+                        break;
+                    case "Giấy Khen Hiệu Trưởng":
+                        header("Location: $baseUrl?p=khenthuonghieutruong&message=" . urlencode($message));
+                        break;
+                    case "Chiến Sĩ Thi Đua Cơ Sở":
+                        header("Location: $baseUrl?p=khenthuongcstdcs&message=" . urlencode($message));
+                        break;
+                    case "Chiến Sĩ Thi Đua Thành Phố":
+                        header("Location: $baseUrl?p=khenthuongcstdtp&message=" . urlencode($message));
+                        break;
+                    case "Chiến Sĩ Thi Đua Toàn Quốc":
+                        header("Location: $baseUrl?p=khenthuongcstdtq&message=" . urlencode($message));
+                        break;
+                    case "Bằng Khen Ủy Ban Nhân Thành Phố":
+                        header("Location: $baseUrl?p=khenthuongubnd&message=" . urlencode($message));
+                        break;
+                    case "Bằng Khen Thủ Tướng Chính Phủ":
+                        header("Location: $baseUrl?p=khenthuongbkttcp&message=" . urlencode($message));
+                        break;
+                    case "Huân Chương Lao Động Hạng Ba":
+                        header("Location: $baseUrl?p=khenthuonghb&message=" . urlencode($message));
+                        break;
+                    case "Huân Chương Lao Động Hạng Nhì":
+                        header("Location: $baseUrl?p=khenthuonghn&message=" . urlencode($message));
+                        break;
+                    default:
+                        header("Location: $baseUrl?p=danhgiaCN&message=" . urlencode($message));
+                }
+
             } else {
                     $message = "Lỗi khi di chuyển file PDF vào thư mục lưu trữ.";
                 }
@@ -165,11 +199,7 @@
         } else {
             $message = "Vui lòng chọn file PDF để tải lên.";
         }
-
-        
-            // Chuyển hướng trang và truyền thông báo qua URL
-            header("Location: $baseUrl?p=danhgiaCN&message=" . urlencode($message));
-            exit();
+        return $message;
         }
         
         //Cập Nhật Đánh Giá Tập Cá Nhân
@@ -285,6 +315,358 @@
                 return $danhgiacnList;
         }
 
+        //Phân Trang Đánh Giá Lao Động Tiên Tiến
+        public static function layTongSoDanhGiatt($conn) {
+            $sql = "SELECT COUNT(*) FROM danhgiacn WHERE DanhGia IN ('Lao Động Tiên Tiến')";
+            $result = $conn->query($sql);
+            $row = $result->fetch_row();
+            return $row[0];
+        }
+
+        public static function layDanhGiaTTPhanTrang($conn, $startFrom, $recordsPerPage) {
+            $sql = "SELECT * FROM danhgiacn WHERE DanhGia IN ('Lao Động Tiên Tiến') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
+            $result = $conn->query($sql);
+
+            $danhgiacnList = array();
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    // Đánh Giá Cá Nhân vào danh sách
+                    // Tạo đối tượng Khoa và đưa vào mảng
+                    $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
+                    $nam_obj = Nam::laynam($conn,$row["Manam"]);
+                    $khoa_obj = Khoa::layKhoa($conn,$row["MaKhoa"]);
+                    $danhgiacn_obj = new DanhgiaCN();
+                    $danhgiacn_obj->MaDGCN = $row["MaDGCN"];
+                    $danhgiacn_obj->MaCN = $thongtincanhan_obj->HoTen;
+                    $danhgiacn_obj->MaKhoa = $khoa_obj->TenKhoa;
+                    $danhgiacn_obj->Manam = $nam_obj->Nam;
+                    $danhgiacn_obj->SoQD = $row["SoQD"];
+                    $danhgiacn_obj->DanhGia = $row["DanhGia"];
+                    $danhgiacn_obj->Ngay = $row["Ngay"];
+                    $danhgiacn_obj->DonVi = $row["DonVi"];
+                    $danhgiacn_obj->FilePDF = $row["FilePDF"];
+
+
+                    $danhgiacnList[] = $danhgiacn_obj;
+                }
+                }
+                return $danhgiacnList;
+        }
+
+        //Phân Trang Đánh Giá Giấy Khen Hiệu Trưởng
+        public static function layTongSoDanhGiahieutruong($conn) {
+            $sql = "SELECT COUNT(*) FROM danhgiacn WHERE DanhGia IN ('Giấy Khen Hiệu Trưởng')";
+            $result = $conn->query($sql);
+            $row = $result->fetch_row();
+            return $row[0];
+        }
+
+        public static function layDanhHTGiaPhanTrang($conn, $startFrom, $recordsPerPage) {
+            $sql = "SELECT * FROM danhgiacn WHERE DanhGia IN ('Giấy Khen Hiệu Trưởng') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
+            $result = $conn->query($sql);
+
+            $danhgiacnList = array();
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    // Đánh Giá Cá Nhân vào danh sách
+                    // Tạo đối tượng Khoa và đưa vào mảng
+                    $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
+                    $nam_obj = Nam::laynam($conn,$row["Manam"]);
+                    $khoa_obj = Khoa::layKhoa($conn,$row["MaKhoa"]);
+                    $danhgiacn_obj = new DanhgiaCN();
+                    $danhgiacn_obj->MaDGCN = $row["MaDGCN"];
+                    $danhgiacn_obj->MaCN = $thongtincanhan_obj->HoTen;
+                    $danhgiacn_obj->MaKhoa = $khoa_obj->TenKhoa;
+                    $danhgiacn_obj->Manam = $nam_obj->Nam;
+                    $danhgiacn_obj->SoQD = $row["SoQD"];
+                    $danhgiacn_obj->DanhGia = $row["DanhGia"];
+                    $danhgiacn_obj->Ngay = $row["Ngay"];
+                    $danhgiacn_obj->DonVi = $row["DonVi"];
+                    $danhgiacn_obj->FilePDF = $row["FilePDF"];
+
+
+                    $danhgiacnList[] = $danhgiacn_obj;
+                }
+                }
+                return $danhgiacnList;
+        }
+
+
+        //Phân Trang Đánh Giá Chiến Sĩ Thi Đua Cơ Sở
+        public static function layTongSoDanhGiaCS($conn) {
+            $sql = "SELECT COUNT(*) FROM danhgiacn WHERE DanhGia IN ('Chiến Sĩ Thi Đua Cơ Sở')";
+            $result = $conn->query($sql);
+            $row = $result->fetch_row();
+            return $row[0];
+        }
+
+        public static function layDanhGiaCSPhanTrang($conn, $startFrom, $recordsPerPage) {
+            $sql = "SELECT * FROM danhgiacn WHERE DanhGia IN ('Chiến Sĩ Thi Đua Cơ Sở') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
+            $result = $conn->query($sql);
+
+            $danhgiacnList = array();
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    // Đánh Giá Cá Nhân vào danh sách
+                    // Tạo đối tượng Khoa và đưa vào mảng
+                    $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
+                    $nam_obj = Nam::laynam($conn,$row["Manam"]);
+                    $khoa_obj = Khoa::layKhoa($conn,$row["MaKhoa"]);
+                    $danhgiacn_obj = new DanhgiaCN();
+                    $danhgiacn_obj->MaDGCN = $row["MaDGCN"];
+                    $danhgiacn_obj->MaCN = $thongtincanhan_obj->HoTen;
+                    $danhgiacn_obj->MaKhoa = $khoa_obj->TenKhoa;
+                    $danhgiacn_obj->Manam = $nam_obj->Nam;
+                    $danhgiacn_obj->SoQD = $row["SoQD"];
+                    $danhgiacn_obj->DanhGia = $row["DanhGia"];
+                    $danhgiacn_obj->Ngay = $row["Ngay"];
+                    $danhgiacn_obj->DonVi = $row["DonVi"];
+                    $danhgiacn_obj->FilePDF = $row["FilePDF"];
+
+
+                    $danhgiacnList[] = $danhgiacn_obj;
+                }
+                }
+                return $danhgiacnList;
+        }
+
+        //Phân Trang Đánh Giá Chiến Sĩ Thi Đua Thành Phố
+        public static function layTongSoDanhGiaTP($conn) {
+            $sql = "SELECT COUNT(*) FROM danhgiacn WHERE DanhGia IN ('Chiến Sĩ Thi Đua Thành Phố')";
+            $result = $conn->query($sql);
+            $row = $result->fetch_row();
+            return $row[0];
+        }
+
+        public static function layDanhGiaTPPhanTrang($conn, $startFrom, $recordsPerPage) {
+            $sql = "SELECT * FROM danhgiacn WHERE DanhGia IN ('Chiến Sĩ Thi Đua Thành Phố') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
+            $result = $conn->query($sql);
+
+            $danhgiacnList = array();
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    // Đánh Giá Cá Nhân vào danh sách
+                    // Tạo đối tượng Khoa và đưa vào mảng
+                    $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
+                    $nam_obj = Nam::laynam($conn,$row["Manam"]);
+                    $khoa_obj = Khoa::layKhoa($conn,$row["MaKhoa"]);
+                    $danhgiacn_obj = new DanhgiaCN();
+                    $danhgiacn_obj->MaDGCN = $row["MaDGCN"];
+                    $danhgiacn_obj->MaCN = $thongtincanhan_obj->HoTen;
+                    $danhgiacn_obj->MaKhoa = $khoa_obj->TenKhoa;
+                    $danhgiacn_obj->Manam = $nam_obj->Nam;
+                    $danhgiacn_obj->SoQD = $row["SoQD"];
+                    $danhgiacn_obj->DanhGia = $row["DanhGia"];
+                    $danhgiacn_obj->Ngay = $row["Ngay"];
+                    $danhgiacn_obj->DonVi = $row["DonVi"];
+                    $danhgiacn_obj->FilePDF = $row["FilePDF"];
+
+
+                    $danhgiacnList[] = $danhgiacn_obj;
+                }
+                }
+                return $danhgiacnList;
+        }
+
+
+        //Phân Trang Đánh Giá Chiến Sĩ Thi Đua Toàn Quốc
+        public static function layTongSoDanhGiaTQ($conn) {
+            $sql = "SELECT COUNT(*) FROM danhgiacn WHERE DanhGia IN ('Chiến Sĩ Thi Đua Toàn Quốc')";
+            $result = $conn->query($sql);
+            $row = $result->fetch_row();
+            return $row[0];
+        }
+
+        public static function layDanhGiaTQPhanTrang($conn, $startFrom, $recordsPerPage) {
+            $sql = "SELECT * FROM danhgiacn WHERE DanhGia IN ('Chiến Sĩ Thi Đua Toàn Quốc') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
+            $result = $conn->query($sql);
+
+            $danhgiacnList = array();
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    // Đánh Giá Cá Nhân vào danh sách
+                    // Tạo đối tượng Khoa và đưa vào mảng
+                    $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
+                    $nam_obj = Nam::laynam($conn,$row["Manam"]);
+                    $khoa_obj = Khoa::layKhoa($conn,$row["MaKhoa"]);
+                    $danhgiacn_obj = new DanhgiaCN();
+                    $danhgiacn_obj->MaDGCN = $row["MaDGCN"];
+                    $danhgiacn_obj->MaCN = $thongtincanhan_obj->HoTen;
+                    $danhgiacn_obj->MaKhoa = $khoa_obj->TenKhoa;
+                    $danhgiacn_obj->Manam = $nam_obj->Nam;
+                    $danhgiacn_obj->SoQD = $row["SoQD"];
+                    $danhgiacn_obj->DanhGia = $row["DanhGia"];
+                    $danhgiacn_obj->Ngay = $row["Ngay"];
+                    $danhgiacn_obj->DonVi = $row["DonVi"];
+                    $danhgiacn_obj->FilePDF = $row["FilePDF"];
+
+
+                    $danhgiacnList[] = $danhgiacn_obj;
+                }
+                }
+                return $danhgiacnList;
+        }
+
+        //Phân Trang Đánh Giá Bằng Khen Ủy Ban Nhân Thành Phố
+        public static function layTongSoDanhGiaUBND($conn) {
+            $sql = "SELECT COUNT(*) FROM danhgiacn WHERE DanhGia IN ('Bằng Khen Ủy Ban Nhân Thành Phố')";
+            $result = $conn->query($sql);
+            $row = $result->fetch_row();
+            return $row[0];
+        }
+
+        public static function layDanhGiaUBNDPhanTrang($conn, $startFrom, $recordsPerPage) {
+            $sql = "SELECT * FROM danhgiacn WHERE DanhGia IN ('Bằng Khen Ủy Ban Nhân Thành Phố') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
+            $result = $conn->query($sql);
+
+            $danhgiacnList = array();
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    // Đánh Giá Cá Nhân vào danh sách
+                    // Tạo đối tượng Khoa và đưa vào mảng
+                    $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
+                    $nam_obj = Nam::laynam($conn,$row["Manam"]);
+                    $khoa_obj = Khoa::layKhoa($conn,$row["MaKhoa"]);
+                    $danhgiacn_obj = new DanhgiaCN();
+                    $danhgiacn_obj->MaDGCN = $row["MaDGCN"];
+                    $danhgiacn_obj->MaCN = $thongtincanhan_obj->HoTen;
+                    $danhgiacn_obj->MaKhoa = $khoa_obj->TenKhoa;
+                    $danhgiacn_obj->Manam = $nam_obj->Nam;
+                    $danhgiacn_obj->SoQD = $row["SoQD"];
+                    $danhgiacn_obj->DanhGia = $row["DanhGia"];
+                    $danhgiacn_obj->Ngay = $row["Ngay"];
+                    $danhgiacn_obj->DonVi = $row["DonVi"];
+                    $danhgiacn_obj->FilePDF = $row["FilePDF"];
+
+
+                    $danhgiacnList[] = $danhgiacn_obj;
+                }
+                }
+                return $danhgiacnList;
+        }
+
+        //Phân Trang Đánh Giá Bằng Khen Thủ Tướng Chính Phủ
+        public static function layTongSoDanhGiaTTCP($conn) {
+            $sql = "SELECT COUNT(*) FROM danhgiacn WHERE DanhGia IN ('Bằng Khen Thủ Tướng Chính Phủ')";
+            $result = $conn->query($sql);
+            $row = $result->fetch_row();
+            return $row[0];
+        }
+
+        public static function layDanhGiaTTCPPhanTrang($conn, $startFrom, $recordsPerPage) {
+            $sql = "SELECT * FROM danhgiacn WHERE DanhGia IN ('Bằng Khen Thủ Tướng Chính Phủ') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
+            $result = $conn->query($sql);
+
+            $danhgiacnList = array();
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    // Đánh Giá Cá Nhân vào danh sách
+                    // Tạo đối tượng Khoa và đưa vào mảng
+                    $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
+                    $nam_obj = Nam::laynam($conn,$row["Manam"]);
+                    $khoa_obj = Khoa::layKhoa($conn,$row["MaKhoa"]);
+                    $danhgiacn_obj = new DanhgiaCN();
+                    $danhgiacn_obj->MaDGCN = $row["MaDGCN"];
+                    $danhgiacn_obj->MaCN = $thongtincanhan_obj->HoTen;
+                    $danhgiacn_obj->MaKhoa = $khoa_obj->TenKhoa;
+                    $danhgiacn_obj->Manam = $nam_obj->Nam;
+                    $danhgiacn_obj->SoQD = $row["SoQD"];
+                    $danhgiacn_obj->DanhGia = $row["DanhGia"];
+                    $danhgiacn_obj->Ngay = $row["Ngay"];
+                    $danhgiacn_obj->DonVi = $row["DonVi"];
+                    $danhgiacn_obj->FilePDF = $row["FilePDF"];
+
+
+                    $danhgiacnList[] = $danhgiacn_obj;
+                }
+                }
+                return $danhgiacnList;
+        }
+
+        //Phân Trang Đánh Giá Huân Chưởng Lao Động Hạng Ba
+        public static function layTongSoDanhGiaHB($conn) {
+            $sql = "SELECT COUNT(*) FROM danhgiacn WHERE DanhGia IN ('Huân Chưởng Lao Động Hạng Ba')";
+            $result = $conn->query($sql);
+            $row = $result->fetch_row();
+            return $row[0];
+        }
+
+        public static function layDanhGiaHBPhanTrang($conn, $startFrom, $recordsPerPage) {
+            $sql = "SELECT * FROM danhgiacn WHERE DanhGia IN ('Huân Chưởng Lao Động Hạng Ba') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
+            $result = $conn->query($sql);
+
+            $danhgiacnList = array();
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    // Đánh Giá Cá Nhân vào danh sách
+                    // Tạo đối tượng Khoa và đưa vào mảng
+                    $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
+                    $nam_obj = Nam::laynam($conn,$row["Manam"]);
+                    $khoa_obj = Khoa::layKhoa($conn,$row["MaKhoa"]);
+                    $danhgiacn_obj = new DanhgiaCN();
+                    $danhgiacn_obj->MaDGCN = $row["MaDGCN"];
+                    $danhgiacn_obj->MaCN = $thongtincanhan_obj->HoTen;
+                    $danhgiacn_obj->MaKhoa = $khoa_obj->TenKhoa;
+                    $danhgiacn_obj->Manam = $nam_obj->Nam;
+                    $danhgiacn_obj->SoQD = $row["SoQD"];
+                    $danhgiacn_obj->DanhGia = $row["DanhGia"];
+                    $danhgiacn_obj->Ngay = $row["Ngay"];
+                    $danhgiacn_obj->DonVi = $row["DonVi"];
+                    $danhgiacn_obj->FilePDF = $row["FilePDF"];
+
+
+                    $danhgiacnList[] = $danhgiacn_obj;
+                }
+                }
+                return $danhgiacnList;
+        }
+
+        //Phân Trang Đánh Giá Huân Chưởng Lao Động Hạng Nhì
+        public static function layTongSoDanhGiaHN($conn) {
+            $sql = "SELECT COUNT(*) FROM danhgiacn WHERE DanhGia IN ('Huân Chưởng Lao Động Hạng Nhì')";
+            $result = $conn->query($sql);
+            $row = $result->fetch_row();
+            return $row[0];
+        }
+
+        public static function layDanhGiaHNPhanTrang($conn, $startFrom, $recordsPerPage) {
+            $sql = "SELECT * FROM danhgiacn WHERE DanhGia IN ('Huân Chưởng Lao Động Hạng Nhì') ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
+            $result = $conn->query($sql);
+
+            $danhgiacnList = array();
+
+            if ($result->num_rows > 0) {
+                while($row = $result->fetch_assoc()) {
+                    // Đánh Giá Cá Nhân vào danh sách
+                    // Tạo đối tượng Khoa và đưa vào mảng
+                    $thongtincanhan_obj = thongtincanhan::laythongtincanhan($conn,$row["MaCN"]);
+                    $nam_obj = Nam::laynam($conn,$row["Manam"]);
+                    $khoa_obj = Khoa::layKhoa($conn,$row["MaKhoa"]);
+                    $danhgiacn_obj = new DanhgiaCN();
+                    $danhgiacn_obj->MaDGCN = $row["MaDGCN"];
+                    $danhgiacn_obj->MaCN = $thongtincanhan_obj->HoTen;
+                    $danhgiacn_obj->MaKhoa = $khoa_obj->TenKhoa;
+                    $danhgiacn_obj->Manam = $nam_obj->Nam;
+                    $danhgiacn_obj->SoQD = $row["SoQD"];
+                    $danhgiacn_obj->DanhGia = $row["DanhGia"];
+                    $danhgiacn_obj->Ngay = $row["Ngay"];
+                    $danhgiacn_obj->DonVi = $row["DonVi"];
+                    $danhgiacn_obj->FilePDF = $row["FilePDF"];
+
+
+                    $danhgiacnList[] = $danhgiacn_obj;
+                }
+                }
+                return $danhgiacnList;
+        }
     }
 
 

@@ -77,14 +77,6 @@ class DanhgiaTT {
             $fileType = $_FILES['file']['type'];
             $fileNameCmps = explode(".", $fileName);
             $fileExtension = strtolower(end($fileNameCmps));
-
-            // Kiểm tra kích thước file
-            $maxFileSize = 2 * 1024 * 1024; // Giới hạn kích thước file: 2MB
-            if ($fileSize > $maxFileSize) {
-                $message = "File PDF quá lớn. Vui lòng chọn file nhỏ hơn 2MB.";
-                header("Location: $baseUrl?p=danhgiaCN&message=" . urlencode($message));
-                exit();
-            }
     
             // Kiểm tra định dạng file
             $allowedfileExtensions = array('pdf');
@@ -632,34 +624,131 @@ class DanhgiaTT {
     }
 
     public static function laydexuatdanhgia($conn) {
-        $sql = "SELECT 
-                khoa.TenKhoa,
-                danhgiatt.Manam AS Nam,
-                danhgiatt.danhgia AS DanhGia,
-                'Đề xuất khen thưởng Tập Thể Lao Động Tiên Tiến' AS DeXuatKhenThuong
-            FROM danhgiatt
-            JOIN khoa ON danhgiatt.MaKhoa = khoa.MaKhoa
-            WHERE danhgiatt.danhgia  IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ')
-            AND danhgiatt.MaKhoa IN (
-                SELECT MaKhoa
-                FROM khethuongkyluat
-                WHERE khethuongkyluat.Manam = danhgiatt.Manam
-                GROUP BY MaKhoa
-                HAVING 
-                    (SUM(CASE WHEN khenthuong = 'Tập Thể Lao Động Tiên Tiến' THEN 1 ELSE 0 END) / COUNT(*)) * 100 >= 70
-                    AND SUM(CASE WHEN kyluat = 'Cảnh cáo' THEN 1 ELSE 0 END) = 0
-            )
-            ORDER BY Nam, TenKhoa";
+        $sql = "WITH danh_sach AS (
+    SELECT 
+        k.TenKhoa,
+        n.Nam,
+        dg.DanhGia,
+        CASE 
+    	WHEN (dg.DanhGia = 'Tập Thể Lao Động Xuất Sắc' OR dg.DanhGia = 'Hoàn Thành Xuất Sắc')
+                 AND EXISTS (
+                     SELECT 1 
+                     FROM danhgiatt dg2 
+                     WHERE dg.MaKhoa = dg2.MaKhoa 
+                     AND (dg2.DanhGia = 'Hoàn Thành Xuất Sắc' OR dg2.DanhGia = 'Tập Thể Lao Động Xuất Sắc')
+                     AND dg2.Manam = dg.Manam - 1
+                 ) THEN 'Bằng Khen Ủy Ban Nhân Dân Thành Phố'
+            WHEN dg.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ')
+                 AND NOT EXISTS (
+                     SELECT 1 
+                     FROM danhgiatt dg2 
+                     WHERE dg.MaKhoa = dg2.MaKhoa 
+                     AND dg.Manam = dg2.Manam 
+                     AND dg2.DanhGia IN ('Tập Thể Lao Động Tiên Tiến')
+                 ) THEN 'Tập Thể Lao Động Tiên Tiến'
+                 
+            WHEN dg.DanhGia IN ('Tập Thể Lao Động Tiên Tiến', 'Hoàn Thành Xuất Sắc')
+                 AND NOT EXISTS (
+                     SELECT 1 
+                     FROM danhgiatt dg2 
+                     WHERE dg.MaKhoa = dg2.MaKhoa 
+                     AND dg.Manam = dg2.Manam 
+                     AND dg2.DanhGia IN ('Tập Thể Lao Động Xuất Sắc')
+                 ) THEN 'Tập Thể Lao Động Xuất Sắc'
+                 
+            
+    
+            WHEN dg.DanhGia IN ('Tập Thể Lao Động Tiên Tiến', 'Hoàn Thành Tốt Nhiệm Vụ')
+                 AND NOT EXISTS (
+                     SELECT 1 
+                     FROM danhgiatt dg2 
+                     WHERE dg.MaKhoa = dg2.MaKhoa 
+                     AND dg.Manam = dg2.Manam 
+                     AND dg2.DanhGia IN ('Giấy Khen Hiệu Trưởng')
+                 ) THEN 'Giấy Khen Hiệu Trưởng'
+    
+            WHEN dg.DanhGia = 'Bằng Khen Ủy Ban Nhân Dân Thành Phố'
+                 AND NOT EXISTS (
+                     SELECT 1 
+                     FROM danhgiatt dg2 
+                     WHERE dg.MaKhoa = dg2.MaKhoa 
+                     AND dg.Manam = dg2.Manam 
+                     AND dg2.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
+                 ) THEN 'Bằng Khen Thủ Tướng Chính Phủ'
+                 
+            WHEN dg.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
+                 AND NOT EXISTS (
+                     SELECT 1 
+                     FROM danhgiatt dg2 
+                     WHERE dg.MaKhoa = dg2.MaKhoa 
+                     AND dg.Manam = dg2.Manam 
+                     AND dg2.DanhGia = 'Huân Chương Lao Động Hạng Ba'
+                 ) THEN 'Huân Chương Lao Động Hạng Ba'
+                 
+            WHEN dg.DanhGia = 'Huân Chương Lao Động Hạng Ba'
+                 AND NOT EXISTS (
+                     SELECT 1 
+                     FROM danhgiatt dg2 
+                     WHERE dg.MaKhoa = dg2.MaKhoa 
+                     AND dg.Manam = dg2.Manam 
+                     AND dg2.DanhGia = 'Huân Chương Lao Động Hạng Nhì'
+                 ) THEN 'Huân Chương Lao Động Hạng Nhì'
+                 
+            ELSE NULL
+        END AS DeXuatKhenThuong
+    FROM danhgiatt dg
+    JOIN khoa k ON dg.MaKhoa = k.MaKhoa
+    JOIN nam n ON dg.Manam = n.Manam
+    WHERE 
+        dg.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc', 'Hoàn Thành Nhiệm Vụ', 'Tập Thể Lao Động Tiên Tiến', 'Tập Thể Lao Động Xuất Sắc', 'Giấy Khen Hiệu Trưởng')
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM khethuongkyluat kt 
+            JOIN thongtincanhan tc ON kt.MaCN = tc.MaCN
+            WHERE 
+                tc.MaKhoa = k.MaKhoa 
+                AND kt.KyLuat IS NOT NULL 
+                AND kt.Manam = dg.Manam
+        )
+),
+danh_sach_duoc_khen_thuong AS (
+    SELECT DISTINCT k.TenKhoa, dg.Manam
+    FROM danhgiatt dg
+    JOIN khoa k ON dg.MaKhoa = k.MaKhoa
+    WHERE dg.DanhGia IN (
+        'Tập Thể Lao Động Tiên Tiến', 
+        'Tập Thể Lao Động Xuất Sắc', 
+        'Giấy Khen Hiệu Trưởng',
+        'Bằng Khen Ủy Ban Nhân Dân Thành Phố', 
+        'Bằng Khen Thủ Tướng Chính Phủ', 
+        'Huân Chương Lao Động Hạng Ba', 
+        'Huân Chương Lao Động Hạng Nhì'
+    )
+)
+
+SELECT 
+    ds.TenKhoa,
+    ds.Nam,
+    ds.DanhGia,
+    ds.DeXuatKhenThuong
+FROM danh_sach ds
+LEFT JOIN danh_sach_duoc_khen_thuong dskt 
+    ON ds.TenKhoa = dskt.TenKhoa 
+    AND ds.Nam = dskt.Manam
+WHERE ds.DeXuatKhenThuong IS NOT NULL
+AND dskt.TenKhoa IS NULL
+GROUP BY ds.TenKhoa, ds.Nam, ds.DanhGia, ds.DeXuatKhenThuong;
+";
         $result = $conn->query($sql);
 
         $danhgiattList = array();
 
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
-                $nam_obj = Nam::laynam($conn, $row["Nam"]);
+                
                 $danhgiatt_obj = new DanhgiaTT();
                 $danhgiatt_obj->MaKhoa = $row["TenKhoa"];
-                $danhgiatt_obj->Manam = $nam_obj->Nam;
+                $danhgiatt_obj->Manam = $row["Nam"];
                 $danhgiatt_obj->DanhGia = $row["DanhGia"];
                 $danhgiatt_obj->DeXuatDanhGia = $row["DeXuatKhenThuong"];
 

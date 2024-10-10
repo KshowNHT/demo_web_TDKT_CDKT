@@ -1,6 +1,6 @@
 <?php
     include('./ktkyluat.php');
-    if(isset($_POST["SoQuyetDinh"])){
+    if(isset($_POST["KhenThuong"])){
         $data = new ktkyluat();
         $data->MaCN = $_POST["MaCN"]; 
         $data->KhenThuong = $_POST["KhenThuong"];
@@ -29,7 +29,11 @@
         $id = ($_GET["id"]);
         $data = new thongtincanhan();
         $data  =  $data->laythongtincanhan($conn,$id); 
-        $ten = $data->HoTen;
+        if (isset($data->HoTen)) {
+            $ten = $data->HoTen;
+        } else {
+            $ten = "Không xác định";
+        }
     }
     $Lnam = Nam::layDanhSach($conn);
 ?>
@@ -138,12 +142,12 @@ h2 {
 </style>
 
 <div class="container">
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
         <h2>Đánh Giá Thành Tích</h2>
 
 
         <div class="form-group">
-            <label for="MaCN">Họ Và Tên: <?php echo $ten?></label>
+            <label for="MaCN1">Họ Và Tên: <?php echo $ten?></label>
             <input type="hidden" class="form-control" id="MaCN" name="MaCN" value="<?php echo htmlspecialchars($data->MaCN); ?>" readonly>
         </div>
 
@@ -158,7 +162,7 @@ h2 {
         </div>
 
         <div class="form-group">
-        <label for="MaKhoa">Đơn Vị: <?php echo isset($data->MaKhoa->TenKhoa) ? $data->MaKhoa->TenKhoa : 'Không xác định'; ?></label>
+        <label for="MaKhoa1">Đơn Vị: <?php echo isset($data->MaKhoa->TenKhoa) ? $data->MaKhoa->TenKhoa : 'Không xác định'; ?></label>
         <input type="hidden" class="form-control" id="MaKhoa" name="MaKhoa" value="<?php echo htmlspecialchars($data->MaKhoa->MaKhoa); ?>" readonly>
 
         </div>
@@ -212,3 +216,16 @@ h2 {
 </div>
 
 
+<script>
+function validateForm() {
+    let soQuyetDinh = document.getElementById('SoQuyetDinh').value;
+    let ngay = document.getElementById('Ngay').value;
+    let lnam = document.getElementById('Lnam').value;
+
+    if ( soQuyetDinh == "" || ngay == "" || lnam == "") {
+        alert("Vui lòng điền đầy đủ các trường bắt buộc!");
+        return false;
+    }
+    return true;
+}
+</script>

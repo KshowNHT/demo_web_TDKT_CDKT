@@ -171,6 +171,44 @@
             return $data;
         }
         
+        //lấy Thông Tin Cá Nhân Theo Từng Khoa và Năm
+    public static function layDanhSachthongtintheokhoaVaNam($conn, $khoa, $nam, $danhgia) {
+    $sql = "SELECT t.*, k.TenKhoa 
+            FROM thongtincanhan t 
+            INNER JOIN khoa k ON t.MaKhoa = k.MaKhoa 
+            WHERE k.MaKhoa = ?
+            AND t.MaCN IN (
+                SELECT d.MaCN 
+                FROM danhgiacn d 
+                WHERE d.MaKhoa = ? 
+                AND d.MaNam = ?
+                AND d.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Lao Động Tiên Tiến', 'Giấy Khen Hiệu Trưởng', 'Chiến Sĩ Thi Đua Cơ Sở', 'Chiến Sĩ Thi Đua Thành Phố', 'Chiến Sĩ Thi Đua Toàn Quốc','Bằng Khen Ủy Ban Nhân Thành Phố', 'Bằng Khen Thủ Tướng Chính Phủ', 'Huân Chương Lao Động Hạng Ba','Huân Chương Lao Động Hạng Nhì')
+            )
+            AND t.MaCN NOT IN (
+                SELECT d.MaCN 
+                FROM danhgiacn d 
+                WHERE d.MaKhoa = ? 
+                AND d.MaNam = ?
+                AND d.DanhGia = ?
+            )";
+    
+    $stmt = $conn->prepare($sql);
+    
+    // Liên kết các tham số: $khoa và $nam sẽ được sử dụng nhiều lần
+    $stmt->bind_param("iiiiis", $khoa, $khoa, $nam, $khoa, $nam, $danhgia);
+    
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $data = [];
+    
+    // Lưu kết quả vào mảng $data
+    while ($row = $result->fetch_object()) {
+        $data[] = $row;
+    }
+    
+    return $data;
+}
+
         
         
 

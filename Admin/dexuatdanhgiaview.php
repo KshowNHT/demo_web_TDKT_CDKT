@@ -232,9 +232,10 @@ if (isset($_GET["message"])) {
 
     // Function to handle the search
     async function searchData() {
+        
         const searchTenKhoa = document.getElementById('searchTenKhoa').value.trim();
         const selectedManam = document.getElementById('options').value;
-
+        console.log("Tên Khoa tìm kiếm:", searchTenKhoa);
         const queryString = `getmadexuatdanhgia.php?TenKhoa=${encodeURIComponent(searchTenKhoa)}&Manam=${encodeURIComponent(selectedManam)}`;
 
         try {

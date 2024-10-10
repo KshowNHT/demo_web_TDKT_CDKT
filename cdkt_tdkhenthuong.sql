@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3308
--- Thời gian đã tạo: Th9 30, 2024 lúc 06:25 PM
+-- Thời gian đã tạo: Th10 09, 2024 lúc 11:24 AM
 -- Phiên bản máy phục vụ: 10.4.24-MariaDB
 -- Phiên bản PHP: 8.1.6
 
@@ -35,8 +35,34 @@ CREATE TABLE `danhgiacn` (
   `Manam` int(20) NOT NULL,
   `DanhGia` varchar(50) NOT NULL,
   `Ngay` date NOT NULL,
-  `DonVi` varchar(30) NOT NULL
+  `DonVi` varchar(30) NOT NULL,
+  `FilePDF` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `danhgiacn`
+--
+
+INSERT INTO `danhgiacn` (`MaDGCN`, `MaCN`, `MaKhoa`, `SoQD`, `Manam`, `DanhGia`, `Ngay`, `DonVi`, `FilePDF`) VALUES
+(37, 215, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(38, 216, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(39, 217, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(40, 218, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(41, 219, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(42, 220, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(43, 221, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(44, 222, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(45, 223, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(46, 224, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Trung tâm Ngoại ngữ - Tin học', './uploads/1728066005_slide_chuong_2.pdf'),
+(47, 225, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(48, 226, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(49, 227, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(50, 228, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(51, 229, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(52, 230, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(53, 231, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(54, 232, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
+(55, 233, 35, 'test', 7, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf');
 
 -- --------------------------------------------------------
 
@@ -60,15 +86,21 @@ CREATE TABLE `danhgiatt` (
 --
 
 INSERT INTO `danhgiatt` (`MaDGTT`, `MaKhoa`, `SoQD`, `Manam`, `DanhGia`, `Ngay`, `DonVi`, `FilePDF`) VALUES
-(211, 32, 'test', 7, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/slide_chuong_1.pdf'),
-(212, 33, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/1727597631_ATBMTT_B3.pdf'),
-(213, 34, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/1727597631_ATBMTT_B3.pdf'),
-(214, 35, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/1727597631_ATBMTT_B3.pdf'),
-(215, 36, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/1727597631_ATBMTT_B3.pdf'),
-(216, 37, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-08-28', 'Phòng Quản lý đào tạo', './uploads/1727597631_ATBMTT_B3.pdf'),
-(217, 33, 'test', 16, 'Tập Thể Lao Động Tiên Tiến', '2024-08-28', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1727600760_slide_chuong_1.pdf'),
-(218, 34, 'test', 16, 'Tập Thể Lao Động Tiên Tiến', '2024-08-28', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1727600760_slide_chuong_1.pdf'),
-(219, 35, 'test', 16, 'Tập Thể Lao Động Tiên Tiến', '2024-08-28', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1727600760_slide_chuong_1.pdf');
+(221, 32, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-10-01', 'Phòng Quản lý đào tạo', './uploads/1728387407_slide_chuong_1.pdf'),
+(222, 33, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728387407_slide_chuong_1.pdf'),
+(223, 34, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728387407_slide_chuong_1.pdf'),
+(224, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728387407_slide_chuong_1.pdf'),
+(225, 36, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728387407_slide_chuong_1.pdf'),
+(226, 37, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728387407_slide_chuong_1.pdf'),
+(228, 33, 'test', 16, 'Tập Thể Lao Động Tiên Tiến', '2024-10-03', 'Phòng Quản trị thiết bị', './uploads/1728387462_slide_chuong_2.pdf'),
+(229, 35, 'test', 7, 'Hoàn Thành Xuất Sắc', '2024-09-30', 'Phòng Kế hoạch - Tài chính', './uploads/1728412387_slide_chuong_1.pdf'),
+(230, 32, 'test', 15, 'Hoàn Thành Xuất Sắc', '2024-09-30', 'Phòng Quản trị thiết bị', './uploads/1728412720_slide_chuong_1.pdf'),
+(231, 35, 'test', 7, 'Tập Thể Lao Động Tiên Tiến', '2024-09-30', 'Phòng Quản lý đào tạo', './uploads/1728413545_slide_chuong_2.pdf'),
+(232, 46, 'demo', 12, 'Hoàn Thành Xuất Sắc', '2024-09-30', 'Khoa Tài chính - Kế toán', './uploads/1728464907_slide_chuong_1.pdf'),
+(233, 46, 'test', 13, 'Hoàn Thành Xuất Sắc', '2024-09-30', 'Phòng Hành chính - Tổ chức', './uploads/1728464968_slide_chuong_1.pdf'),
+(234, 46, 'demo', 14, 'Hoàn Thành Xuất Sắc', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728465012_slide_chuong_1.pdf'),
+(235, 46, 'demo', 15, 'Hoàn Thành Xuất Sắc', '2024-08-07', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728465037_slide_chuong_1.pdf'),
+(236, 46, 'demo', 16, 'Hoàn Thành Xuất Sắc', '2024-07-11', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728465061_slide_chuong_1.pdf');
 
 -- --------------------------------------------------------
 
@@ -94,10 +126,9 @@ CREATE TABLE `khethuongkyluat` (
 --
 
 INSERT INTO `khethuongkyluat` (`MaKTKL`, `MaCN`, `KhenThuong`, `KyLuat`, `Manam`, `SoQuyetDinh`, `NgayQuyetDinh`, `MaKhoa`, `FilePDF`, `GhiChu`) VALUES
-(4, 276, 'Giấy Khen Hiệu Trưởng', '', 7, 'test', '2024-09-05', 41, './uploads/1727680343_slide_chuong_1.pdf', 'test'),
-(5, 277, 'Tập Thể Lao Động Tiên Tiến', '', 16, 'test', '2024-09-05', 41, './uploads/1727680343_slide_chuong_1.pdf', 'test'),
-(6, 278, 'Tập Thể Lao Động Tiên Tiến', '', 16, 'test', '2024-09-05', 41, './uploads/1727680343_slide_chuong_1.pdf', 'test'),
-(7, 279, 'Tập Thể Lao Động Tiên Tiến', '', 16, 'test', '2024-09-05', 41, './uploads/1727680343_slide_chuong_1.pdf', 'test');
+(32, 175, 'test', '', 7, 'test', '2024-09-30', 32, './uploads/1728290699_slide_chuong_1.pdf', ''),
+(33, 176, 'test', '', 7, 'test', '2024-09-30', 32, './uploads/1728290736_slide_chuong_1.pdf', 'test'),
+(34, 276, '', 'Cảnh cáo', 16, 'test', '2024-10-03', 41, './uploads/1728386011_slide_chuong_2.pdf', 'test');
 
 -- --------------------------------------------------------
 
@@ -427,19 +458,19 @@ ALTER TABLE `thongtincanhan`
 -- AUTO_INCREMENT cho bảng `danhgiacn`
 --
 ALTER TABLE `danhgiacn`
-  MODIFY `MaDGCN` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `MaDGCN` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
 
 --
 -- AUTO_INCREMENT cho bảng `danhgiatt`
 --
 ALTER TABLE `danhgiatt`
-  MODIFY `MaDGTT` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=220;
+  MODIFY `MaDGTT` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=237;
 
 --
 -- AUTO_INCREMENT cho bảng `khethuongkyluat`
 --
 ALTER TABLE `khethuongkyluat`
-  MODIFY `MaKTKL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `MaKTKL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 
 --
 -- AUTO_INCREMENT cho bảng `khoa`

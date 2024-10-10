@@ -98,7 +98,60 @@ session_start();
                                    </p>
                                 </a>
                                 <ul class="nav nav-treeview">
-                                    <!-- khen thưởng tập thể -->
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongtt";?>" class="nav-link">
+                                            <i class="fa-solid fa-medal"></i>
+                                            <p><?php echo $pages['khenthuongtt'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuonghieutruong";?>" class="nav-link">
+                                            <i class="fa-solid fa-star"></i>
+                                            <p> <?php echo $pages['khenthuonghieutruong'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongcstdcs";?>" class="nav-link">
+                                            <i class="fa-solid fa-school"></i>
+                                            <p> <?php echo $pages['khenthuongcstdcs'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongcstdtp";?>" class="nav-link">
+                                            <i class="fa-solid fa-city"></i>
+                                            <p> <?php echo $pages['khenthuongcstdtp'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongcstdtq";?>" class="nav-link">
+                                            <i class="fa-solid fa-university"></i>
+                                            <p> <?php echo $pages['khenthuongcstdtq'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongubnd";?>" class="nav-link">
+                                            <i class="fa-solid fa-building"></i>
+                                            <P> <?php echo $pages['khenthuongubnd'][0];?> </P>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongbkttcp";?>" class="nav-link">
+                                            <i class="fa-solid fa-landmark"></i>
+                                            <p> <?php echo $pages['khenthuongbkttcp'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuonghb";?>" class="nav-link">
+                                            <i class="fa-solid fa-landmark"></i>
+                                            <p> <?php echo $pages['khenthuonghb'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuonghn";?>" class="nav-link">
+                                            <i class="fa-solid fa-landmark"></i>
+                                            <p> <?php echo $pages['khenthuonghn'][0];?> </p>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
         <?php } ?>
@@ -152,7 +205,60 @@ session_start();
                                    </p>
                                 </a>
                                 <ul class="nav nav-treeview">
-                                    <!-- khen thưởng tập thể -->
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongtt";?>" class="nav-link">
+                                            <i class="fa-solid fa-medal"></i>
+                                            <p><?php echo $pages['khenthuongtt'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuonghieutruong";?>" class="nav-link">
+                                            <i class="fa-solid fa-star"></i>
+                                            <p> <?php echo $pages['khenthuonghieutruong'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongcstdcs";?>" class="nav-link">
+                                            <i class="fa-solid fa-school"></i>
+                                            <p> <?php echo $pages['khenthuongcstdcs'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongcstdtp";?>" class="nav-link">
+                                            <i class="fa-solid fa-city"></i>
+                                            <p> <?php echo $pages['khenthuongcstdtp'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongcstdtq";?>" class="nav-link">
+                                            <i class="fa-solid fa-university"></i>
+                                            <p> <?php echo $pages['khenthuongcstdtq'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongubnd";?>" class="nav-link">
+                                            <i class="fa-solid fa-building"></i>
+                                            <P> <?php echo $pages['khenthuongubnd'][0];?> </P>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuongbkttcp";?>" class="nav-link">
+                                            <i class="fa-solid fa-landmark"></i>
+                                            <p> <?php echo $pages['khenthuongbkttcp'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuonghb";?>" class="nav-link">
+                                            <i class="fa-solid fa-landmark"></i>
+                                            <p> <?php echo $pages['khenthuonghb'][0];?> </p>
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo "$baseUrl?p=khenthuonghn";?>" class="nav-link">
+                                            <i class="fa-solid fa-landmark"></i>
+                                            <p> <?php echo $pages['khenthuonghn'][0];?> </p>
+                                        </a>
+                                    </li>
                                 </ul>
                             </li>
                             <li class="nav-item">
