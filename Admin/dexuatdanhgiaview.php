@@ -1,6 +1,5 @@
 <?php
 include('./danhgiaTT.php');
-$data = DanhgiaTT::laydexuatdanhgia($conn);
 $awardMap = array(
     'Tập Thể Lao Động Tiên Tiến'=>'Tập Thể Lao Động Tiên Tiến',
     'Tập Thể Lao Động Xuất Sắc'=>'Tập Thể Lao Động Xuất Sắc',
@@ -11,6 +10,21 @@ $awardMap = array(
     'Huân Chương Lao Động Hạng Nhì'=>'Huân Chương Lao Động Hạng Nhì'
 );
 
+
+$currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+$recordsPerPage = 10; // số bản ghi trên mỗi trang
+
+// Tính vị trí bắt đầu lấy dữ liệu
+$startFrom = ($currentPage - 1) * $recordsPerPage;
+
+// Lấy tổng số bản ghi
+$totalRecords = DanhgiaTT::laytongdexuatdanhgia($conn);
+
+// Tính tổng số trang
+$totalPages = ceil($totalRecords / $recordsPerPage);
+
+// Lấy dữ liệu cho trang hiện tại
+$data = DanhgiaTT::laydexuatdanhgia($conn, $startFrom, $recordsPerPage);
 
 $Manam = isset($_GET['Manam']) ? $_GET['Manam'] : null;
 $options = Nam::layDanhSach($conn);
@@ -164,6 +178,32 @@ if (isset($_GET["message"])) {
         ?>
     </tbody>
 </table>
+
+<nav aria-label="Page navigation">
+    <ul class="pagination">
+        <?php if ($currentPage > 1): ?>
+            <li class="page-item">
+                <a class="page-link" href="?p=dexuatkhenthuong&page=<?php echo $currentPage - 1; ?>" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        <?php endif; ?>
+
+        <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+            <li class="page-item <?php echo $i == $currentPage ? 'active' : ''; ?>">
+                <a class="page-link" href="?p=dexuatkhenthuong&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+            </li>
+        <?php endfor; ?>
+
+        <?php if ($currentPage < $totalPages): ?>
+            <li class="page-item">
+                <a class="page-link" href="?p=dexuatkhenthuong&page=<?php echo $currentPage + 1; ?>" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        <?php endif; ?>
+    </ul>
+</nav>
 
 
 

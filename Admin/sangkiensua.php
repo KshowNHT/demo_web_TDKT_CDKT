@@ -50,12 +50,13 @@
             </div>
 
             <div class="form-group">
-                <label for="CapSK">Cấp Sáng Kiến</label>
+                <label for="CapSK">Cấp Đề Tài</label>
                 <select name="CapSK" id="CapSK" class="form-control">
-                    <option value="1" <?php echo $data->CapSK == "1" ? 'selected' : ''; ?>>Cấp Sáng Kiến</option>
-                    <option value="Cấp Cơ Sở" <?php echo $data->CapSK == "Cấp Cơ Sở" ? 'selected' : ''; ?>>Cấp Cơ Sở</option>
-                    <option value="Cấp Thành Phố" <?php echo $data->CapSK == "Cấp Thành Phố" ? 'selected' : ''; ?>>Cấp Thành Phố</option>
-                    <option value="Cấp Quận" <?php echo $data->CapSK == "Cấp Quận" ? 'selected' : ''; ?>>Cấp Quận</option>
+                    <option value="1" <?php echo $data->CapSK == "1" ? 'selected' : ''; ?>>Cấp Đề Tài</option>
+                    <option value="Sáng Kiên Cấp Cơ Sở" <?php echo $data->CapSK == "Sáng Kiên Cấp Cơ Sở" ? 'selected' : ''; ?>>Sáng Kiên Cấp Cơ Sở</option>
+                    <option value="Sáng Kiên Cấp Thành Phố" <?php echo $data->CapSK == "Sáng Kiên Cấp Thành Phố" ? 'selected' : ''; ?>>Sáng Kiên Cấp Thành Phố</option>
+                    <option value="Sáng Kiên Cấp Quận" <?php echo $data->CapSK == "Sáng Kiên Cấp Quận" ? 'selected' : ''; ?>>Sáng Kiên Cấp Quận</option>
+                    <option value="Nghiên Cú Khoa Học" <?php echo $data->CapSK == "Nghiên Cú Khoa Học" ? 'selected' : ''; ?>>Nghiên Cú Khoa Học</option>
                 </select>
             </div>
 

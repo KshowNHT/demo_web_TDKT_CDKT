@@ -138,6 +138,7 @@ if (isset($_GET["message"])) {
                 <td><?php echo $item->MoTa;?></td>
                 <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] == 'Quản Trị'){?> 
                     <td>
+                    <button class="btn btn-custom btn-custom-primary" onclick="handleActionChange('ktth', '<?php echo $item->MaKhoa; ?>', event)">Thêm Khen Thưởng Tập Thể</button>
                     <button class="btn btn-custom btn-custom-primary" onclick="handleActionChange('Khoasua', '<?php echo $item->MaKhoa; ?>', event)">Sửa Khoa</button>
                     <button class="btn btn-custom btn-custom-danger" onclick="handleActionChange('Khoaxoa', '<?php echo $item->MaKhoa; ?>', event)">Xóa</button>
                 </td>

@@ -109,6 +109,13 @@ if (isset($_GET["message"])) {
 
 </style>
 
+<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
+    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=kttt"; ?>">Khen Thưởng Tập Thể</a>
+    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=ktkyluat"; ?>">Khen Thưởng Cá Nhân</a>
+<?php
+}
+?>
+
 <div class="search-box">
     <input type="text" id="searchSoQD" placeholder="Nhập Số Quyết Định" />
     <input type="text" id="searchTenKhoa" placeholder="Nhập Họ và Tên" />

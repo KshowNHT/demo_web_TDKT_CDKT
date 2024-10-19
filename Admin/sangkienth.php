@@ -27,7 +27,7 @@
 
 
     <div class="form-group">
-        <label for="TenSK">Tên Sáng Kiến: </label>
+        <label for="TenSK">Đề tài: </label>
         <input type="text" class="form-control" id="TenSK" name="TenSK">
     </div>
 
@@ -51,12 +51,13 @@
     </div>
 
     <div class="form-group">
-        <label >Đánh Giá</label>
+        <label >Cấp Đề Tài</label>
         <select name="CapSK" id="CapSK">
-            <option value="1">Cấp Sáng Kiến</option>
-            <option value="Cấp Cơ Sở" >Cấp Cơ Sở</option>
-            <option value="Cấp Thành Phố" >Cấp Thành Phố</option>
-            <option value="Cấp Quận" >Cấp Quận</option>
+            <option value="1">Không Có Cấp</option>
+            <option value="Sáng Kiên Cấp Cơ Sở" >Sáng Kiên Cấp Cơ Sở</option>
+            <option value="Sáng Kiên Cấp Thành Phố" >Sáng Kiên Cấp Thành Phố</option>
+            <option value="Sáng Kiên Cấp Quận" >Sáng Kiên Cấp Quận</option>
+            <option value="Nghiên Cú Khoa Học" >Nghiên Cú Khoa Học</option>
         </select>
     </div>
     <div class="form-group">

@@ -111,7 +111,7 @@ if (isset($_GET["message"])) {
     <thead>
         <tr>
             <th>Họ Và Tên </th>
-            <th>Sáng Kiến</th>
+            <th>Đề Tài</th>
             <th>Năm</th>
             <th>Cấp Sáng Kiến</th>
         </tr>
