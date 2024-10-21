@@ -44,11 +44,6 @@ if (isset($_GET["message"])) {
 }
 ?>
 
-<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
-    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=danhgiaTThcldhbthem"; ?>">Xét Đánh Giá Tập Thể</a>
-<?php
-}
-?>
 
 <style>
     .pagination {

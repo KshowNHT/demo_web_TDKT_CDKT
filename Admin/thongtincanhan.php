@@ -145,20 +145,22 @@
         }
 
         //lấy Thông Tin Cá Nhân Theo Từng Khoa 
-        public static function layDanhSachthongtintheokhoa($conn, $khoa) {
+        public static function layDanhSachthongtintheokhoa($conn, $khoa, $nam) {
             $sql = "SELECT t.*, k.TenKhoa 
                     FROM thongtincanhan t 
-                    INNER JOIN khoa k ON t.MaKhoa = k.MaKhoa 
+                    INNER JOIN khoa k ON t.MaKhoa = k.MaKhoa
                     WHERE k.MaKhoa = ?
                     AND t.MaCN NOT IN (
                         SELECT d.MaCN 
                         FROM danhgiacn d 
-                        WHERE d.MaKhoa = ? 
+                        INNER JOIN nam n ON d.Manam = n.Manam
+                        WHERE d.MaKhoa = ?
+                        AND d.Manam = ?
                         AND d.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Nhiệm Vụ', 'Không Hoàn Thành Nhiệm Vụ', 'Chưa Đánh Giá')
                     )";
             $stmt = $conn->prepare($sql);
             
-            $stmt->bind_param("ii", $khoa, $khoa);
+            $stmt->bind_param("iii", $khoa, $khoa, $nam);
             
             $stmt->execute();
             $result = $stmt->get_result();

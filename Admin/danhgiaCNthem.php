@@ -123,6 +123,7 @@ $datakhoa = Khoa::layDanhSach($conn);
     <form method="post" enctype="multipart/form-data">
         <h2>Đánh Giá Thành Tích</h2>
         <div class="form-row">
+            
     <div class="form-group">
         <label for="Lnam">Năm</label>
         <select class="form-control" name="Lnam" id="Lnam">
@@ -203,11 +204,12 @@ $datakhoa = Khoa::layDanhSach($conn);
     $(document).ready(function(){
         $('#Lkhoa').change(function(){
             var khoa = $(this).val();
-            console.log('Dữ Liệu:', khoa);
+            var nam = $('#Lnam').val();
+            console.log('Dữ Liệu:', khoa, nam);
             $.ajax({
                 url: 'getthongtintheokhoa.php',
                 type: 'POST',
-                data: {khoa: khoa},
+                data: {khoa: khoa, nam: nam},
                 success: function(data) {
                     $('#thongtin-list').html(data);
                 }

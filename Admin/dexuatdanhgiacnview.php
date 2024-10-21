@@ -1,10 +1,12 @@
 <?php
-include('./danhgiaTT.php');
+include('./danhgiaCN.php');
 $awardMap = array(
-    'Tập Thể Lao Động Tiên Tiến'=>'Tập Thể Lao Động Tiên Tiến',
-    'Tập Thể Lao Động Xuất Sắc'=>'Tập Thể Lao Động Xuất Sắc',
+    'Lao Động Tiên Tiến'=>'Lao Động Tiên Tiến',
+    'Chiến Sĩ Thi Đua Cơ Sở'=>'Chiến Sĩ Thi Đua Cơ Sở',
     'Giấy Khen Hiệu Trưởng'=>'Giấy Khen Hiệu Trưởng',
-    'Bằng Khen UBND Thành Phố'=>'Bằng Khen UBND Thành Phố',
+    'Chiến Sĩ Thi Đua Thành Phố'=>'Chiến Sĩ Thi Đua Thành Phố',
+    'Chiến Sĩ Thi Đua Toàn Quốc'=>'Chiến Sĩ Thi Đua Toàn Quốc',
+    'Bằng Khen Ủy Ban Nhân Dân Thành Phố'=>'Bằng Khen Ủy Ban Nhân Dân Thành Phố',
     'Bằng Khen Thủ Tướng Chính Phủ'=>'Bằng Khen Thủ Tướng Chính Phủ',
     'Huân Chương Lao Động Hạng Ba'=>'Huân Chương Lao Động Hạng Ba',
     'Huân Chương Lao Động Hạng Nhì'=>'Huân Chương Lao Động Hạng Nhì'
@@ -18,13 +20,13 @@ $recordsPerPage = 10; // số bản ghi trên mỗi trang
 $startFrom = ($currentPage - 1) * $recordsPerPage;
 
 // Lấy tổng số bản ghi
-$totalRecords = DanhgiaTT::laytongdexuatdanhgia($conn);
+$totalRecords = DanhgiaCN::laytongdexuatdanhgia($conn);
 
 // Tính tổng số trang
 $totalPages = ceil($totalRecords / $recordsPerPage);
 
 // Lấy dữ liệu cho trang hiện tại
-$data = DanhgiaTT::laydexuatdanhgia($conn, $startFrom, $recordsPerPage);
+$data = DanhgiaCN::laydexuatdanhgia($conn, $startFrom, $recordsPerPage);
 
 $Manam = isset($_GET['Manam']) ? $_GET['Manam'] : null;
 $options = Nam::layDanhSach($conn);
@@ -42,11 +44,10 @@ if (isset($_GET["message"])) {
 }
 ?>
 
+<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=dexuatkhenthuong"; ?>">Đề Xuất Khen Thưởng Tập Thể</a>
 
-<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=dexuatkhenthuongcn"; ?>">Đề Xuất Khen Thưởng Cá Nhân</a>
-
-<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
-    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=danhgiaTThcldhnthem"; ?>">Xét Đánh Giá Tập Thể</a>
+<?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?>
+<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=khenthuongth"; ?>">Xét Đánh Giá Cá Nhân</a>
 <?php
 }
 ?>
@@ -121,7 +122,7 @@ if (isset($_GET["message"])) {
 
 
 <div class="search-box">
-    <input type="text" id="searchTenKhoa" placeholder="Nhập Tên Khoa" />
+    <input type="text" id="searchHoTen" placeholder="Nhập Họ Và Tên" />
     <button class="btn btn-custom btn-custom-primary" onclick="searchData()">Tìm Kiếm</button>
 </div>
 
@@ -133,7 +134,8 @@ if (isset($_GET["message"])) {
     <thead>
         <tr>
             <th>Số Thứ Tự</th> <!-- Thêm tiêu đề cho Số Thứ Tự -->
-            <th>Tên Khoa</th>
+            <th>Họ Và Tên</th>
+            <th>Đơn Vị</th>
             <th>Năm</th>
             <th>Đánh Giá</th>
             <th>Đề Xuất Khen Thưởng</th>
@@ -149,6 +151,7 @@ if (isset($_GET["message"])) {
         ?>
             <tr>
                 <td scope="row"><?php echo $stt++; ?></td> <!-- Hiển thị Số Thứ Tự và tăng biến đếm -->
+                <td><?php echo htmlspecialchars($item->MaCN) ; ?></td>
                 <td><?php echo htmlspecialchars($item->MaKhoa) ; ?></td>
                 <td><?php echo htmlspecialchars($item->Manam ?? "Cần Thêm Năm Cho $item->MaKhoa"); ?></td>
                 <td><?php echo htmlspecialchars($danhGia);?></td> 
@@ -164,7 +167,7 @@ if (isset($_GET["message"])) {
     <ul class="pagination">
         <?php if ($currentPage > 1): ?>
             <li class="page-item">
-                <a class="page-link" href="?p=dexuatkhenthuong&page=<?php echo $currentPage - 1; ?>" aria-label="Previous">
+                <a class="page-link" href="?p=dexuatkhenthuongcn&page=<?php echo $currentPage - 1; ?>" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
             </li>
@@ -172,13 +175,13 @@ if (isset($_GET["message"])) {
 
         <?php for ($i = 1; $i <= $totalPages; $i++): ?>
             <li class="page-item <?php echo $i == $currentPage ? 'active' : ''; ?>">
-                <a class="page-link" href="?p=dexuatkhenthuong&page=<?php echo $i; ?>"><?php echo $i; ?></a>
+                <a class="page-link" href="?p=dexuatkhenthuongcn&page=<?php echo $i; ?>"><?php echo $i; ?></a>
             </li>
         <?php endfor; ?>
 
         <?php if ($currentPage < $totalPages): ?>
             <li class="page-item">
-                <a class="page-link" href="?p=dexuatkhenthuong&page=<?php echo $currentPage + 1; ?>" aria-label="Next">
+                <a class="page-link" href="?p=dexuatkhenthuongcn&page=<?php echo $currentPage + 1; ?>" aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
@@ -190,10 +193,12 @@ if (isset($_GET["message"])) {
 
 <script>
     const awardMap = {
-        'Tập Thể Lao Động Tiên Tiến': 'Tập Thể Lao Động Tiên Tiến',
-    'Tập Thể Lao Động Xuất Sắc': 'Tập Thể Lao Động Xuất Sắc',
+        'Lao Động Tiên Tiến': 'Lao Động Tiên Tiến',
+    'Chiến Sĩ Thi Đua Cơ Sở': 'Chiến Sĩ Thi Đua Cơ Sở',
     'Giấy Khen Hiệu Trưởng': 'Giấy Khen Hiệu Trưởng',
-    'Bằng Khen UBND Thành Phố': 'Bằng Khen UBND Thành Phố',
+    'Chiến Sĩ Thi Đua Thành Phố': 'Chiến Sĩ Thi Đua Thành Phố',
+    'Chiến Sĩ Thi Đua Toàn Quốc': 'Chiến Sĩ Thi Đua Toàn Quốc',
+    'Bằng Khen Ủy Ban Nhân Dân Thành Phố': 'Bằng Khen Ủy Ban Nhân Dân Thành Phố',
     'Bằng Khen Thủ Tướng Chính Phủ': 'Bằng Khen Thủ Tướng Chính Phủ',
     'Huân Chương Lao Động Hạng Ba': 'Huân Chương Lao Động Hạng Ba',
     'Huân Chương Lao Động Hạng Nhì': 'Huân Chương Lao Động Hạng Nhì'
@@ -253,53 +258,56 @@ if (isset($_GET["message"])) {
 
     // Function to handle the search
     async function searchData() {
-        
-        const searchTenKhoa = document.getElementById('searchTenKhoa').value.trim();
-        console.log("Tên Khoa tìm kiếm:", searchTenKhoa);
-        const queryString = `getmadexuatdanhgia.php?TenKhoa=${encodeURIComponent(searchTenKhoa)}`;
+    const searchHoTen = document.getElementById('searchHoTen').value.trim();
 
-        try {
-            const response = await fetch(queryString);
-            if (!response.ok) {
-                throw new Error('Mạng lỗi');
-            }
-            const data = await response.json();
+    const queryString = `getdexuatcn.php?HoTen=${encodeURIComponent(searchHoTen)}`;
 
-            const tableBody = document.getElementById('danhgiatt-table-body');
-            tableBody.innerHTML = '';  // Clear table
-
-            let stt = 1;  // Khởi tạo biến số thứ tự
-
-            data.forEach(item => {
-                const tr = document.createElement('tr');
-
-                // Thêm ô Số Thứ Tự
-                const tdSTT = document.createElement('td');
-                tdSTT.textContent = stt++;  // Hiển thị và tăng số thứ tự
-                tr.appendChild(tdSTT);
-
-                const tdTenKhoa = document.createElement('td');
-                tdTenKhoa.textContent = item.TenKhoa;
-                tr.appendChild(tdTenKhoa);
-
-                const tdNam = document.createElement('td');
-                tdNam.textContent = item.Nam || `Cần Thêm Năm Cho ${item.TenKhoa}`;
-                tr.appendChild(tdNam);
-
-                const tdDanhGia = document.createElement('td');
-                tdDanhGia.textContent = awardMap[item.DanhGia] || item.DanhGia;
-                tr.appendChild(tdDanhGia);
-
-                const tdDeXuatKhenThuong = document.createElement('td');
-                tdDeXuatKhenThuong.textContent = item.DeXuatKhenThuong;
-                tr.appendChild(tdDeXuatKhenThuong);
-
-                tableBody.appendChild(tr);
-            });
-        } catch (error) {
-            console.error('Lỗi khi tìm kiếm:', error);
+    try {
+        const response = await fetch(queryString);
+        if (!response.ok) {
+            throw new Error('Mạng lỗi');
         }
+        const data = await response.json();
+
+        const tableBody = document.getElementById('danhgiatt-table-body');
+        tableBody.innerHTML = '';  // Clear table
+
+        let stt = 1;  // Khởi tạo biến số thứ tự
+
+        data.forEach(item => {
+            const tr = document.createElement('tr');
+
+            const tdSTT = document.createElement('td');
+            tdSTT.textContent = stt++;  // Hiển thị và tăng số thứ tự
+            tr.appendChild(tdSTT);
+
+            const tdHoTen = document.createElement('td');
+            tdHoTen.textContent = item.HoTen;
+            tr.appendChild(tdHoTen);
+
+            const tdTenKhoa = document.createElement('td');
+            tdTenKhoa.textContent = item.TenKhoa;
+            tr.appendChild(tdTenKhoa);
+
+            const tdNam = document.createElement('td');
+            tdNam.textContent = item.Nam || `Cần Thêm Năm Cho ${item.TenKhoa}`;
+            tr.appendChild(tdNam);
+
+            const tdDanhGia = document.createElement('td');
+            tdDanhGia.textContent = awardMap[item.DanhGia] || item.DanhGia;
+            tr.appendChild(tdDanhGia);
+
+            const tdDeXuatKhenThuong = document.createElement('td');
+            tdDeXuatKhenThuong.textContent = item.DeXuatKhenThuong;
+            tr.appendChild(tdDeXuatKhenThuong);
+
+            tableBody.appendChild(tr);
+        });
+    } catch (error) {
+        console.error('Lỗi khi tìm kiếm:', error);
     }
+}
+
 </script>
 
 

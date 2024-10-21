@@ -58,6 +58,7 @@
             <option value="Sáng Kiên Cấp Thành Phố" >Sáng Kiên Cấp Thành Phố</option>
             <option value="Sáng Kiên Cấp Quận" >Sáng Kiên Cấp Quận</option>
             <option value="Nghiên Cú Khoa Học" >Nghiên Cú Khoa Học</option>
+            <option value="Khoa Học Công Nghệ" >Khoa Học Công Nghệ</option>
         </select>
     </div>
     <div class="form-group">

@@ -11,6 +11,7 @@
         public $DanhGia;
         public $Ngay;
         public $DonVi;
+        public $DeXuatDanhGia;
         public $FilePDF;
 
 
@@ -667,7 +668,580 @@
                 }
                 return $danhgiacnList;
         }
+
+        public static function laytongdexuatdanhgia($conn) {
+            $sql = "WITH danh_sach AS (
+    SELECT 
+        tc.HoTen,
+        k.TenKhoa,
+        n.Nam,
+        dg.DanhGia,
+        CASE 
+    	WHEN dg.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Chiến Sĩ Thi Đua Cơ Sở')
+    AND (
+        SELECT COUNT(DISTINCT n.Manam) 
+        FROM danhgiacn dg5 
+        JOIN nam n ON dg5.Manam = n.Manam
+        WHERE dg5.MaCN = dg.MaCN 
+        AND dg5.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Chiến Sĩ Thi Đua Cơ Sở')
+        AND n.Manam <= dg.Manam
+    )= 2
+    AND (
+        SELECT COUNT(*) 
+        FROM sangkien sk 
+        WHERE sk.MaCN = dg.MaCN  
+        AND sk.CapSK IN ('Sáng Kiên Cấp Cơ Sở')
+    )= 2
+    AND NOT EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg3 
+           WHERE dg3.MaCN = dg.MaCN  
+             AND dg3.DanhGia = 'Bằng Khen Ủy Ban Nhân Dân Thành Phố'
+       )
+THEN 'Bằng Khen Ủy Ban Nhân Dân Thành Phố'
+    
+    	WHEN (dg.DanhGia = 'Lao Động Tiên Tiến')
+       AND EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg2 
+           WHERE dg2.MaCN = dg.MaCN  
+             AND dg2.DanhGia IN ('Hoàn Thành Xuất Sắc')
+       )
+       AND NOT EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg3 
+           WHERE dg3.MaCN = dg.MaCN  
+             AND dg3.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+       )
+       OR EXISTS (
+           SELECT 1 
+           FROM sangkien sk 
+           WHERE sk.MaCN = dg.MaCN  
+             AND sk.CapSK IN ('Cấp Trường', 'Nghiên Cứu Khoa Học')
+       )
+       AND NOT EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg3 
+           WHERE dg3.MaCN = dg.MaCN  
+             AND dg3.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+       )
+    THEN 'Chiến Sĩ Thi Đua Cơ Sở'
+
+WHEN dg.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ')
+       AND NOT EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg2 
+           WHERE dg2.MaCN = dg.MaCN  
+             AND dg2.DanhGia = 'Lao Động Tiên Tiến'
+       )
+    THEN 'Lao Động Tiên Tiến'
+
+WHEN dg.DanhGia IN ('Lao Động Tiên Tiến')
+       AND NOT EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg2 
+           WHERE dg2.MaCN = dg.MaCN  
+             AND dg2.DanhGia = 'Giấy Khen Hiệu Trưởng'
+       )
+    THEN 'Giấy Khen Hiệu Trưởng'
+    
+    WHEN dg.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+                AND (
+                    SELECT COUNT(DISTINCT n.Manam) 
+                    FROM danhgiacn dg4 
+                    JOIN nam n ON dg4.Manam = n.Manam
+                    WHERE dg4.MaCN = dg.MaCN 
+                    AND dg4.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+                    AND n.Manam <= dg.Manam
+                )= 3
+                AND EXISTS (
+                    SELECT 1 
+                    FROM sangkien sk 
+                    WHERE sk.MaCN = dg.MaCN  
+                    AND sk.CapSK IN ('Sáng Kiên Cấp Thành Phố', 'Khoa Học Công Nghệ')
+                )
+    			 AND NOT EXISTS (
+                       SELECT 1 
+                       FROM danhgiacn dg2 
+                       WHERE dg2.MaCN = dg.MaCN  
+                         AND dg2.DanhGia = 'Chiến Sĩ Thi Đua Thành Phố'
+                   )
+            THEN 'Chiến Sĩ Thi Đua Thành Phố'
+    
+    WHEN dg.DanhGia = 'Chiến Sĩ Thi Đua Thành Phố'
+                AND (
+                    SELECT COUNT(DISTINCT n.Manam) 
+                    FROM danhgiacn dg5 
+                    JOIN nam n ON dg5.Manam = n.Manam
+                    WHERE dg5.MaCN = dg.MaCN 
+                    AND dg5.DanhGia = 'Chiến Sĩ Thi Đua Thành Phố'
+                    AND n.Manam <= dg.Manam
+                ) = 2
+                AND EXISTS (
+                    SELECT 1 
+                    FROM sangkien sk 
+                    WHERE sk.MaCN = dg.MaCN  
+                    AND sk.CapSK IN ('Sáng Kiên Cấp Thành Phố', 'Khoa Học Công Nghệ')
+                )AND NOT EXISTS (
+                       SELECT 1 
+                       FROM danhgiacn dg2 
+                       WHERE dg2.MaCN = dg.MaCN  
+                         AND dg2.DanhGia = 'Chiến Sĩ Thi Đua Toàn Quốc'
+                   )
+            THEN 'Chiến Sĩ Thi Đua Toàn Quốc'
+    
+    	WHEN 
+            -- Kiểm tra có 5 năm liên tục hoàn thành tốt nhiệm vụ trở lên
+            (
+                SELECT COUNT(DISTINCT n5.Manam) 
+                FROM danhgiacn dg5 
+                JOIN nam n5 ON dg5.Manam = n5.Manam
+                WHERE dg5.MaCN = dg.MaCN 
+                AND dg5.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc')
+                AND n5.Manam <= dg.Manam
+            )= 5
+            AND (
+                SELECT COUNT(*) 
+                FROM danhgiacn dg6
+                WHERE dg6.MaCN = dg.MaCN
+                AND dg6.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+            )= 3
+            AND NOT EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg7
+                WHERE dg7.MaCN = dg.MaCN  
+                AND dg7.DanhGia IN ('Bằng Khen Thủ Tướng Chính Phủ')
+            )
+        THEN 'Bằng Khen Thủ Tướng Chính Phủ'
+    
+    	WHEN dg.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
+            -- Kiểm tra đã nhận 'Bằng Khen Thủ Tướng Chính Phủ'
+            AND EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg1 
+                WHERE dg1.MaCN = dg.MaCN
+                AND dg1.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
+            )
+            AND (
+                SELECT COUNT(DISTINCT n2.Manam) 
+                FROM danhgiacn dg2 
+                JOIN nam n2 ON dg2.Manam = n2.Manam
+                WHERE dg2.MaCN = dg.MaCN
+                AND dg2.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc', 'Chiến Sĩ Thi Đua Cơ Sở')
+                AND n2.Manam >= (
+                    SELECT MIN(n1.Manam)
+                    FROM danhgiacn dg1
+                    JOIN nam n1 ON dg1.Manam = n1.Manam
+                    WHERE dg1.MaCN = dg.MaCN
+                    AND dg1.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
+                )
+            )>= 5
+            AND EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg3
+                JOIN nam n3 ON dg3.Manam = n3.Manam
+                WHERE dg3.MaCN = dg.MaCN
+                AND dg3.DanhGia = 'Hoàn Thành Xuất Sắc'
+                AND n3.Manam >= (
+                    SELECT MIN(n1.Manam)
+                    FROM danhgiacn dg1
+                    JOIN nam n1 ON dg1.Manam = n1.Manam
+                    WHERE dg1.MaCN = dg.MaCN
+                    AND dg1.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
+                )
+            )
+            AND (
+                SELECT COUNT(*) 
+                FROM danhgiacn dg4
+                WHERE dg4.MaCN = dg.MaCN
+                AND dg4.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+            )= 3
+            AND NOT EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg5
+                WHERE dg5.MaCN = dg.MaCN  
+                AND dg5.DanhGia IN ('Huân Chương Lao Động Hạng Ba')
+            )
+        THEN 'Huân Chương Lao Động Hạng Ba'
+	
+    WHEN dg.DanhGia = 'Huân Chương Lao Động Hạng Ba'
+            -- Kiểm tra đã nhận 'Huân Chương Lao Động Hạng Ba'
+           AND EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg1 
+                WHERE dg1.MaCN = dg.MaCN
+                AND dg1.DanhGia = 'Huân Chương Lao Động Hạng Ba'
+            )
+            
+            -- Kiểm tra có 5 năm liên tục hoàn thành tốt nhiệm vụ trở lên sau khi nhận 'Huân Chương Lao Động Hạng Ba'
+            AND (
+                SELECT COUNT(DISTINCT n2.Manam) 
+                FROM danhgiacn dg2 
+                JOIN nam n2 ON dg2.Manam = n2.Manam
+                WHERE dg2.MaCN = dg.MaCN
+                AND dg2.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc', 'Chiến Sĩ Thi Đua Cơ Sở', 'Chiến Sĩ Thi Đua Thành Phố')
+                AND n2.Manam >= (
+                    SELECT MIN(n1.Manam)
+                    FROM danhgiacn dg1
+                    JOIN nam n1 ON dg1.Manam = n1.Manam
+                    WHERE dg1.MaCN = dg.MaCN
+                    AND dg1.DanhGia = 'Huân Chương Lao Động Hạng Ba'
+                )
+            ) >= 5
+            
+            -- Kiểm tra có ít nhất 2 năm hoàn thành xuất sắc nhiệm vụ trong 5 năm đó
+            AND (
+                SELECT COUNT(*) 
+                FROM danhgiacn dg3
+                WHERE dg3.MaCN = dg.MaCN
+                AND dg3.DanhGia = 'Hoàn Thành Xuất Sắc'
+            ) >= 2
+            AND EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg4
+                WHERE dg4.MaCN = dg.MaCN
+                AND dg4.DanhGia = 'Chiến Sĩ Thi Đua Thành Phố'
+            )
+            AND NOT EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg5
+                WHERE dg5.MaCN = dg.MaCN  
+                AND dg5.DanhGia IN ('Huân Chương Lao Động Hạng Nhì')
+            )
+        THEN 'Huân Chương Lao Động Hạng Nhì'
+            ELSE NULL
+        END AS DeXuatKhenThuong
+    FROM danhgiacn dg
+    JOIN khoa k ON dg.MaKhoa = k.MaKhoa
+    JOIN nam n ON dg.Manam = n.Manam
+    JOIN thongtincanhan tc ON dg.MaCN = tc.MaCN
+    WHERE 
+        dg.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc', 'Hoàn Thành Nhiệm Vụ', 'Lao Động Tiên Tiến', 'Chiến Sĩ Thi Đua Cơ Sở', 'Giấy Khen Hiệu Trưởng','Chiến Sĩ Thi Đua Thành Phố','Chiến Sĩ Thi Đua Toàn Quốc','Bằng Khen Ủy Ban Nhân Dân Thành Phố','Bằng Khen Thủ Tướng Chính Phủ','Huân Chương Lao Động Hạng Ba','Huân Chương Lao Động Hạng Nhì')
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM khethuongkyluat kt
+            WHERE kt.MaCN = dg.MaCN
+        )
+)
+
+
+SELECT COUNT(*) AS tong_de_xuat
+FROM danhgiacn dg
+JOIN khoa k ON dg.MaKhoa = k.MaKhoa
+JOIN nam n ON dg.Manam = n.Manam
+WHERE dg.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc')
+AND NOT EXISTS (
+    SELECT 1 
+    FROM khethuongkyluat kt
+    WHERE kt.MaCN = dg.MaCN
+)";
+            
+            $result = $conn->query($sql);
+            $row = $result->fetch_assoc();
+            return $row['tong_de_xuat'];
+        }
+    
+        public static function laydexuatdanhgia($conn, $startFrom, $recordsPerPage) {
+            $sql = "WITH danh_sach AS (
+    SELECT 
+        tc.HoTen,
+        k.TenKhoa,
+        n.Nam,
+        dg.DanhGia,
+        CASE 
+    	WHEN dg.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Chiến Sĩ Thi Đua Cơ Sở')
+    AND (
+        SELECT COUNT(DISTINCT n.Manam) 
+        FROM danhgiacn dg5 
+        JOIN nam n ON dg5.Manam = n.Manam
+        WHERE dg5.MaCN = dg.MaCN 
+        AND dg5.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Chiến Sĩ Thi Đua Cơ Sở')
+        AND n.Manam <= dg.Manam
+    )= 2
+    AND (
+        SELECT COUNT(*) 
+        FROM sangkien sk 
+        WHERE sk.MaCN = dg.MaCN  
+        AND sk.CapSK IN ('Sáng Kiên Cấp Cơ Sở')
+    )= 2
+    AND NOT EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg3 
+           WHERE dg3.MaCN = dg.MaCN  
+             AND dg3.DanhGia = 'Bằng Khen Ủy Ban Nhân Dân Thành Phố'
+       )
+THEN 'Bằng Khen Ủy Ban Nhân Dân Thành Phố'
+    
+    	WHEN (dg.DanhGia = 'Lao Động Tiên Tiến')
+       AND EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg2 
+           WHERE dg2.MaCN = dg.MaCN  
+             AND dg2.DanhGia IN ('Hoàn Thành Xuất Sắc')
+       )
+       AND NOT EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg3 
+           WHERE dg3.MaCN = dg.MaCN  
+             AND dg3.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+       )
+       OR EXISTS (
+           SELECT 1 
+           FROM sangkien sk 
+           WHERE sk.MaCN = dg.MaCN  
+             AND sk.CapSK IN ('Cấp Trường', 'Nghiên Cứu Khoa Học')
+       )
+       AND NOT EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg3 
+           WHERE dg3.MaCN = dg.MaCN  
+             AND dg3.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+       )
+    THEN 'Chiến Sĩ Thi Đua Cơ Sở'
+
+WHEN dg.DanhGia IN ('Hoàn Thành Xuất Sắc', 'Hoàn Thành Tốt Nhiệm Vụ')
+       AND NOT EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg2 
+           WHERE dg2.MaCN = dg.MaCN  
+             AND dg2.DanhGia = 'Lao Động Tiên Tiến'
+       )
+    THEN 'Lao Động Tiên Tiến'
+
+WHEN dg.DanhGia IN ('Lao Động Tiên Tiến')
+       AND NOT EXISTS (
+           SELECT 1 
+           FROM danhgiacn dg2 
+           WHERE dg2.MaCN = dg.MaCN  
+             AND dg2.DanhGia = 'Giấy Khen Hiệu Trưởng'
+       )
+    THEN 'Giấy Khen Hiệu Trưởng'
+    
+    WHEN dg.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+                AND (
+                    SELECT COUNT(DISTINCT n.Manam) 
+                    FROM danhgiacn dg4 
+                    JOIN nam n ON dg4.Manam = n.Manam
+                    WHERE dg4.MaCN = dg.MaCN 
+                    AND dg4.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+                    AND n.Manam <= dg.Manam
+                )= 3
+                AND EXISTS (
+                    SELECT 1 
+                    FROM sangkien sk 
+                    WHERE sk.MaCN = dg.MaCN  
+                    AND sk.CapSK IN ('Sáng Kiên Cấp Thành Phố', 'Khoa Học Công Nghệ')
+                )
+    			 AND NOT EXISTS (
+                       SELECT 1 
+                       FROM danhgiacn dg2 
+                       WHERE dg2.MaCN = dg.MaCN  
+                         AND dg2.DanhGia = 'Chiến Sĩ Thi Đua Thành Phố'
+                   )
+            THEN 'Chiến Sĩ Thi Đua Thành Phố'
+    
+    WHEN dg.DanhGia = 'Chiến Sĩ Thi Đua Thành Phố'
+                AND (
+                    SELECT COUNT(DISTINCT n.Manam) 
+                    FROM danhgiacn dg5 
+                    JOIN nam n ON dg5.Manam = n.Manam
+                    WHERE dg5.MaCN = dg.MaCN 
+                    AND dg5.DanhGia = 'Chiến Sĩ Thi Đua Thành Phố'
+                    AND n.Manam <= dg.Manam
+                ) = 2
+                AND EXISTS (
+                    SELECT 1 
+                    FROM sangkien sk 
+                    WHERE sk.MaCN = dg.MaCN  
+                    AND sk.CapSK IN ('Sáng Kiên Cấp Thành Phố', 'Khoa Học Công Nghệ')
+                )AND NOT EXISTS (
+                       SELECT 1 
+                       FROM danhgiacn dg2 
+                       WHERE dg2.MaCN = dg.MaCN  
+                         AND dg2.DanhGia = 'Chiến Sĩ Thi Đua Toàn Quốc'
+                   )
+            THEN 'Chiến Sĩ Thi Đua Toàn Quốc'
+    
+    	WHEN 
+            (
+                SELECT COUNT(DISTINCT n5.Manam) 
+                FROM danhgiacn dg5 
+                JOIN nam n5 ON dg5.Manam = n5.Manam
+                WHERE dg5.MaCN = dg.MaCN 
+                AND dg5.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc')
+                AND n5.Manam <= dg.Manam
+            )= 5
+            
+            AND (
+                SELECT COUNT(*) 
+                FROM danhgiacn dg6
+                WHERE dg6.MaCN = dg.MaCN
+                AND dg6.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+            )= 3
+            
+            AND NOT EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg7
+                WHERE dg7.MaCN = dg.MaCN  
+                AND dg7.DanhGia IN ('Bằng Khen Thủ Tướng Chính Phủ')
+            )
+        THEN 'Bằng Khen Thủ Tướng Chính Phủ'
+    
+    	WHEN dg.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
+            AND EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg1 
+                WHERE dg1.MaCN = dg.MaCN
+                AND dg1.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
+            )
+            
+            -- Kiểm tra có 5 năm liên tục hoàn thành tốt nhiệm vụ trở lên sau khi nhận 'Bằng Khen Thủ Tướng Chính Phủ'
+            AND (
+                SELECT COUNT(DISTINCT n2.Manam) 
+                FROM danhgiacn dg2 
+                JOIN nam n2 ON dg2.Manam = n2.Manam
+                WHERE dg2.MaCN = dg.MaCN
+                AND dg2.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc', 'Chiến Sĩ Thi Đua Cơ Sở')
+                AND n2.Manam >= (
+                    SELECT MIN(n1.Manam)
+                    FROM danhgiacn dg1
+                    JOIN nam n1 ON dg1.Manam = n1.Manam
+                    WHERE dg1.MaCN = dg.MaCN
+                    AND dg1.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
+                )
+            )>= 5
+            AND EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg3
+                JOIN nam n3 ON dg3.Manam = n3.Manam
+                WHERE dg3.MaCN = dg.MaCN
+                AND dg3.DanhGia = 'Hoàn Thành Xuất Sắc'
+                AND n3.Manam >= (
+                    SELECT MIN(n1.Manam)
+                    FROM danhgiacn dg1
+                    JOIN nam n1 ON dg1.Manam = n1.Manam
+                    WHERE dg1.MaCN = dg.MaCN
+                    AND dg1.DanhGia = 'Bằng Khen Thủ Tướng Chính Phủ'
+                )
+            )
+
+            AND (
+                SELECT COUNT(*) 
+                FROM danhgiacn dg4
+                WHERE dg4.MaCN = dg.MaCN
+                AND dg4.DanhGia = 'Chiến Sĩ Thi Đua Cơ Sở'
+            )= 3
+            AND NOT EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg5
+                WHERE dg5.MaCN = dg.MaCN  
+                AND dg5.DanhGia IN ('Huân Chương Lao Động Hạng Ba')
+            )
+        THEN 'Huân Chương Lao Động Hạng Ba'
+	
+    WHEN dg.DanhGia = 'Huân Chương Lao Động Hạng Ba'
+            -- Kiểm tra đã nhận 'Huân Chương Lao Động Hạng Ba'
+           AND EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg1 
+                WHERE dg1.MaCN = dg.MaCN
+                AND dg1.DanhGia = 'Huân Chương Lao Động Hạng Ba'
+            )
+            AND (
+                SELECT COUNT(DISTINCT n2.Manam) 
+                FROM danhgiacn dg2 
+                JOIN nam n2 ON dg2.Manam = n2.Manam
+                WHERE dg2.MaCN = dg.MaCN
+                AND dg2.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc', 'Chiến Sĩ Thi Đua Cơ Sở', 'Chiến Sĩ Thi Đua Thành Phố')
+                AND n2.Manam >= (
+                    SELECT MIN(n1.Manam)
+                    FROM danhgiacn dg1
+                    JOIN nam n1 ON dg1.Manam = n1.Manam
+                    WHERE dg1.MaCN = dg.MaCN
+                    AND dg1.DanhGia = 'Huân Chương Lao Động Hạng Ba'
+                )
+            ) >= 5
+            AND (
+                SELECT COUNT(*) 
+                FROM danhgiacn dg3
+                WHERE dg3.MaCN = dg.MaCN
+                AND dg3.DanhGia = 'Hoàn Thành Xuất Sắc'
+            ) >= 2
+            AND EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg4
+                WHERE dg4.MaCN = dg.MaCN
+                AND dg4.DanhGia = 'Chiến Sĩ Thi Đua Thành Phố'
+            )
+            AND NOT EXISTS (
+                SELECT 1 
+                FROM danhgiacn dg5
+                WHERE dg5.MaCN = dg.MaCN  
+                AND dg5.DanhGia IN ('Huân Chương Lao Động Hạng Nhì')
+            )
+        THEN 'Huân Chương Lao Động Hạng Nhì'
+            ELSE NULL
+        END AS DeXuatKhenThuong
+    FROM danhgiacn dg
+    JOIN khoa k ON dg.MaKhoa = k.MaKhoa
+    JOIN nam n ON dg.Manam = n.Manam
+    JOIN thongtincanhan tc ON dg.MaCN = tc.MaCN
+    WHERE 
+        dg.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc', 'Hoàn Thành Nhiệm Vụ', 'Lao Động Tiên Tiến', 'Chiến Sĩ Thi Đua Cơ Sở', 'Giấy Khen Hiệu Trưởng','Chiến Sĩ Thi Đua Thành Phố','Chiến Sĩ Thi Đua Toàn Quốc','Bằng Khen Ủy Ban Nhân Dân Thành Phố','Bằng Khen Thủ Tướng Chính Phủ','Huân Chương Lao Động Hạng Ba','Huân Chương Lao Động Hạng Nhì')
+        AND NOT EXISTS (
+            SELECT 1 
+            FROM khethuongkyluat kt
+            WHERE kt.MaCN = dg.MaCN
+        )
+),
+danh_sach_duoc_khen_thuong AS (
+    SELECT DISTINCT 
+        k.TenKhoa,
+        n.Manam
+    FROM danhgiacn dg
+    JOIN khoa k ON dg.MaKhoa = k.MaKhoa
+    JOIN nam n ON dg.Manam = n.Manam
+    JOIN thongtincanhan tc ON dg.MaCN = tc.MaCN
+    WHERE dg.DanhGia IN ('Lao Động Tiên Tiến', 'Giấy Khen Hiệu Trưởng', 'Chiến Sĩ Thi Đua Cơ Sở', 'Chiến Sĩ Thi Đua Thành Phố', 'Chiến Sĩ Thi Đua Toàn Quốc', 'Bằng Khen Ủy Ban Nhân Dân Thành Phố', 'Bằng Khen Thủ Tướng Chính Phủ', 'Huân Chương Lao Động Hạng Ba', 'Huân Chương Lao Động Hạng Nhì')
+)
+SELECT 
+    ds.HoTen,
+    ds.TenKhoa,
+    ds.Nam,
+    ds.DanhGia,
+    ds.DeXuatKhenThuong
+FROM danh_sach ds
+LEFT JOIN danh_sach_duoc_khen_thuong dskt 
+    ON ds.TenKhoa = dskt.TenKhoa 
+    AND ds.Nam = dskt.Manam
+WHERE ds.DeXuatKhenThuong IS NOT NULL
+AND dskt.TenKhoa IS NULL
+ORDER BY ds.Nam ASC
+LIMIT $startFrom, $recordsPerPage;";
+        
+            $result = $conn->query($sql);
+        
+            $danhgiattList = array();
+        
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+                    $danhgiatt_obj = new DanhgiaCN();
+                    $danhgiatt_obj->MaCN = $row["HoTen"];
+                    $danhgiatt_obj->MaKhoa = $row["TenKhoa"];
+                    $danhgiatt_obj->Manam = $row["Nam"];
+                    $danhgiatt_obj->DanhGia = $row["DanhGia"];
+                    $danhgiatt_obj->DeXuatDanhGia = $row["DeXuatKhenThuong"];
+                    $danhgiattList[] = $danhgiatt_obj;
+                }
+            }
+        
+            return $danhgiattList;
+        }
+        
     }
+
+
+    
 
 
 ?>

@@ -2,8 +2,9 @@
 include('./connectdb.php'); 
 include('./thongtincanhan.php');
 
-if (isset($_POST['khoa'])) {
+if (isset($_POST['khoa'])&& !empty($_POST['nam'])) {
     $khoa = $_POST['khoa'];
+    $nam = $_POST['nam'];
 
     // Truy vấn để lấy giá trị 'TenKhoa' dựa trên 'MaKhoa'
     $sql = "SELECT * FROM khoa WHERE MaKhoa = ?";
@@ -17,7 +18,7 @@ if (isset($_POST['khoa'])) {
     if ($row) {
         $tenkhoa = $row['TenKhoa'];
     
-        $datathongtin = thongtincanhan::layDanhSachthongtintheokhoa($conn, $khoa);
+        $datathongtin = thongtincanhan::layDanhSachthongtintheokhoa($conn, $khoa, $nam);
     
         if ($datathongtin) {
             // Bắt đầu bảng

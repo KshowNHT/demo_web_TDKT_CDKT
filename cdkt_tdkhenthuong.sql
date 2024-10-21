@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3308
--- Thời gian đã tạo: Th10 17, 2024 lúc 06:11 PM
+-- Thời gian đã tạo: Th10 20, 2024 lúc 12:15 PM
 -- Phiên bản máy phục vụ: 10.4.24-MariaDB
 -- Phiên bản PHP: 8.1.6
 
@@ -157,14 +157,14 @@ INSERT INTO `danhgiatt` (`MaDGTT`, `MaKhoa`, `SoQD`, `Manam`, `DanhGia`, `Ngay`,
 (240, 40, '', 7, 'Hoàn Thành Xuất Sắc', '0000-00-00', '', NULL),
 (241, 40, '', 8, 'Tập Thể Lao Động Xuất Sắc', '0000-00-00', '', NULL),
 (242, 40, '', 9, 'Hoàn Thành Xuất Sắc', '0000-00-00', '', NULL),
-(243, 40, '', 10, 'Tập Thể Lao Động Xuất Sắc', '0000-00-00', '', NULL),
+(243, 40, 'test', 9, 'Tập Thể Lao Động Xuất Sắc', '2024-10-01', 'Phòng Quản trị thiết bị', 'Không có file PDF'),
 (244, 40, '', 11, 'Bằng Khen Thủ Tướng Chính Phủ', '0000-00-00', '', NULL),
 (245, 40, '', 12, 'Cờ Thi Đua Của UBND', '0000-00-00', '', NULL),
 (246, 40, '', 13, 'Cờ Thi Đua Của UBND', '0000-00-00', '', NULL),
 (247, 41, '', 7, 'Hoàn Thành Tốt Nhiệm Vụ', '0000-00-00', '', NULL),
 (248, 41, '', 8, 'Tập Thể Lao Động Tiên Tiến', '0000-00-00', '', NULL),
 (249, 41, '', 9, 'Hoàn Thành Xuất Sắc', '0000-00-00', '', NULL),
-(250, 41, '', 10, 'Tập Thể Lao Động Xuất Sắc', '0000-00-00', '', NULL),
+(250, 41, 'test', 9, 'Tập Thể Lao Động Xuất Sắc', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/slide_chuong_2.pdf'),
 (251, 41, '', 11, 'Bằng Khen Thủ Tướng Chính Phủ', '0000-00-00', '', NULL),
 (252, 41, '', 12, 'Bằng Khen Ủy Ban Nhân Dân Thành Phố', '0000-00-00', '', NULL),
 (253, 41, '', 13, 'Cờ Thi Đua Của Chính Phủ', '0000-00-00', '', NULL),
@@ -174,7 +174,21 @@ INSERT INTO `danhgiatt` (`MaDGTT`, `MaKhoa`, `SoQD`, `Manam`, `DanhGia`, `Ngay`,
 (257, 42, '', 10, 'Tập Thể Lao Động Xuất Sắc', '0000-00-00', '', NULL),
 (258, 42, '', 11, 'Bằng Khen Thủ Tướng Chính Phủ', '0000-00-00', '', NULL),
 (259, 42, '', 12, 'Cờ Thi Đua Của UBND', '0000-00-00', '', NULL),
-(260, 42, '', 13, 'Cờ Thi Đua Của UBND', '0000-00-00', '', NULL);
+(260, 42, '', 13, 'Cờ Thi Đua Của UBND', '0000-00-00', '', NULL),
+(261, 46, 'test', 16, 'Bằng Khen Thủ Tướng Chính Phủ', '2024-10-02', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1729344084_TH_Buoi3_2 (1).pdf'),
+(262, 40, 'test', 9, 'Bằng Khen Ủy Ban Nhân Dân Thành Phố', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1729344572_TH_Buoi3_1 (1).pdf'),
+(263, 41, 'test', 9, 'Bằng Khen Ủy Ban Nhân Dân Thành Phố', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1729344572_TH_Buoi3_1 (1).pdf'),
+(264, 42, 'test', 9, 'Bằng Khen Ủy Ban Nhân Dân Thành Phố', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1729344572_TH_Buoi3_1 (1).pdf'),
+(265, 46, 'test', 15, 'Tập Thể Lao Động Xuất Sắc', '2024-10-01', 'Phòng Quản trị thiết bị', './uploads/1729345435_slide_chuong_2.pdf'),
+(266, 46, 'test', 14, 'Tập Thể Lao Động Xuất Sắc', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1729345483_slide_chuong_1.pdf'),
+(267, 46, 'test', 13, 'Tập Thể Lao Động Xuất Sắc', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1729345511_TH_Buoi3_2 (1).pdf'),
+(268, 46, 'test', 12, 'Tập Thể Lao Động Xuất Sắc', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1729345566_TH_Buoi3_1 (2).pdf'),
+(269, 44, 'test', 11, 'Hoàn Thành Xuất Sắc', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1729346483_TH_Buoi3_2 (1).pdf'),
+(270, 45, 'test', 11, 'Hoàn Thành Xuất Sắc', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1729346483_TH_Buoi3_2 (1).pdf'),
+(271, 46, 'test', 11, 'Hoàn Thành Xuất Sắc', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1729346483_TH_Buoi3_2 (1).pdf'),
+(272, 45, 'test', 11, 'Tập Thể Lao Động Xuất Sắc', '2024-10-02', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1729346518_TH_Buoi3_2 (1).pdf'),
+(273, 46, 'test', 11, 'Tập Thể Lao Động Xuất Sắc', '2024-10-02', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1729346518_TH_Buoi3_2 (1).pdf'),
+(274, 46, 'test', 16, 'Huân Chương Lao Động Hạng Ba', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1729347319_TH_Buoi3_1 (1).pdf');
 
 -- --------------------------------------------------------
 
@@ -221,6 +235,15 @@ CREATE TABLE `khethuongkyluattt` (
   `FilePDF` varchar(50) NOT NULL,
   `GhiChu` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Đang đổ dữ liệu cho bảng `khethuongkyluattt`
+--
+
+INSERT INTO `khethuongkyluattt` (`MaKTKLtt`, `MaKhoa`, `KhenThuong`, `Manam`, `SoQuyetDinh`, `NgayQuyetDinh`, `DonVi`, `FilePDF`, `GhiChu`) VALUES
+(37, 35, 'Cờ Thi Đua Ủy Ban Nhân Dân', 16, 'test', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp tác', './uploads/1729186142_TH_Buoi3_1 (1).pdf', 'test'),
+(38, 46, 'Cờ Thi Đua Ủy Ban Nhân Dân', 16, 'test', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp tác', './uploads/1729343376_TH_Buoi3_2 (1).pdf', 'test'),
+(39, 46, 'Cờ Thi Đua Chính Phủ', 16, 'test', '2024-09-30', 'Phòng Kế hoạch - Tài chính', './uploads/1729343865_Blockchain_in_Logistics_and_S', 'test');
 
 -- --------------------------------------------------------
 
@@ -511,6 +534,13 @@ ALTER TABLE `khethuongkyluat`
   ADD KEY `fk_MaKhoa` (`MaKhoa`);
 
 --
+-- Chỉ mục cho bảng `khethuongkyluattt`
+--
+ALTER TABLE `khethuongkyluattt`
+  ADD PRIMARY KEY (`MaKTKLtt`),
+  ADD KEY `fk_MaKhoa` (`MaKhoa`);
+
+--
 -- Chỉ mục cho bảng `khoa`
 --
 ALTER TABLE `khoa`
@@ -556,13 +586,19 @@ ALTER TABLE `danhgiacn`
 -- AUTO_INCREMENT cho bảng `danhgiatt`
 --
 ALTER TABLE `danhgiatt`
-  MODIFY `MaDGTT` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=261;
+  MODIFY `MaDGTT` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=275;
 
 --
 -- AUTO_INCREMENT cho bảng `khethuongkyluat`
 --
 ALTER TABLE `khethuongkyluat`
   MODIFY `MaKTKL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+
+--
+-- AUTO_INCREMENT cho bảng `khethuongkyluattt`
+--
+ALTER TABLE `khethuongkyluattt`
+  MODIFY `MaKTKLtt` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT cho bảng `khoa`
