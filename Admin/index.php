@@ -60,6 +60,7 @@
         'khenthuongbkttcp' => array('Đánh Giá Cá Nhân Bằng Khen Thủ Tướng Chính Phủ', 'khenthuongttcp.php'),
         'khenthuonghb' => array('Đánh Giá Cá Nhân Huân Chương Lao Động Hạng Ba', 'khenthuonghcldhb.php'),
         'khenthuonghn' => array('Đánh Giá Cá Nhân Huân Chương Lao Động Hạng Nhì', 'khenthuonghcldhn.php'),
+        'khenthuongsua' => array('Sửa Đánh Giá Cá Nhân', 'khenthuongsua.php'),
         // Sáng Kiên
         'sangkien' => array('Quản lý Sáng Kiến', 'sangkienview.php'),
         'sangkiensua' => array('Sửa Sáng Kiến', 'sangkiensua.php'),

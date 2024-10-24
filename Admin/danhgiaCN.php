@@ -252,7 +252,37 @@
         
             $stmt->close();
         
-            header("Location: $baseUrl?p=danhgiaCN&message=" . urlencode($message));
+            switch ($this->DanhGia) {
+                case "Lao Động Tiên Tiến":
+                    header("Location: $baseUrl?p=khenthuongtt&message=" . urlencode($message));
+                    break;
+                case "Giấy Khen Hiệu Trưởng":
+                    header("Location: $baseUrl?p=khenthuonghieutruong&message=" . urlencode($message));
+                    break;
+                case "Chiến Sĩ Thi Đua Cơ Sở":
+                    header("Location: $baseUrl?p=khenthuongcstdcs&message=" . urlencode($message));
+                    break;
+                case "Chiến Sĩ Thi Đua Thành Phố":
+                    header("Location: $baseUrl?p=khenthuongcstdtp&message=" . urlencode($message));
+                    break;
+                case "Chiến Sĩ Thi Đua Toàn Quốc":
+                    header("Location: $baseUrl?p=khenthuongcstdtq&message=" . urlencode($message));
+                    break;
+                case "Bằng Khen Ủy Ban Nhân Thành Phố":
+                    header("Location: $baseUrl?p=khenthuongubnd&message=" . urlencode($message));
+                    break;
+                case "Bằng Khen Thủ Tướng Chính Phủ":
+                    header("Location: $baseUrl?p=khenthuongbkttcp&message=" . urlencode($message));
+                    break;
+                case "Huân Chương Lao Động Hạng Ba":
+                    header("Location: $baseUrl?p=khenthuonghb&message=" . urlencode($message));
+                    break;
+                case "Huân Chương Lao Động Hạng Nhì":
+                    header("Location: $baseUrl?p=khenthuonghn&message=" . urlencode($message));
+                    break;
+                default:
+                    header("Location: $baseUrl?p=danhgiaCN&message=" . urlencode($message));
+            }    
             exit();
         }
 

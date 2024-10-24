@@ -168,7 +168,7 @@ if (isset($_GET["message"])) {
             </td>
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
                 <td>
-                <button class="btn btn-custom btn-custom-primary" onclick="handleAction('danhgiaCNsua', '<?php echo $item->MaDGCN; ?>')">Sửa Đánh Giá</button>
+                <button class="btn btn-custom btn-custom-primary" onclick="handleAction('khenthuongsua', '<?php echo $item->MaDGCN; ?>')">Sửa</button>
                 </td>
                 <?php
                     }
@@ -259,13 +259,13 @@ if (isset($_GET["message"])) {
                 `;
                 tableBody.appendChild(tr);
 
-                // Kiểm tra quyền của người dùng để hiển thị nút "Sửa Đánh Giá"
+                // Kiểm tra quyền của người dùng để hiển thị nút "Sửa"
                 if ('<?php echo isset($_SESSION["VaiTro"]) && $_SESSION["VaiTro"] === "Quản Trị" ? "true" : "false"; ?>' === 'true') {
                     const tdAction = document.createElement('td');
                     const buttonSua = document.createElement('button');
                     buttonSua.className = 'btn btn-custom btn-custom-primary';
-                    buttonSua.textContent = 'Sửa Đánh Giá';
-                    buttonSua.onclick = () => handleAction('danhgiaCNsua', item.MaDGCN);
+                    buttonSua.textContent = 'Sửa';
+                    buttonSua.onclick = () => handleAction('khenthuongsua', item.MaDGCN);
                     tdAction.appendChild(buttonSua);
                     tr.appendChild(tdAction);
                 }
@@ -327,8 +327,8 @@ async function searchData() {
 
                     const buttonSua = document.createElement('button');
                     buttonSua.className = 'btn btn-custom btn-custom-primary';
-                    buttonSua.textContent = 'Sửa Đánh Giá';
-                    buttonSua.onclick = () => handleAction('danhgiaCNsua', item.MaDGCN);
+                    buttonSua.textContent = 'Sửa';
+                    buttonSua.onclick = () => handleAction('khenthuongsua', item.MaDGCN);
                     tdAction.appendChild(buttonSua);
 
                     tr.appendChild(tdAction);

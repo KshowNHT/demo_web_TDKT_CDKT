@@ -168,7 +168,7 @@ if (isset($_GET["message"])) {
             </td>
                 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
                 <td>
-                <button class="btn btn-custom btn-custom-primary" onclick="handleAction('danhgiaCNsua', '<?php echo $item->MaDGCN; ?>')">Sửa Đánh Giá</button>
+                <button class="btn btn-custom btn-custom-primary" onclick="handleAction('khenthuongsua', '<?php echo $item->MaDGCN; ?>')">Sửa</button>
                 </td>
                 <?php
                     }
@@ -264,8 +264,8 @@ if (isset($_GET["message"])) {
                     const tdAction = document.createElement('td');
                     const buttonSua = document.createElement('button');
                     buttonSua.className = 'btn btn-custom btn-custom-primary';
-                    buttonSua.textContent = 'Sửa Đánh Giá';
-                    buttonSua.onclick = () => handleAction('danhgiaCNsua', item.MaDGCN);
+                    buttonSua.textContent = 'Sửa';
+                    buttonSua.onclick = () => handleAction('khenthuongsua', item.MaDGCN);
                     tdAction.appendChild(buttonSua);
                     tr.appendChild(tdAction);
                 }
@@ -327,8 +327,8 @@ async function searchData() {
 
                     const buttonSua = document.createElement('button');
                     buttonSua.className = 'btn btn-custom btn-custom-primary';
-                    buttonSua.textContent = 'Sửa Đánh Giá';
-                    buttonSua.onclick = () => handleAction('danhgiaCNsua', item.MaDGCN);
+                    buttonSua.textContent = 'Sửa';
+                    buttonSua.onclick = () => handleAction('khenthuongsua', item.MaDGCN);
                     tdAction.appendChild(buttonSua);
 
                     tr.appendChild(tdAction);

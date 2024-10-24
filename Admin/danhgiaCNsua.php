@@ -130,7 +130,7 @@ legend {
                 <label >Năm</label>
                 <select name="Lnam" id="Lnam">
                     <?php foreach($Lnam as $L) { ?>
-                        <option value="<?php echo $L->Manam; ?>" <?php echo ($L->Manam == $data->Manam) ? 'selected' : ''; ?>>
+                        <option value="<?php echo $L->Manam; ?>" <?php echo ($L->Manam == $data->Manam->Manam) ? 'selected' : ''; ?>>
                             <?php echo $L->Nam; ?>
                         </option>
                     <?php } ?>
