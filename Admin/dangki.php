@@ -95,5 +95,26 @@
         header("Location: $baseUrl?p=taikhoan&message=" . urlencode($message));
         exit();
     }
+
+    public function SuaVaiTro($conn) {
+        // Chỉ cập nhật vai trò
+        $sql = "UPDATE taikhoan SET VaiTro = ? WHERE MaTk = ?";
+        
+        // Sử dụng prepared statement để tránh SQL injection
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("si", $this->VaiTro, $this->MaTk);
+        
+        // Thực hiện câu lệnh và kiểm tra kết quả
+        if ($stmt->execute()) {
+            echo "<div class='alert alert-success'>Cập nhật vai trò thành công.</div>";
+        } else {
+            echo "<div class='alert alert-danger'>Cập nhật vai trò không thành công.</div>";
+        }
+        
+        // Đóng prepared statement
+        $stmt->close();
+    }
+    
+    
 }
 ?>

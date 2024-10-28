@@ -8,6 +8,7 @@
         'taikhoan' => array('Quản lý Tài Khoản', 'taikhoanview.php'),
         'taikhoanxoa' => array('Xóa Tài Khoản', 'taikhoanxoa.php'),
         'taikhoansua' => array('Đổi Mật Khẩu', 'doimatkhau.php'),
+        'taikhoanadminsua' => array('Sửa Tài Khoản', 'taikhoansua.php'),
         'dangxuat' => array('Đăng Xuất', 'dangxuat.php'),
         'dexuatkhenthuong' => array('Đề Xuất Khen Thưởng Tập Thể', 'dexuatdanhgiaview.php'),
         'dexuatkhenthuongcn' => array('Đề Xuất Khen Thưởng Cá Nhân ', 'dexuatdanhgiacnview.php'),

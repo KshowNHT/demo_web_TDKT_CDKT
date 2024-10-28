@@ -1246,7 +1246,7 @@ LEFT JOIN danh_sach_duoc_khen_thuong dskt
     AND ds.Nam = dskt.Manam
 WHERE ds.DeXuatKhenThuong IS NOT NULL
 AND dskt.TenKhoa IS NULL
-ORDER BY ds.Nam ASC
+ORDER BY ds.Nam DESC
 LIMIT $startFrom, $recordsPerPage;";
         
             $result = $conn->query($sql);

@@ -172,7 +172,7 @@ if (!empty($Manam)) {
 }
 
 // Sắp xếp kết quả theo năm và tên khoa
-$sql .= " ORDER BY Nam, TenKhoa, HoTen";
+$sql .= " ORDER BY ds.Nam DESC;";
 
 // Thực hiện truy vấn
 $result = $conn->query($sql);

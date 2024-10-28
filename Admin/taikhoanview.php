@@ -59,6 +59,7 @@
                 <td scope="row"><?php echo $item->VaiTro ;?></td>
                 <?php if(isset($_SESSION['VaiTro']) && $_SESSION['VaiTro'] == 'Quản Trị'){?> 
                 <td>
+                    <button class="btn btn-custom btn-custom-primary" onclick="handleActionChange('taikhoanadminsua', '<?php echo $item->MaTk; ?>', event)">Sửa Tài Khoản</button>
                     <button class="btn btn-custom btn-custom-danger" onclick="handleActionChange('taikhoanxoa', '<?php echo $item->MaTk; ?>', event)">Xóa Tài Khoản</button>
                 </td>
                 <?php

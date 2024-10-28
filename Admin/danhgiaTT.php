@@ -1037,7 +1037,7 @@ class DanhgiaTT {
         WHERE ds.DeXuatKhenThuong IS NOT NULL
         AND dskt.TenKhoa IS NULL
         GROUP BY ds.TenKhoa, ds.Nam, ds.DanhGia, ds.DeXuatKhenThuong
-        ORDER BY ds.Nam ASC
+        ORDER BY ds.Nam DESC
         LIMIT $startFrom, $recordsPerPage";
     
         $result = $conn->query($sql);
