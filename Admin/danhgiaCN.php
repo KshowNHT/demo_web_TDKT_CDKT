@@ -949,7 +949,7 @@ WHEN dg.DanhGia IN ('Lao Động Tiên Tiến')
         dg.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc', 'Hoàn Thành Nhiệm Vụ', 'Lao Động Tiên Tiến', 'Chiến Sĩ Thi Đua Cơ Sở', 'Giấy Khen Hiệu Trưởng','Chiến Sĩ Thi Đua Thành Phố','Chiến Sĩ Thi Đua Toàn Quốc','Bằng Khen Ủy Ban Nhân Dân Thành Phố','Bằng Khen Thủ Tướng Chính Phủ','Huân Chương Lao Động Hạng Ba','Huân Chương Lao Động Hạng Nhì')
         AND NOT EXISTS (
             SELECT 1 
-            FROM khethuongkyluat kt
+            FROM khethuongkyluatcn kt
             WHERE kt.MaCN = dg.MaCN
         )
 )
@@ -962,7 +962,7 @@ JOIN nam n ON dg.Manam = n.Manam
 WHERE dg.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc')
 AND NOT EXISTS (
     SELECT 1 
-    FROM khethuongkyluat kt
+    FROM khethuongkyluatcn kt
     WHERE kt.MaCN = dg.MaCN
 )";
             
@@ -1220,7 +1220,7 @@ WHEN dg.DanhGia IN ('Lao Động Tiên Tiến')
         dg.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc', 'Hoàn Thành Nhiệm Vụ', 'Lao Động Tiên Tiến', 'Chiến Sĩ Thi Đua Cơ Sở', 'Giấy Khen Hiệu Trưởng','Chiến Sĩ Thi Đua Thành Phố','Chiến Sĩ Thi Đua Toàn Quốc','Bằng Khen Ủy Ban Nhân Dân Thành Phố','Bằng Khen Thủ Tướng Chính Phủ','Huân Chương Lao Động Hạng Ba','Huân Chương Lao Động Hạng Nhì')
         AND NOT EXISTS (
             SELECT 1 
-            FROM khethuongkyluat kt
+            FROM khethuongkyluatcn kt
             WHERE kt.MaCN = dg.MaCN
         )
 ),

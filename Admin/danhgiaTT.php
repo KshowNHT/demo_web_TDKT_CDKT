@@ -801,7 +801,7 @@ class DanhgiaTT {
                 dg.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc', 'Hoàn Thành Nhiệm Vụ', 'Tập Thể Lao Động Tiên Tiến', 'Tập Thể Lao Động Xuất Sắc', 'Giấy Khen Hiệu Trưởng','Bằng Khen Ủy Ban Nhân Dân Thành Phố','Bằng Khen Thủ Tướng Chính Phủ')
                 AND NOT EXISTS (
                     SELECT 1 
-                    FROM khethuongkyluat kt 
+                    FROM khethuongkyluatcn kt 
                     JOIN thongtincanhan tc ON kt.MaCN = tc.MaCN
                     WHERE 
                         tc.MaKhoa = k.MaKhoa 
@@ -809,7 +809,6 @@ class DanhgiaTT {
                         AND kt.Manam = dg.Manam
                 )
         )
-        
         SELECT COUNT(*) AS tong_de_xuat FROM danh_sach WHERE DeXuatKhenThuong IS NOT NULL;";
         
         $result = $conn->query($sql);
@@ -1003,7 +1002,7 @@ class DanhgiaTT {
                 dg.DanhGia IN ('Hoàn Thành Tốt Nhiệm Vụ', 'Hoàn Thành Xuất Sắc', 'Hoàn Thành Nhiệm Vụ', 'Tập Thể Lao Động Tiên Tiến', 'Tập Thể Lao Động Xuất Sắc', 'Giấy Khen Hiệu Trưởng','Bằng Khen Ủy Ban Nhân Dân Thành Phố','Bằng Khen Thủ Tướng Chính Phủ','Huân Chương Lao Động Hạng Ba', 'Huân Chương Lao Động Hạng Nhì')
                 AND NOT EXISTS (
                     SELECT 1 
-                    FROM khethuongkyluat kt 
+                    FROM khethuongkyluatcn kt 
                     JOIN thongtincanhan tc ON kt.MaCN = tc.MaCN
                     WHERE 
                         tc.MaKhoa = k.MaKhoa 

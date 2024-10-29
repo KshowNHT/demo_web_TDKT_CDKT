@@ -213,7 +213,7 @@ CREATE TABLE `khethuongkyluatcn` (
 -- Đang đổ dữ liệu cho bảng `khethuongkyluat`
 --
 
-INSERT INTO `khethuongkyluat` (`MaKTKL`, `MaCN`, `KhenThuong`, `KyLuat`, `Manam`, `SoQuyetDinh`, `NgayQuyetDinh`, `MaKhoa`, `FilePDF`, `GhiChu`) VALUES
+INSERT INTO `khethuongkyluatcn` (`MaKTKL`, `MaCN`, `KhenThuong`, `KyLuat`, `Manam`, `SoQuyetDinh`, `NgayQuyetDinh`, `MaKhoa`, `FilePDF`, `GhiChu`) VALUES
 (32, 175, 'test', '', 7, 'test', '2024-09-30', 32, './uploads/1728290699_slide_chuong_1.pdf', ''),
 (33, 176, 'test', '', 7, 'test', '2024-09-30', 32, './uploads/1728290736_slide_chuong_1.pdf', 'test'),
 (34, 276, '', 'Cảnh cáo', 16, 'test', '2024-10-03', 41, './uploads/1728386011_slide_chuong_2.pdf', 'test');
@@ -527,7 +527,7 @@ ALTER TABLE `danhgiatt`
 --
 -- Chỉ mục cho bảng `khethuongkyluat`
 --
-ALTER TABLE `khethuongkyluat`
+ALTER TABLE `khethuongkyluatcn`
   ADD PRIMARY KEY (`MaKTKL`),
   ADD KEY `fk_MaCn` (`MaCN`),
   ADD KEY `fk_Manam` (`Manam`),
@@ -591,7 +591,7 @@ ALTER TABLE `danhgiatt`
 --
 -- AUTO_INCREMENT cho bảng `khethuongkyluat`
 --
-ALTER TABLE `khethuongkyluat`
+ALTER TABLE `khethuongkyluatcn`
   MODIFY `MaKTKL` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
@@ -651,7 +651,7 @@ ALTER TABLE `danhgiatt`
 --
 -- Các ràng buộc cho bảng `khethuongkyluat`
 --
-ALTER TABLE `khethuongkyluat`
+ALTER TABLE `khethuongkyluatcn`
   ADD CONSTRAINT `fk_MaCn` FOREIGN KEY (`MaCN`) REFERENCES `thongtincanhan` (`MaCN`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_MaKhoa` FOREIGN KEY (`MaKhoa`) REFERENCES `khoa` (`MaKhoa`) ON DELETE CASCADE,
   ADD CONSTRAINT `fk_Manam` FOREIGN KEY (`Manam`) REFERENCES `nam` (`Manam`);

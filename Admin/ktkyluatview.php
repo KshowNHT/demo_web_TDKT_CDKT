@@ -117,15 +117,6 @@ if (isset($_GET["message"])) {
 ?>
 
 
-<div class="combobox">
-    <label for="options">Chọn một tùy chọn:</label>
-    <select name="options" id="options" onchange="fetchAndDisplayDanhGia(this.value)">
-        <option value="">Chọn Năm</option>
-        <?php foreach($options as $option): ?>
-            <option value="<?= htmlspecialchars($option->Manam);?>"><?= htmlspecialchars($option->Nam);?></option>
-        <?php endforeach;?>
-    </select>
-</div>
 <div id="result">
     <p id="result-text"></p>
 </div>

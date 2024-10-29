@@ -17,14 +17,14 @@ class ktkyluat{
 
     //Phân Trang khen thưởng kỷ luật
     public static function layTongSoktkyluat($conn) {
-        $sql = "SELECT COUNT(*) FROM khethuongkyluatcncn";
+        $sql = "SELECT COUNT(*) FROM khethuongkyluatcn";
         $result = $conn->query($sql);
         $row = $result->fetch_row();
         return $row[0];
     }
 
     public static function layDanhGiaPhanTrang($conn, $startFrom, $recordsPerPage) {
-        $sql = "SELECT * FROM khethuongkyluat ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM khethuongkyluatcn ORDER BY Manam DESC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
 
         $ktkyluatttList = array();
@@ -56,7 +56,7 @@ class ktkyluat{
 
     // Lấy khen thưởng kỷ luật theo ID
     public static function laydgtt($conn, $id) {
-        $sql = "SELECT * FROM khethuongkyluatcn WHERE MaKTKL = $id";
+        $sql = "SELECT * FROM khethuongkyluatcncn WHERE MaKTKL = $id";
         $result = mysqli_query($conn, $sql);
 
         $ktkyluat_obj = new ktkyluat();
