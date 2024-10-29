@@ -69,12 +69,12 @@
         'sangkienxoa' => array('Xóa Sáng kiến', 'sangkienxoa.php'),
         'sangkienct' => array('Xem Chi Tiết Sáng kiến', 'sangkienct.php'),
         // Khen Thưởng Kỷ Luật Cá Nhân
-        'ktkyluat' => array('Quản lý Khen Thưởng Kỷ Luật', 'ktkyluatview.php'),
+        'ktkyluat' => array('Quản lý Khen Thưởng Kỷ Luật Cá Nhân', 'ktkyluatview.php'),
         'ktkyluatsua' => array('Sửa Khen Thưởng Kỷ Luật', 'ktkyluatsua.php'),
         'ktkyluatth' => array('Thêm Khen Thưởng Kỷ Luật', 'ktkyluatthem.php'),
         'ktkyluatxoa' => array('Xóa Khen Thưởng Kỷ Luật', 'ktkyluatxoa.php'),
         // Khen Thưởng Kỷ Luật Tập Thể
-        'kttt' => array('Quản lý Khen Thưởng Kỷ Luật', 'KTttview.php'),
+        'kttt' => array('Quản lý Khen Thưởng Tập Thể', 'KTttview.php'),
         'ktsua' => array('Sửa Khen Thưởng', 'KTttsua.php'),
         'ktth' => array('Thêm Khen Thưởng', 'KTttth.php'),
         'ktxoa' => array('Xóa Khen Thưởng', 'KTttxoa.php'),

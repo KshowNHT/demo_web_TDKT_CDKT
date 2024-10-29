@@ -196,7 +196,7 @@ INSERT INTO `danhgiatt` (`MaDGTT`, `MaKhoa`, `SoQD`, `Manam`, `DanhGia`, `Ngay`,
 -- Cấu trúc bảng cho bảng `khethuongkyluat`
 --
 
-CREATE TABLE `khethuongkyluat` (
+CREATE TABLE `khethuongkyluatcn` (
   `MaKTKL` int(11) NOT NULL,
   `MaCN` int(11) NOT NULL,
   `KhenThuong` varchar(30) NOT NULL DEFAULT 'Không Có Khen Thưởng',
@@ -358,7 +358,7 @@ CREATE TABLE `thongtincanhan` (
   `HoTen` varchar(30) NOT NULL,
   `NgaySinh` date NOT NULL,
   `MaKhoa` int(20) DEFAULT NULL,
-  `ChuVu` varchar(50) NOT NULL
+  `ChuVu` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
