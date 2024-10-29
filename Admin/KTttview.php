@@ -109,11 +109,6 @@ if (isset($_GET["message"])) {
 
 </style>
 
-<div class="search-box">
-    <input type="text" id="searchSoQD" placeholder="Nhập Số Quyết Định" />
-    <input type="text" id="searchTenKhoa" placeholder="Nhập Họ và Tên" />
-    <button class="btn btn-custom btn-custom-primary" onclick="searchData()">Tìm Kiếm</button>
-</div>
 
 <div class="combobox">
     <label for="options">Chọn một tùy chọn:</label>
