@@ -17,14 +17,14 @@ class ktkyluat{
 
     //Phân Trang khen thưởng kỷ luật
     public static function layTongSoktkyluat($conn) {
-        $sql = "SELECT COUNT(*) FROM khethuongkyluat";
+        $sql = "SELECT COUNT(*) FROM khethuongkyluatcncn";
         $result = $conn->query($sql);
         $row = $result->fetch_row();
         return $row[0];
     }
 
     public static function layDanhGiaPhanTrang($conn, $startFrom, $recordsPerPage) {
-        $sql = "SELECT * FROM khethuongkyluat ORDER BY Manam DESC LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM khethuongkyluat ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
 
         $ktkyluatttList = array();
@@ -56,7 +56,7 @@ class ktkyluat{
 
     // Lấy khen thưởng kỷ luật theo ID
     public static function laydgtt($conn, $id) {
-        $sql = "SELECT * FROM khethuongkyluat WHERE MaKTKL = $id";
+        $sql = "SELECT * FROM khethuongkyluatcn WHERE MaKTKL = $id";
         $result = mysqli_query($conn, $sql);
 
         $ktkyluat_obj = new ktkyluat();
@@ -98,7 +98,7 @@ class ktkyluat{
     
                 // Di chuyển file từ thư mục tạm sang vị trí lưu trữ
                 if (move_uploaded_file($fileTmpPath, $dest_path)) {
-                    $sql = "INSERT INTO khethuongkyluat (MaCN, KhenThuong, KyLuat, Manam, SoQuyetDinh, NgayQuyetDinh, MaKhoa, FilePDF, GhiChu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                    $sql = "INSERT INTO khethuongkyluatcn (MaCN, KhenThuong, KyLuat, Manam, SoQuyetDinh, NgayQuyetDinh, MaKhoa, FilePDF, GhiChu) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
                     $stmt = $conn->prepare($sql);
     
                     if (is_array($this->MaCN)) {
@@ -180,7 +180,7 @@ class ktkyluat{
         }
     
         // Tạo câu truy vấn SQL
-        $stmt = $conn->prepare("UPDATE khethuongkyluat SET KhenThuong = ?, KyLuat = ?, Manam = ?, SoQuyetDinh = ?, NgayQuyetDinh = ?, MaKhoa = ?, FilePDF = ?, GhiChu = ? WHERE MaKTKL = ?");
+        $stmt = $conn->prepare("UPDATE khethuongkyluatcn SET KhenThuong = ?, KyLuat = ?, Manam = ?, SoQuyetDinh = ?, NgayQuyetDinh = ?, MaKhoa = ?, FilePDF = ?, GhiChu = ? WHERE MaKTKL = ?");
         $stmt->bind_param("sssssssss", $this->KhenThuong, $this->KyLuat, $this->Manam, $this->SoQuyetDinh, $this->NgayQuyetDinh, $this->MaKhoa, $this->FilePDF, $this->GhiChu, $this->MaKTKL);
 
     
@@ -205,7 +205,7 @@ class ktkyluat{
     private function getCurrentPDF($conn) {
         $FilePDF = null; 
     
-        $stmt = $conn->prepare("SELECT FilePDF FROM khethuongkyluat WHERE MaKTKL = ?");
+        $stmt = $conn->prepare("SELECT FilePDF FROM khethuongkyluatcn WHERE MaKTKL = ?");
         $stmt->bind_param("s", $this->MaKTKL);
         $stmt->execute();
         $stmt->bind_result($FilePDF);
@@ -224,7 +224,7 @@ class ktkyluat{
     // Xóa Khen Thưởng Kỷ Luật
     public function Xoaktkl($conn, $baseUrl) {
         $message = "Lỗi khi Xóa thể loại";
-        $sql = "DELETE FROM khethuongkyluat WHERE MaKTKL = $this->MaKTKL";
+        $sql = "DELETE FROM khethuongkyluatcn WHERE MaKTKL = $this->MaKTKL";
 
         if (mysqli_query($conn, $sql)) {
             $message = "Xóa Đánh Giá thành công";

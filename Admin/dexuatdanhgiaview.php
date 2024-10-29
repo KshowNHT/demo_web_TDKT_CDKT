@@ -189,12 +189,12 @@ if (isset($_GET["message"])) {
 <script>
     const awardMap = {
         'Tập Thể Lao Động Tiên Tiến': 'Tập Thể Lao Động Tiên Tiến',
-    'Tập Thể Lao Động Xuất Sắc': 'Tập Thể Lao Động Xuất Sắc',
-    'Giấy Khen Hiệu Trưởng': 'Giấy Khen Hiệu Trưởng',
-    'Bằng Khen UBND Thành Phố': 'Bằng Khen UBND Thành Phố',
-    'Bằng Khen Thủ Tướng Chính Phủ': 'Bằng Khen Thủ Tướng Chính Phủ',
-    'Huân Chương Lao Động Hạng Ba': 'Huân Chương Lao Động Hạng Ba',
-    'Huân Chương Lao Động Hạng Nhì': 'Huân Chương Lao Động Hạng Nhì'
+        'Tập Thể Lao Động Xuất Sắc': 'Tập Thể Lao Động Xuất Sắc',
+        'Giấy Khen Hiệu Trưởng': 'Giấy Khen Hiệu Trưởng',
+        'Bằng Khen UBND Thành Phố': 'Bằng Khen UBND Thành Phố',
+        'Bằng Khen Thủ Tướng Chính Phủ': 'Bằng Khen Thủ Tướng Chính Phủ',
+        'Huân Chương Lao Động Hạng Ba': 'Huân Chương Lao Động Hạng Ba',
+        'Huân Chương Lao Động Hạng Nhì': 'Huân Chương Lao Động Hạng Nhì'
     };
 
     // Fetch data based on the selected year
