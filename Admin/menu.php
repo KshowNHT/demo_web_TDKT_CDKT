@@ -26,7 +26,7 @@ session_start();
                                 <a href="#" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                    <p> 
-                                        Tập Thể
+                                        Quản Lý Khen Thưởng Tập Thể
                                         <i class="fas fa-angle-left right"></i>
                                    </p>
                                 </a>
@@ -90,10 +90,15 @@ session_start();
                 </a>
             </li>
             <li class="nav-item">
+                <a href="<?php echo "$baseUrl?p=dexuatkhenthuongcn"; ?>" class="nav-link">
+                   <p> <?php echo $pages['dexuatkhenthuongcn'][0];?> </p>
+                </a>
+             </li>
+            <li class="nav-item">
                                 <a href="#" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                    <p> 
-                                        Cá Nhân 
+                                        Quản Lý Khen Thưởng Cá Nhân
                                         <i class="fas fa-angle-left right"></i>
                                    </p>
                                 </a>

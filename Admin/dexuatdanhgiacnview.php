@@ -43,11 +43,9 @@ if (isset($_GET["message"])) {
 <?php
 }
 ?>
-
-<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=dexuatkhenthuong"; ?>">Đề Xuất Khen Thưởng Tập Thể</a>
-
 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?>
-<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=khenthuongth"; ?>">Xét Đánh Giá Cá Nhân</a>
+<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=dexuatkhenthuong"; ?>">Đề Xuất Khen Thưởng Tập Thể</a>
+<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=khenthuongth"; ?>">Xét Khen Thưởng Cá Nhân</a>
 <?php
 }
 ?>

@@ -42,11 +42,9 @@ if (isset($_GET["message"])) {
 }
 ?>
 
-
-<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=dexuatkhenthuongcn"; ?>">Đề Xuất Khen Thưởng Cá Nhân</a>
-
 <?php if(isset($_SESSION['TenTk']) && $_SESSION['VaiTro'] === 'Quản Trị'){?> 
-    <a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=danhgiaTThcldhnthem"; ?>">Xét Đánh Giá Tập Thể</a>
+<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=dexuatkhenthuongcn"; ?>">Đề Xuất Khen Thưởng Cá Nhân</a>
+<a class="btn btn-custom btn-custom-primary" href="<?php echo " $baseUrl?p=danhgiaTThcldhnthem"; ?>">Xét Khen Thưởng Tập Thể</a>
 <?php
 }
 ?>

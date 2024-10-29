@@ -24,7 +24,7 @@ class ktkyluat{
     }
 
     public static function layDanhGiaPhanTrang($conn, $startFrom, $recordsPerPage) {
-        $sql = "SELECT * FROM khethuongkyluat ORDER BY Manam ASC LIMIT $startFrom, $recordsPerPage";
+        $sql = "SELECT * FROM khethuongkyluat ORDER BY Manam DESC LIMIT $startFrom, $recordsPerPage";
         $result = $conn->query($sql);
 
         $ktkyluatttList = array();
