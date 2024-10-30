@@ -343,7 +343,7 @@ session_start();
         <li class="nav-item">
             <a href="<?php echo "$baseUrl?p=ktkyluat"; ?>" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
-               <p> <?php echo $pages['ktkyluat'][0]; ?> </p> 
+               <p> Quản lý Khen Thưởng Kỷ Luật </p> 
             </a>
         </li>
          <li class="nav-item">
