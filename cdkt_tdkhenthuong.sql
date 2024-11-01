@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3308
--- Thời gian đã tạo: Th10 01, 2024 lúc 10:08 AM
+-- Thời gian đã tạo: Th10 01, 2024 lúc 10:37 AM
 -- Phiên bản máy phục vụ: 10.4.24-MariaDB
 -- Phiên bản PHP: 8.1.6
 
@@ -381,7 +381,10 @@ INSERT INTO `taikhoan` (`MaTk`, `TenTk`, `MatKhau`, `VaiTro`) VALUES
 (5, 'Thuan678', '$2y$10$PcKQeopNjJiFaME.1GOlQOyLAypMxfOeLWLgWL43JxBqRbIhWECEK', 'Khoa'),
 (6, 'giangvien', '$2y$10$NXemjRp4IZcz2wPth4ESv.qKOjjCz.90aZqFs5SxInNdeG3oIvsX.', 'Giảng Viên'),
 (7, 'quantri', '$2y$10$yFl/RVR7q0tcUqFHEyf8QOGnFTPBDP3.lpvq74Tkz6cNshGWZc4ca', 'Quản Trị'),
-(8, 'khoa', '$2y$10$20KJ/7mqGaacA4JJ2vylhOSja02BVmFk7R7u.hDVKq.YnABRl2Njm', 'Khoa');
+(8, 'khoa', '$2y$10$20KJ/7mqGaacA4JJ2vylhOSja02BVmFk7R7u.hDVKq.YnABRl2Njm', 'Khoa'),
+(11, 'Admin1', '$2y$10$rKB93FW/Mefo6MUQiG7eauyu0huKKtSBV9uVnbxUOrd6aQ6EsEjqa', 'Quản Trị'),
+(12, 'GiangVien1', '$2y$10$SACWU.AAGd2Dy5u0TfabcegCi0Dw.dTqMNBfv2Etv1seuc7HOCBe6', 'Giảng Viên'),
+(13, 'Khoa1', '$2y$10$uVXhM6V5YUVkXYMVlLji/eXijJM/yNIvqNeoXtONAVKAvm61Ss3Hm', 'Khoa');
 
 -- --------------------------------------------------------
 
@@ -660,7 +663,7 @@ ALTER TABLE `sangkien`
 -- AUTO_INCREMENT cho bảng `taikhoan`
 --
 ALTER TABLE `taikhoan`
-  MODIFY `MaTk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `MaTk` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `thongtincanhan`
