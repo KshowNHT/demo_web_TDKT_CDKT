@@ -57,6 +57,7 @@
                     <option value="Sáng Kiên Cấp Thành Phố" <?php echo $data->CapSK == "Sáng Kiên Cấp Thành Phố" ? 'selected' : ''; ?>>Sáng Kiên Cấp Thành Phố</option>
                     <option value="Sáng Kiên Cấp Quận" <?php echo $data->CapSK == "Sáng Kiên Cấp Quận" ? 'selected' : ''; ?>>Sáng Kiên Cấp Quận</option>
                     <option value="Nghiên Cú Khoa Học" <?php echo $data->CapSK == "Nghiên Cú Khoa Học" ? 'selected' : ''; ?>>Nghiên Cú Khoa Học</option>
+                    <option value="Khoa Học Công Nghệ" <?php echo $data->CapSK == "Khoa Học Công Nghệ" ? 'selected' : ''; ?>>Khoa Học Công Nghệ</option>
                 </select>
             </div>
 

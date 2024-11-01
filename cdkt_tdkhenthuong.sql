@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1:3308
--- Thời gian đã tạo: Th10 01, 2024 lúc 10:37 AM
+-- Thời gian đã tạo: Th10 01, 2024 lúc 01:23 PM
 -- Phiên bản máy phục vụ: 10.4.24-MariaDB
 -- Phiên bản PHP: 8.1.6
 
@@ -44,85 +44,15 @@ CREATE TABLE `danhgiacn` (
 --
 
 INSERT INTO `danhgiacn` (`MaDGCN`, `MaCN`, `MaKhoa`, `SoQD`, `Manam`, `DanhGia`, `Ngay`, `DonVi`, `FilePDF`) VALUES
-(37, 215, 35, 'test', 16, 'Lao Động Tiên Tiến', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất lượng', './uploads/1728066005_slide_chuong_2.pdf'),
-(38, 216, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(39, 217, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(40, 218, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(41, 219, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(42, 220, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(43, 221, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(44, 222, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(45, 223, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(46, 224, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Trung tâm Ngoại ngữ - Tin học', './uploads/1728066005_slide_chuong_2.pdf'),
-(47, 225, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất lượng', './uploads/1728066005_slide_chuong_2.pdf'),
-(48, 226, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(49, 227, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(50, 228, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(51, 229, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(52, 230, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(53, 231, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(54, 232, 35, 'test', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728066005_slide_chuong_2.pdf'),
-(55, 233, 35, 'test', 16, 'Hoàn Thành Xuất Sắc', '2024-10-03', 'Phòng Thanh tra - Đảm bảo chất lượng', './uploads/1728066005_slide_chuong_2.pdf'),
-(56, 217, 35, 'test', 16, 'Lao Động Tiên Tiến', '2024-09-30', 'Phòng Quản lý đào tạo', './uploads/1728578118_slide_chuong_1.pdf'),
-(57, 218, 35, 'test', 16, 'Lao Động Tiên Tiến', '2024-09-30', 'Phòng Quản lý đào tạo', './uploads/1728578118_slide_chuong_1.pdf'),
-(58, 215, 35, 'test', 16, 'Giấy Khen Hiệu Trưởng', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814359_slide_chuong_1.pdf'),
-(59, 216, 35, 'test', 16, 'Giấy Khen Hiệu Trưởng', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814359_slide_chuong_1.pdf'),
-(60, 217, 35, 'test', 16, 'Giấy Khen Hiệu Trưởng', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814359_slide_chuong_1.pdf'),
-(61, 218, 35, 'test', 16, 'Giấy Khen Hiệu Trưởng', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814359_slide_chuong_1.pdf'),
-(62, 219, 35, 'test', 16, 'Giấy Khen Hiệu Trưởng', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814359_slide_chuong_1.pdf'),
-(63, 222, 35, 'test', 16, 'Chiến Sĩ Thi Đua Cơ Sở', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814426_slide_chuong_2.pdf'),
-(64, 223, 35, 'test', 16, 'Chiến Sĩ Thi Đua Cơ Sở', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814426_slide_chuong_2.pdf'),
-(65, 224, 35, 'test', 16, 'Chiến Sĩ Thi Đua Cơ Sở', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814426_slide_chuong_2.pdf'),
-(66, 225, 35, 'test', 16, 'Chiến Sĩ Thi Đua Cơ Sở', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814426_slide_chuong_2.pdf'),
-(67, 228, 35, 'test', 16, 'Chiến Sĩ Thi Đua Cơ Sở', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814426_slide_chuong_2.pdf'),
-(68, 229, 35, 'test', 16, 'Chiến Sĩ Thi Đua Cơ Sở', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814426_slide_chuong_2.pdf'),
-(69, 222, 35, 'test', 16, 'Chiến Sĩ Thi Đua Thành Phố', '2024-10-01', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814506_slide_chuong_1.pdf'),
-(70, 223, 35, 'test', 16, 'Chiến Sĩ Thi Đua Thành Phố', '2024-10-01', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814506_slide_chuong_1.pdf'),
-(71, 229, 35, 'test', 16, 'Chiến Sĩ Thi Đua Thành Phố', '2024-10-01', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814506_slide_chuong_1.pdf'),
-(72, 230, 35, 'test', 16, 'Chiến Sĩ Thi Đua Thành Phố', '2024-10-01', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814506_slide_chuong_1.pdf'),
-(73, 231, 35, 'test', 16, 'Chiến Sĩ Thi Đua Thành Phố', '2024-10-01', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814506_slide_chuong_1.pdf'),
-(74, 232, 35, 'test', 16, 'Chiến Sĩ Thi Đua Thành Phố', '2024-10-01', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814506_slide_chuong_1.pdf'),
-(75, 217, 35, 'test', 16, 'Chiến Sĩ Thi Đua Toàn Quốc', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814576_slide_chuong_1.pdf'),
-(76, 218, 35, 'test', 16, 'Chiến Sĩ Thi Đua Toàn Quốc', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814576_slide_chuong_1.pdf'),
-(77, 219, 35, 'test', 16, 'Chiến Sĩ Thi Đua Toàn Quốc', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814576_slide_chuong_1.pdf'),
-(78, 220, 35, 'test', 16, 'Chiến Sĩ Thi Đua Toàn Quốc', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814576_slide_chuong_1.pdf'),
-(79, 221, 35, 'test', 16, 'Chiến Sĩ Thi Đua Toàn Quốc', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814576_slide_chuong_1.pdf'),
-(80, 222, 35, 'test', 16, 'Chiến Sĩ Thi Đua Toàn Quốc', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814576_slide_chuong_1.pdf'),
-(81, 223, 35, 'test', 16, 'Chiến Sĩ Thi Đua Toàn Quốc', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814576_slide_chuong_1.pdf'),
-(82, 224, 35, 'test', 16, 'Chiến Sĩ Thi Đua Toàn Quốc', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814576_slide_chuong_1.pdf'),
-(83, 225, 35, 'test', 16, 'Chiến Sĩ Thi Đua Toàn Quốc', '2024-10-02', 'Phòng Quản trị thiết bị', './uploads/1728814576_slide_chuong_1.pdf'),
-(84, 219, 35, 'test', 16, 'Bằng Khen Ủy Ban Nhân Thành Phố', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728814647_slide_chuong_2.pdf'),
-(85, 220, 35, 'test', 16, 'Bằng Khen Ủy Ban Nhân Thành Phố', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728814647_slide_chuong_2.pdf'),
-(86, 221, 35, 'test', 16, 'Bằng Khen Ủy Ban Nhân Thành Phố', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728814647_slide_chuong_2.pdf'),
-(87, 222, 35, 'test', 16, 'Bằng Khen Ủy Ban Nhân Thành Phố', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728814647_slide_chuong_2.pdf'),
-(88, 223, 35, 'test', 16, 'Bằng Khen Ủy Ban Nhân Thành Phố', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728814647_slide_chuong_2.pdf'),
-(89, 223, 35, 'test', 16, 'Bằng Khen Thủ Tướng Chính Phủ', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728814752_slide_chuong_2.pdf'),
-(90, 224, 35, 'test', 16, 'Bằng Khen Thủ Tướng Chính Phủ', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728814752_slide_chuong_2.pdf'),
-(91, 225, 35, 'test', 16, 'Bằng Khen Thủ Tướng Chính Phủ', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728814752_slide_chuong_2.pdf'),
-(92, 226, 35, 'test', 16, 'Bằng Khen Thủ Tướng Chính Phủ', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728814752_slide_chuong_2.pdf'),
-(93, 227, 35, 'test', 16, 'Bằng Khen Thủ Tướng Chính Phủ', '2024-09-30', 'Phòng Quản lý Khoa học - Hợp t', './uploads/1728814752_slide_chuong_2.pdf'),
-(94, 227, 35, 'test', 16, 'Huân Chương Lao Động Hạng Ba', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814856_TH_Buoi3_1 (1).pdf'),
-(95, 228, 35, 'test', 16, 'Huân Chương Lao Động Hạng Ba', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814856_TH_Buoi3_1 (1).pdf'),
-(96, 229, 35, 'test', 16, 'Huân Chương Lao Động Hạng Ba', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814856_TH_Buoi3_1 (1).pdf'),
-(97, 230, 35, 'test', 16, 'Huân Chương Lao Động Hạng Ba', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814856_TH_Buoi3_1 (1).pdf'),
-(98, 215, 35, 'test', 16, 'Huân Chương Lao Động Hạng Nhì', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814924_slide_chuong_6.pdf'),
-(99, 216, 35, 'test', 16, 'Huân Chương Lao Động Hạng Nhì', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814924_slide_chuong_6.pdf'),
-(100, 217, 35, 'test', 16, 'Huân Chương Lao Động Hạng Nhì', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814924_slide_chuong_6.pdf'),
-(101, 218, 35, 'test', 16, 'Huân Chương Lao Động Hạng Nhì', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814924_slide_chuong_6.pdf'),
-(102, 219, 35, 'test', 16, 'Huân Chương Lao Động Hạng Nhì', '2024-09-30', 'Phòng Thanh tra - Đảm bảo chất', './uploads/1728814924_slide_chuong_6.pdf'),
-(103, 233, 35, 'test', 16, 'Lao Động Tiên Tiến', '2024-10-01', 'Phòng Quản lý Khoa học - Hợp tác', './uploads/1729017682_TH_Buoi3_2 (1).pdf'),
-(104, 229, 35, 'test', 16, 'Lao Động Tiên Tiến', '2024-09-30', 'Phòng Quản lý đào tạo', './uploads/1729142939_TH_Buoi3_2 (1).pdf'),
-(105, 230, 35, 'test', 16, 'Lao Động Tiên Tiến', '2024-09-30', 'Phòng Quản lý đào tạo', './uploads/1729142939_TH_Buoi3_2 (1).pdf'),
-(106, 311, 39, '20', 16, 'Hoàn Thành Tốt Nhiệm Vụ', '2024-10-28', 'Phòng Hành chính - Tổ chức', './uploads/1730450936_TH_Buoi3_2 (1).pdf'),
-(107, 311, 39, '20', 16, 'Lao Động Tiên Tiến', '2024-10-29', 'Phòng Kế hoạch - Tài chính', './uploads/1730451027_TH_Buoi3_1 (2).pdf'),
-(108, 311, 39, '20', 16, 'Giấy Khen Hiệu Trưởng', '2024-10-28', 'Phòng Quản trị thiết bị', './uploads/1730451102_TH_Buoi3_2 (1).pdf'),
-(109, 311, 39, '20', 16, 'Chiến Sĩ Thi Đua Cơ Sở', '2024-10-29', 'Phòng Kế hoạch - Tài chính', './uploads/1730451159_TH_Buoi3_2 (1).pdf'),
-(110, 311, 39, '20', 16, 'Chiến Sĩ Thi Đua Thành Phố', '2024-10-28', 'Phòng Kế hoạch - Tài chính', './uploads/1730451217_TH_Buoi3_2.pdf'),
-(111, 311, 39, '20', 16, 'Chiến Sĩ Thi Đua Toàn Quốc', '2024-10-05', 'Phòng Kế hoạch - Tài chính', './uploads/1730451308_TH_Buoi3_2 (1).pdf'),
-(112, 311, 39, '20', 16, 'Bằng Khen Ủy Ban Nhân Thành Phố', '2024-10-28', 'Phòng Kế hoạch - Tài chính', './uploads/1730451386_TH_Buoi3_2.pdf'),
-(113, 311, 39, '20', 16, 'Bằng Khen Thủ Tướng Chính Phủ', '2024-10-28', 'Phòng Kế hoạch - Tài chính', './uploads/1730451430_TH_Buoi3_2.pdf'),
-(114, 311, 39, '20', 16, 'Huân Chương Lao Động Hạng Ba', '2024-10-29', 'Phòng Kế hoạch - Tài chính', './uploads/1730451482_TH_Buoi3_1.pdf'),
-(115, 311, 39, '20', 16, 'Huân Chương Lao Động Hạng Nhì', '2024-10-28', 'Phòng Kế hoạch - Tài chính', './uploads/1730451535_TH_Buoi3_2.pdf');
+(118, 311, 39, '20', 16, 'Hoàn Thành Xuất Sắc', '2024-10-29', 'Phòng Hành chính - Tổ chức', './uploads/1730459019_TH_Buoi3_1 (1).pdf'),
+(119, 311, 39, '20', 16, 'Lao Động Tiên Tiến', '2024-10-28', 'Phòng Hành chính - Tổ chức', './uploads/1730459050_TH_Buoi3_2 (1).pdf'),
+(120, 311, 39, '20', 16, 'Chiến Sĩ Thi Đua Cơ Sở', '2024-10-29', 'Phòng Hành chính - Tổ chức', './uploads/1730459458_TH_Buoi3_1 (2).pdf'),
+(121, 311, 39, '20', 15, 'Hoàn Thành Xuất Sắc', '2024-10-28', 'Phòng Hành chính - Tổ chức', './uploads/1730459545_ATBMTT_B3.pdf'),
+(122, 311, 39, '20', 15, 'Lao Động Tiên Tiến', '2024-10-28', 'Phòng Hành chính - Tổ chức', './uploads/1730459872_ATBMTT_B3.pdf'),
+(123, 311, 39, '20', 14, 'Hoàn Thành Xuất Sắc', '2024-10-29', 'Phòng Hành chính - Tổ chức', './uploads/1730460261_TH_Buoi3_1 (1).pdf'),
+(124, 311, 39, '20', 14, 'Lao Động Tiên Tiến', '2024-10-28', 'Phòng Hành chính - Tổ chức', './uploads/1730460405_ATBMTT_B3.pdf'),
+(125, 311, 39, '20', 15, 'Chiến Sĩ Thi Đua Cơ Sở', '2024-10-28', 'Phòng Hành chính - Tổ chức', './uploads/1730460562_TH_Buoi3_2 (1).pdf'),
+(126, 311, 39, '20', 14, 'Chiến Sĩ Thi Đua Cơ Sở', '2024-10-28', 'Phòng Hành chính - Tổ chức', './uploads/1730461877_TH_Buoi3_2 (1).pdf');
 
 -- --------------------------------------------------------
 
@@ -356,7 +286,11 @@ CREATE TABLE `sangkien` (
 
 INSERT INTO `sangkien` (`MaSK`, `MaCN`, `Manam`, `TenSK`, `QD`, `CapSK`) VALUES
 (8, 173, 14, 'Nghiêm cứu AI', '20', 'Sáng Kiên Cấp Thành '),
-(9, 177, 14, 'Nghiên Cứu Framework ', '20', 'Nghiên Cú Khoa Học');
+(9, 177, 14, 'Nghiên Cứu Framework ', '20', 'Nghiên Cú Khoa Học'),
+(13, 311, 16, 'demo', '20', 'Sáng Kiên Cấp Cơ Sở'),
+(14, 311, 15, 'demo', 'demo', 'Sáng Kiên Cấp Cơ Sở'),
+(15, 311, 14, 'demo', 'demo', 'Sáng Kiên Cấp Cơ Sở'),
+(16, 311, 16, 'demo', 'demo', 'Sáng Kiên Cấp Thành ');
 
 -- --------------------------------------------------------
 
@@ -621,7 +555,7 @@ ALTER TABLE `thongtincanhan`
 -- AUTO_INCREMENT cho bảng `danhgiacn`
 --
 ALTER TABLE `danhgiacn`
-  MODIFY `MaDGCN` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=116;
+  MODIFY `MaDGCN` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=127;
 
 --
 -- AUTO_INCREMENT cho bảng `danhgiatt`
@@ -657,7 +591,7 @@ ALTER TABLE `nam`
 -- AUTO_INCREMENT cho bảng `sangkien`
 --
 ALTER TABLE `sangkien`
-  MODIFY `MaSK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `MaSK` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT cho bảng `taikhoan`
