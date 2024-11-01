@@ -50,7 +50,7 @@ error_reporting(E_ALL & ~E_NOTICE & ~E_WARNING);
         foreach($ListKhoa as $L ){
         
         ?>
-       <option value="<?php echo $L->MaKhoa; ?>" <?php if ($L->MaKhoa == $data->MaKhoa) echo "selected"; ?>><?php echo $L->TenKhoa; ?></option>
+       <option value="<?php echo $L->MaKhoa; ?>" <?php if ($L->MaKhoa == $data->MaKhoa->MaKhoa) echo "selected"; ?>><?php echo $L->TenKhoa; ?></option>
 
        <?php
         }

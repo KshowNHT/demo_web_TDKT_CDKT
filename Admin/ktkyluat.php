@@ -56,7 +56,7 @@ class ktkyluat{
 
     // Lấy khen thưởng kỷ luật theo ID
     public static function laydgtt($conn, $id) {
-        $sql = "SELECT * FROM khethuongkyluatcncn WHERE MaKTKL = $id";
+        $sql = "SELECT * FROM khethuongkyluatcn WHERE MaKTKL = $id";
         $result = mysqli_query($conn, $sql);
 
         $ktkyluat_obj = new ktkyluat();

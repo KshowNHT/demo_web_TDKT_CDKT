@@ -92,7 +92,7 @@
             $message = "Đổi mật khẩu không thành công";
         }
 
-        header("Location: $baseUrl?p=taikhoan&message=" . urlencode($message));
+        header("Location: $baseUrl?p=trangchinh&message=" . urlencode($message));
         exit();
     }
 
