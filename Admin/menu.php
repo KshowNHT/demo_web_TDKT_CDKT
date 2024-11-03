@@ -167,15 +167,25 @@ session_start();
                    <p> <?php echo $pages['thongtincanhan'][0]; ?></p>
                 </a>
             </li>
+    
 
             <li class="nav-item">
-                <a href="<?php echo "$baseUrl?p=Khoa"; ?>" class="nav-link">
+                <a href="#" class="nav-link">
                     <i class="fa-solid fa-hotel"></i>
-                   <P> <?php echo $pages['Khoa'][0]; ?> </P>
+                   <P> Quản Lý Chung </P>
                    <i class="fas fa-angle-left right"></i>
                 </a>
             
-                        <ul class="nav nav-treeview">
+                        <ul class="nav-item">
+
+                        <li class="nav-item">
+                            <a href="<?php echo "$baseUrl?p=Khoa"; ?>" class="nav-link">
+                                <i class="fa-solid fa-hotel"></i>
+                            <P> <?php echo $pages['Khoa'][0]; ?> </P>
+                            
+                            </a>
+                        </li>  
+                        
                             <li class="nav-item">
                                 <a href="<?php echo "$baseUrl?p=tudanhgia"; ?>" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
