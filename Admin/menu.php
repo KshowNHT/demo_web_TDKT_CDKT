@@ -167,11 +167,24 @@ session_start();
                    <p> <?php echo $pages['thongtincanhan'][0]; ?></p>
                 </a>
             </li>
+
             <li class="nav-item">
                 <a href="<?php echo "$baseUrl?p=Khoa"; ?>" class="nav-link">
                     <i class="fa-solid fa-hotel"></i>
                    <P> <?php echo $pages['Khoa'][0]; ?> </P>
+                   <i class="fas fa-angle-left right"></i>
                 </a>
+            
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="<?php echo "$baseUrl?p=tudanhgia"; ?>" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                <p> 
+                                        <?php echo $pages['tudanhgia'][0]; ?>
+                                </p>
+                                </a>
+                            </li>   
+                        </ul>
             </li>
             <li class="nav-item">
                 <a href="<?php echo "$baseUrl?p=sangkien"; ?>" class="nav-link">

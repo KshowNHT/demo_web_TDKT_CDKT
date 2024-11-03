@@ -23,6 +23,7 @@
         'Khoath' => array('Thêm Khoa', 'Khoathem.php'),
         'Khoasua' => array('Sửa Khoa', 'Khoasua.php'),
         'Khoaxoa' => array('Xóa Khoa', 'Khoaxoa.php'),
+        'tudanhgia' => array('Đơn Vị Tự Đánh Giá', 'tudanhgiadv.php'),
         //Năm
         'Nam' => array('Quản lý Năm', 'namview.php'),
         'Namth' => array('Thêm Năm', 'namthem.php'),
