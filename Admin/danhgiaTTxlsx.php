@@ -111,3 +111,4 @@ if ($result->num_rows > 0) {
 
 $conn->close();
 ?>
+<a href="./KhenThuong_output.xlsx">Tải xuống</a>
